@@ -1,0 +1,530 @@
+unit ufrmConsumoFlotillas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxStyles, dxSkinsCore, dxSkinBlack, dxSkinBlue,
+  dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinSilver, dxSkinStardust,
+  dxSkinSummer2008, dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue,
+  dxSkinscxPCPainter, cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage,
+  cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, dxmdaset,
+  cxTextEdit, cxLookAndFeelPainters, cxContainer, cxGroupBox, cxLabel,
+  cxMaskEdit, cxButtonEdit, Menus, StdCtrls, cxButtons, uDAInterfaces,
+  uDADataTable, uDAScriptingProvider, uDAMemDataTable, uDARemoteDataAdapter,
+  LibraryCistemGas_Intf, LibraryFlotillas_Intf, cxPC, cxCurrencyEdit, ComCtrls,
+  cxListView, uDACDSDataTable;
+
+type
+  TfrmConsumoFlotillas = class(TfrmCustomModule)
+    tblConsumo: TdxMemData;
+    tblConsumoTicket: TIntegerField;
+    tblConsumoVehiculoID: TIntegerField;
+    tblConsumoImporte: TFloatField;
+    dsConsumo: TDataSource;
+    tblConsumoClienteID: TIntegerField;
+    tblConsumoCliente: TStringField;
+    tblConsumoVolumen: TFloatField;
+    pgcConsumos: TcxPageControl;
+    tsConsumoFlotillas: TcxTabSheet;
+    gbDatos: TcxGroupBox;
+    edtVehiculo: TcxButtonEdit;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    btnAgregar: TcxButton;
+    edtTicket: TcxTextEdit;
+    cxGrid1: TcxGrid;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1DBTableView1RecId: TcxGridDBColumn;
+    cxGrid1DBTableView1ClienteID: TcxGridDBColumn;
+    cxGrid1DBTableView1VehiculoID: TcxGridDBColumn;
+    cxGrid1DBTableView1Cliente: TcxGridDBColumn;
+    cxGrid1DBTableView1Ticket: TcxGridDBColumn;
+    cxGrid1DBTableView1Volumen: TcxGridDBColumn;
+    cxGrid1DBTableView1Importe: TcxGridDBColumn;
+    cxGrid1Level1: TcxGridLevel;
+    tsSagarpa: TcxTabSheet;
+    tsCuponesInternos: TcxTabSheet;
+    tsCuponesExternos: TcxTabSheet;
+    gbTicketS: TcxGroupBox;
+    edtTicketS: TcxTextEdit;
+    cxLabel4: TcxLabel;
+    cxLabel6: TcxLabel;
+    edtImporte: TcxCurrencyEdit;
+    cxLabel7: TcxLabel;
+    edtDiferencia: TcxCurrencyEdit;
+    gbCliente: TcxGroupBox;
+    cxLabel3: TcxLabel;
+    edtSagarpa: TcxCurrencyEdit;
+    cxLabel5: TcxLabel;
+    edtPemex: TcxCurrencyEdit;
+    cxLabel8: TcxLabel;
+    edtEfectivo: TcxCurrencyEdit;
+    edtCredito: TcxCurrencyEdit;
+    edtVehiculoS: TcxButtonEdit;
+    cxLabel9: TcxLabel;
+    cxLabel10: TcxLabel;
+    Voucher: TcxLabel;
+    edtVoucher: TcxCurrencyEdit;
+    gbCuponI: TcxGroupBox;
+    gbCuponE: TcxGroupBox;
+    edtCuponI: TcxTextEdit;
+    cxLabel15: TcxLabel;
+    cdsAgrupacionBomba: TDACDSDataTable;
+    cdsLiquidacion: TDACDSDataTable;
+    lblStatus: TcxLabel;
+    cxLabel11: TcxLabel;
+    edtClienteE: TcxButtonEdit;
+    cxLabel12: TcxLabel;
+    edtImporteE: TcxCurrencyEdit;
+    procedure cxGrid1Enter(Sender: TObject);
+    procedure cxGrid1Exit(Sender: TObject);
+    procedure edtVehiculoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtVehiculoPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure btnAgregarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure edtTicketSExit(Sender: TObject);
+    procedure pgcConsumosPageChanging(Sender: TObject; NewPage: TcxTabSheet;
+      var AllowChange: Boolean);
+    procedure FormDestroy(Sender: TObject);
+    procedure edtEfectivoPropertiesEditValueChanged(Sender: TObject);
+    procedure edtCuponIEnter(Sender: TObject);
+    procedure edtCuponIExit(Sender: TObject);
+    procedure edtCuponIKeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+    MiTicket: TTicket;
+    Nuevo: Boolean;
+    MiVehiculo: TDatosVehiculo;
+    MiBombaID: Integer;
+    FechaLiquidacion: TDateTime;
+    function AbrirLiquidacion: Boolean;
+    procedure Calcular;
+    procedure InhabilitaDatos;
+    procedure LimpiaDatos;
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+  protected
+    procedure RegisterActions; override;
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+  end;
+
+var
+  frmConsumoFlotillas: TfrmConsumoFlotillas;
+
+implementation
+
+uses uDM, Modules, dmActions, ufrmBuscaVehiculoFlotillas, UtileriasComun,
+   LibraryAdministracion_Intf, dmImagenes, ufrmParametros;
+
+{$R *.dfm}
+
+{ TfrmConsumoFlotillas }
+
+function TfrmConsumoFlotillas.AbrirLiquidacion: Boolean;
+begin
+  Result:=True;
+  DM.Parametros:=ObtenParametros('PK', 'Secuencia del Corte');
+  cdsAgrupacionBomba.ParamByName('EstacionID').AsInteger:=DM.Estacion;
+  cdsAgrupacionBomba.Open;
+  cdsAgrupacionBomba.Locate('AgrupacionID', DM.Parametros.Agrupacion, []);
+  MiBombaID:=cdsAgrupacionBomba.FieldByName('BombaID').AsInteger;
+  cdsAgrupacionBomba.Close;
+  cdsLiquidacion.ParamByName('EstacionID').AsInteger:=DM.Estacion;
+  cdsLiquidacion.ParamByName('TurnoID').AsInteger:=DM.Parametros.SecuenciaIni;
+  cdsLiquidacion.Open;
+  if cdsLiquidacion.RecordCount > 0 then
+  begin
+    FechaLiquidacion:=cdsLiquidacion.FieldByName('Fecha').AsDateTime;
+    if cdsLiquidacion.FieldByName('Cerrada').AsBoolean then
+    begin
+      MessageDlg('La liquidacion ya esta cerrada.', mtError, [mbOK], 0);
+      Result:=False;
+    end;
+  end
+  else
+  begin
+    MessageDlg('La liquidacion no existe.', mtError, [mbOK], 0);
+    Result:=False;
+  end;
+  cdsLiquidacion.Close;
+end;
+
+procedure TfrmConsumoFlotillas.ActionCancelar(Action: TBasicAction);
+begin
+  if MessageDlg('¿Desea cancelar la aplicacion de consumos?', mtConfirmation, mbYesNo, 0) = mrYes then
+  begin
+    LimpiaDatos;
+    Nuevo:=False;
+  end;
+end;
+
+procedure TfrmConsumoFlotillas.ActionGuardar(Action: TBasicAction);
+var
+  Datos: TDatosSagarpa;
+  MisDatos: TInsertaOtros;
+begin
+  case pgcConsumos.ActivePageIndex of
+    0:begin
+        tblConsumo.First;
+        while not tblConsumo.Eof do
+        begin
+          DM.ServidorEstacion(DM.Estacion).ConvierteACredito(tblConsumoTicket.AsInteger, tblConsumoVehiculoID.AsInteger);
+          tblConsumo.Next;
+        end;
+        edtVehiculo.Text:='';
+        edtTicket.Text:='';
+        tblConsumo.Close;
+      end;
+    1:begin
+        if edtTicketS.Text <> '' then
+        begin
+          if MessageDlg('¿Desea agregar el ticket al cliente SAGARPA?', mtConfirmation, mbYesNo, 0) = mrNo then
+            Exit;
+          if Abs(edtDiferencia.EditValue) >= 1  then
+          begin
+            MessageDlg('Existen diferencias en en los datos.', mtError, [mbOK], 0);
+            Exit;
+          end;
+          if (edtCredito.Value > 0) and (edtVehiculoS.Text = '') then
+          begin
+            MessageDlg('Debe capturar un cliente para aplicar el credito.', mtError, [mbOK], 0);
+            Exit;
+          end;
+          Datos:=TDatosSagarpa.Create;
+          try
+            Datos.Ticket:=StrToInt(edtTicketS.Text);
+            Datos.SagarpaImporte:=edtSagarpa.EditValue;
+            Datos.PemexImporte:=edtPemex.EditValue;
+            Datos.CreditoImporte:=edtCredito.EditValue;
+            Datos.VoucherImporte:=edtVoucher.EditValue;
+            if edtVehiculoS.Text <> '' then
+              Datos.CreditoCliente:=edtVehiculoS.EditValue;
+            Datos.VoucherCliente:=DM.CteSagarpaVoucher;
+            with DM.Servidor.BuscaSagarpa(DM.Estacion) do
+            begin
+              Datos.SagarpaCliente:=ClienteSagarpa;
+              Datos.PemexCliente:=ClienteSagarpaPemex;
+            end;
+            DM.ServidorEstacion(DM.Estacion).ConvierteACreditoSagarpa(Datos);
+          finally
+            Datos.Free;
+          end;
+        end;
+      end;
+    3:begin
+        if (edtImporteE.EditValue <= 0) or (edtClienteE.Text = '') then
+        begin
+          MessageDlg('Datos incorrectos', mtError, [mbOK], 0);
+          Exit;
+        end;
+
+        MisDatos:=TInsertaOtros.Create;
+        try
+          MisDatos.ID:=0;
+          MisDatos.Serie:='CE';
+          MisDatos.Fecha:=FechaLiquidacion;
+          MisDatos.Referencia:='';
+          MisDatos.Volumen:=1;
+          MisDatos.Precio:=1;
+          MisDatos.Importe:=edtImporteE.EditValue;
+          MisDatos.BombaID:=MiBombaID;
+          MisDatos.ProductoID:=1;
+          MisDatos.TipoID:=5;
+          MisDatos.ClienteID:=DM.ClienteDefault;
+          MisDatos.VehiculoID:=edtClienteE.EditValue;
+          MisDatos.TarjetaYCupon:=True;
+          MisDatos.TurnoID:=DM.Parametros.SecuenciaIni;
+          DM.ServidorEstacion(DM.Estacion).CuponesExternos(MisDatos);
+        finally
+          MisDatos.Free;
+        end;
+      end;
+  end;
+  Nuevo:=False;
+end;
+
+procedure TfrmConsumoFlotillas.ActionNuevo(Action: TBasicAction);
+begin
+  Nuevo:=True;
+  case pgcConsumos.ActivePageIndex of
+    0:begin
+        tblConsumo.Open;
+        gbDatos.Enabled:=True;
+      end;
+    1:begin
+        gbTicketS.Enabled:=True;
+        gbCliente.Enabled:=True;
+        edtTicketS.SetFocus;
+      end;
+    2:begin
+        Nuevo:=AbrirLiquidacion;
+        if Nuevo then
+        begin
+          gbCuponI.Enabled:=True;
+          edtCuponI.SetFocus;
+        end;
+      end;
+    3:begin
+        Nuevo:=AbrirLiquidacion;
+        if Nuevo then
+        begin
+          gbCuponE.Enabled:=True;
+          edtImporteE.SetFocus;
+        end;
+      end;
+  end;
+end;
+
+procedure TfrmConsumoFlotillas.btnAgregarClick(Sender: TObject);
+var
+  Aux: TTicket;
+  MisDatos: TDatosVehiculo;
+begin
+  inherited;
+  if (edtVehiculo.Text = '') or (edtTicket.Text='') then
+  begin
+    MessageDlg('Debe capturar todos los datos', mtError, [mbOK], 0);
+    Exit;
+  end;
+  Aux:=TTicket.Create;
+  MisDatos:=TDatosVehiculo.Create;
+  try
+    Aux.Assign(DM.ServidorEstacion(DM.Estacion).BuscaTicket(StrToInt(edtTicket.Text)));
+    if (Aux.TicketID > 0) then
+    begin
+      if (Aux.Tipo = 0) then
+      begin
+        tblConsumo.Append;
+        tblConsumoTicket.AsInteger:=Aux.TicketID;
+        tblConsumoVehiculoID.AsString:=edtVehiculo.Text;
+        tblConsumoImporte.AsFloat:=Aux.Importe;
+        tblConsumoVolumen.AsFloat:=Aux.Volumen;
+        tblConsumoCliente.AsString:=MiVehiculo.ClienteNombre;
+        tblConsumoClienteID.AsInteger:=MiVehiculo.ClienteID;
+        tblConsumo.Post;
+      end
+      else
+        MessageDlg('El ticket debe ser de efectivo', mtError, [mbOK], 0);
+    end
+    else
+      MessageDlg('El ticket que capturo no existe', mtError, [mbOK], 0);
+  finally
+    Aux.Free;
+    MisDatos.Free;
+    edtVehiculo.Text:='';
+    edtTicket.Text:='';
+  end;
+end;
+
+procedure TfrmConsumoFlotillas.Calcular;
+begin
+  edtDiferencia.Value:=edtImporte.Value - edtSagarpa.EditValue - edtPemex.EditValue - edtEfectivo.EditValue - edtCredito.EditValue - edtVoucher.EditValue;
+end;
+
+procedure TfrmConsumoFlotillas.cxGrid1Enter(Sender: TObject);
+begin
+  inherited;
+  OkEnter:=False;
+end;
+
+procedure TfrmConsumoFlotillas.cxGrid1Exit(Sender: TObject);
+begin
+  inherited;
+  OkEnter:=True;
+end;
+
+procedure TfrmConsumoFlotillas.edtCuponIEnter(Sender: TObject);
+begin
+  inherited;
+  OkEnter:=False;
+end;
+
+procedure TfrmConsumoFlotillas.edtCuponIExit(Sender: TObject);
+begin
+  inherited;
+  OkEnter:=True;
+end;
+
+procedure TfrmConsumoFlotillas.edtCuponIKeyPress(Sender: TObject;
+  var Key: Char);
+var
+  Aux: TCuponValido;
+  Datos: TInsertaOtros;
+begin
+  inherited;
+  if (Key = #13) and (edtCuponI.Text <> '') then
+  begin
+    Aux:=DM.ServidorFlotillas.CuponManual(DM.Estacion, cdsLiquidacion.FieldByName('TurnoID').AsInteger, MiBombaID, edtCuponI.Text);
+    if Aux.Valido then
+    begin
+      Datos:=TInsertaOtros.Create;
+      try
+        Datos.ID:=0;
+        Datos.Serie:='CM';
+        Datos.Fecha:=FechaLiquidacion;
+        Datos.Referencia:=edtCuponI.Text;
+        Datos.Volumen:=1;
+        Datos.Precio:=1;
+        Datos.Importe:=Aux.Importe;
+        Datos.BombaID:=MiBombaID;
+        Datos.ProductoID:=1;
+        Datos.TipoID:=5;
+        Datos.ClienteID:=DM.ClienteDefault;
+        Datos.VehiculoID:=0;
+        Datos.TarjetaYCupon:=True;
+        Datos.TurnoID:=DM.Parametros.SecuenciaIni;
+        DM.ServidorEstacion(DM.Estacion).InsertaOtros(Datos);
+        lblStatus.Caption:=edtCuponI.Text + ' - [GUARDADO]';
+      finally
+        Datos.Free;
+      end;
+    end
+    else
+    begin
+      MessageDlg(Aux.MsnError, mtError, [mbOK], 0);
+      lblStatus.Caption:='';
+    end;
+    edtCuponI.Text:='';
+  end;
+end;
+
+procedure TfrmConsumoFlotillas.edtEfectivoPropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  Calcular;
+end;
+
+procedure TfrmConsumoFlotillas.edtTicketSExit(Sender: TObject);
+begin
+  inherited;
+  if edtTicketS.Text <> '' then
+  begin
+    try
+      MiTicket.Assign(DM.ServidorEstacion(DM.Estacion).BuscaTicket(StrToInt(edtTicketS.Text)));
+      if MiTicket.Tipo = 0 then
+      begin
+        edtImporte.Value:=Decimales(MiTicket.Importe, 2);
+        edtEfectivo.SetFocus;
+        Calcular;
+      end
+      else
+        MessageDlg('El ticket debe de ser de una venta en efectivo', mtError, [mbOK], 0);
+    finally
+    end;
+  end;
+end;
+
+procedure TfrmConsumoFlotillas.edtVehiculoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    edtVehiculoPropertiesButtonClick(Sender, 0);
+end;
+
+procedure TfrmConsumoFlotillas.edtVehiculoPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+  inherited;
+  MiVehiculo.Assign(BuscaVehiculoFlotillas);
+  if MiVehiculo.VehiculoID > 0 then
+  begin
+    (Sender As TcxButtonEdit).EditValue:=MiVehiculo.VehiculoID;
+    if pgcConsumos.ActivePageIndex = 0 then
+      edtTicket.SetFocus;
+  end;
+end;
+
+procedure TfrmConsumoFlotillas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  Nuevo:=False;
+  MiVehiculo:=TDatosVehiculo.Create;
+  MiTicket:=TTicket.Create;
+end;
+
+procedure TfrmConsumoFlotillas.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  MiVehiculo.Free;
+  MiTicket.Free;
+end;
+
+procedure TfrmConsumoFlotillas.InhabilitaDatos;
+begin
+  gbDatos.Enabled:=False;
+  gbTicketS.Enabled:=False;
+  gbCliente.Enabled:=False;
+  gbCuponI.Enabled:=False;
+  gbCuponE.Enabled:=False;
+end;
+
+procedure TfrmConsumoFlotillas.LimpiaDatos;
+begin
+  case pgcConsumos.ActivePageIndex of
+    0:begin
+        tblConsumo.Close;
+        edtVehiculo.Text:='';
+        edtTicket.Text:='';
+      end;
+    1:begin
+        edtTicketS.Text:='';
+        edtImporte.EditValue:=0;
+        edtDiferencia.EditValue:=0;
+        edtEfectivo.EditValue:=0;
+        edtSagarpa.EditValue:=0;
+        edtPemex.EditValue:=0;
+        edtVoucher.EditValue:=0;
+        edtCredito.EditValue:=0;
+        edtVehiculoS.Text:='';
+      end;
+      2:begin
+          edtCuponI.Text:='';
+        end;
+      3:begin
+          edtImporteE.EditValue:=0;
+          edtClienteE.Text:='';
+        end;
+  end;
+end;
+
+procedure TfrmConsumoFlotillas.pgcConsumosPageChanging(Sender: TObject;
+  NewPage: TcxTabSheet; var AllowChange: Boolean);
+begin
+  inherited;
+  AllowChange:=not Nuevo;
+end;
+
+procedure TfrmConsumoFlotillas.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actCancelar, ActionCancelar);
+end;
+
+procedure TfrmConsumoFlotillas.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actNuevo.Enabled:=not Nuevo;
+  dmAppActions.actCancelar.Enabled:=Nuevo;
+  dmAppActions.actGuardar.Enabled:=Nuevo;
+  if not Nuevo then
+    InhabilitaDatos;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Consumo Flotillas', TfrmConsumoFlotillas);
+
+end.

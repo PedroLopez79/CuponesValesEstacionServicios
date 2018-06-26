@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2009/11/17 09:05:01.861.pas,C:\Users\Marco\Proyectos\Cistem\CistemComun\CodigoFuente\ufrmPassword.pas=</Transaction>
+    <Transaction>2009/11/17 09:05:01.861.dfm,C:\Users\Marco\Proyectos\Cistem\CistemComun\CodigoFuente\ufrmPassword.dfm=</Transaction>
+    <Transaction>2010/12/02 12:45:03.134.pas,C:\Users\Peter\Documents\Cistem\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\OpenSSLUtils.pas=</Transaction>
+    <Transaction>2011/01/17 22:40:16.190.dproj,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServerAdministracion.dproj=C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServerEmpresas.dproj</Transaction>
+    <Transaction>2011/01/25 10:32:05.999.dfm,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceAdministracion_Impl.dfm=C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.dfm</Transaction>
+    <Transaction>2011/01/25 10:32:05.999.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceAdministracion_Impl.pas=C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.pas</Transaction>
+    <Transaction>2011/01/25 10:32:22.666.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryAdministracion_Async.pas=C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryEmpresas_Async.pas</Transaction>
+    <Transaction>2011/01/25 10:32:30.198.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryAdministracion_Intf.pas=C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryEmpresas_Intf.pas</Transaction>
+    <Transaction>2011/01/25 10:32:37.306.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryAdministracion_Invk.pas=C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryEmpresas_Invk.pas</Transaction>
+    <Transaction>2011/01/25 10:34:30.782.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryAdministracion_Intf.pas=</Transaction>
+    <Transaction>2011/01/25 10:34:30.784.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryAdministracion_Invk.pas=</Transaction>
+    <Transaction>2011/01/25 10:34:30.785.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryEmpresas_Async.pas=</Transaction>
+    <Transaction>2011/01/25 10:34:30.790.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryEmpresas_Intf.pas=</Transaction>
+    <Transaction>2011/01/25 10:34:30.912.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\LibraryEmpresas_Invk.pas=</Transaction>
+    <Transaction>2011/01/25 10:34:40.327.dfm,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceAdministracion_Impl.dfm=</Transaction>
+    <Transaction>2011/01/25 10:34:40.327.pas,C:\Users\Peter\Documents\Cistem\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceAdministracion_Impl.pas=</Transaction>
+    <Transaction>2014/03/07 18:44:59.000.583,C:\Users\RedPacifico\Desktop\ServiceEmpresas_Impl.dfm=C:\Users\RedPacifico\Desktop\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.dfm</Transaction>
+    <Transaction>2014/03/07 18:44:59.000.583,C:\Users\RedPacifico\Desktop\ServiceEmpresas_Impl.pas=C:\Users\RedPacifico\Desktop\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.pas</Transaction>
+    <Transaction>2014/03/07 18:49:25.000.712,C:\Users\RedPacifico\Desktop\ServiceEmpresas_Impl.pas=</Transaction>
+    <Transaction>2014/03/07 18:49:32.000.979,=C:\Users\RedPacifico\Desktop\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.pas</Transaction>
+    <Transaction>2014/03/07 18:51:11.000.190,C:\Users\RedPacifico\Desktop\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.pas=</Transaction>
+    <Transaction>2014/03/07 18:51:50.000.992,=C:\Users\RedPacifico\Desktop\FACTURA ELECTRONICA(MODULO INDIVIDUAL)\Cistem V70 - FACTURA ELECTRONICA\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.pas</Transaction>
+    <Transaction>2017/01/04 11:01:00.000.035,=C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\CistemComun\CodigoFuente\ufrmPassword.pas</Transaction>
+    <Transaction>2017/01/04 11:01:17.000.191,=C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\CistemComun\CodigoFuente\ufrmServerForm.pas</Transaction>
+    <Transaction>2017/01/04 11:01:32.000.663,=C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\CistemComun\CodigoFuente\LibXmlParser.pas</Transaction>
+    <Transaction>2017/01/04 11:01:46.000.259,=C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\CistemComun\CodigoFuente\UtileriasComun.pas</Transaction>
+    <Transaction>2017/01/09 15:47:59.000.777,C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerBitacora.dproj=C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerEmpresas.dproj</Transaction>
+    <Transaction>2017/01/09 15:49:35.000.394,C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerUtilidades.dproj=C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerBitacora.dproj</Transaction>
+    <Transaction>2017/01/09 15:50:24.000.518,C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerServicios.dproj=C:\Users\RedPacifico\Documents\GitHub\BitacorasEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerUtilidades.dproj</Transaction>
+    <Transaction>2018/02/07 11:55:01.000.141,C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerValesCupones.dproj=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServerServicios.dproj</Transaction>
+    <Transaction>2018/02/07 12:00:17.000.181,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\LibraryValesCupones_Intf.pas</Transaction>
+    <Transaction>2018/02/07 12:00:17.000.373,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\LibraryValesCupones_Invk.pas</Transaction>
+    <Transaction>2018/02/07 12:00:19.000.546,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServiceValesCupones_Impl.pas</Transaction>
+    <Transaction>2018/02/12 12:13:00.000.943,C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ServiceEmpresas_Impl.pas=</Transaction>
+    <Transaction>2018/03/07 16:52:46.000.772,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\LibraryValesCupones_Async.pas</Transaction>
+    <Transaction>2018/03/15 09:03:49.000.983,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\uAutorizacion.pas</Transaction>
+    <Transaction>2018/03/15 10:59:19.000.214,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\Controlador.pas</Transaction>
+    <Transaction>2018/03/15 11:00:27.000.174,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\PuertoSerial.pas</Transaction>
+    <Transaction>2018/03/15 11:00:27.000.127,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\Protocolo.pas</Transaction>
+    <Transaction>2018/03/15 11:00:27.000.103,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\CistemCore.pas</Transaction>
+    <Transaction>2018/03/15 11:00:27.000.198,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\PuertoSerieBennett.pas</Transaction>
+    <Transaction>2018/03/15 11:00:27.000.151,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\ProtocoloBennett.pas</Transaction>
+    <Transaction>2018/03/15 11:05:39.000.571,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\LibraryCistemGas_Intf.pas</Transaction>
+    <Transaction>2018/03/15 11:18:22.000.666,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\SynchedThreads.pas</Transaction>
+    <Transaction>2018/03/15 11:29:07.000.183,C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\LibraryCistemGas_Intf.pas=</Transaction>
+    <Transaction>2018/03/20 15:50:47.000.096,=C:\Users\RedPacifico\Documents\GitHub\CuponesValesEstacionServicios\CistemAdministracion\Codigo Fuente\Server\uCreditosValesCupones.pas</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="..\..\Codigo Fuente"/>
+    <File Path="..\CistemComun"/>
+    <File Path="..\CistemComun\CodigoFuente"/>
+    <File Path="..\CistemComun\CodigoFuente\LibXmlParser.pas"/>
+    <File Path="..\CistemComun\CodigoFuente\ufrmPassword.pas"/>
+    <File Path="..\CistemComun\CodigoFuente\ufrmPassword.dfm"/>
+    <File Path="..\CistemComun\CodigoFuente\ufrmServerForm.pas"/>
+    <File Path="..\CistemComun\CodigoFuente\ufrmServerForm.dfm"/>
+    <File Path="..\CistemComun\CodigoFuente\UtileriasComun.pas"/>
+    <File Path="fServerDataModule.pas"/>
+    <File Path="fServerDataModule.dfm"/>
+    <File Path="fServerForm.pas"/>
+    <File Path="fServerForm.dfm"/>
+    <File Path="libeay32.pas"/>
+    <File Path="LibraryEmpresas_Intf.pas"/>
+    <File Path="LibraryEmpresas_Invk.pas"/>
+    <File Path="LibraryValesCupones_Intf.pas"/>
+    <File Path="LibraryValesCupones_Invk.pas"/>
+    <File Path="ServiceValesCupones_Impl.pas"/>
+    <File Path="ServiceValesCupones_Impl.dfm"/>
+    <File Path="LibraryValesCupones_Async.pas"/>
+    <File Path="uAutorizacion.pas"/>
+    <File Path="Controlador.pas"/>
+    <File Path="CistemCore.pas"/>
+    <File Path="Protocolo.pas"/>
+    <File Path="ProtocoloBennett.pas"/>
+    <File Path="PuertoSerial.pas"/>
+    <File Path="PuertoSerieBennett.pas"/>
+    <File Path="SynchedThreads.pas"/>
+    <File Path="uCreditosValesCupones.pas"/>
+  </ProjectSortOrder>
+</BorlandProject>

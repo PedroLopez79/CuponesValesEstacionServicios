@@ -1,0 +1,725 @@
+unit ufrmFacturas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxControls, cxContainer, cxEdit, cxLabel, cxPC,
+  cxMaskEdit, cxDropDownEdit, cxCalendar, cxDBEdit, cxGroupBox, cxTextEdit,
+  StdCtrls, cxGraphics, cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage,
+  DB, cxDBData, cxMemo, cxGridLevel, cxClasses, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxCheckBox,
+  uDADataTable, uDAScriptingProvider, uDACDSDataTable, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, cxListBox, Menus, cxLookAndFeelPainters,
+  cxButtons, cxCurrencyEdit, cxButtonEdit, cxCheckGroup, dxSkinsCore,
+  dxSkinsDefaultPainters, dxSkinscxPCPainter, uDAInterfaces, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary,
+  dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
+  dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinSilver, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
+  dxSkinXmas2008Blue, cxLookAndFeels, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinFoggy, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSpringTime,
+  uDAMemDataTable, uDARemoteDataAdapter, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
+  cxPCdxBarPopupMenu, Vcl.ComCtrls, dxCore, cxDateUtils, cxNavigator,
+  uDADataAdapter, uDAFields, uROComponent;
+
+type
+  TfrmFacturas = class(TfrmCustomModule)
+    pgcFacturas: TcxPageControl;
+    cxTabSheet2: TcxTabSheet;
+    cxTabSheet1: TcxTabSheet;
+    cxTabSheet3: TcxTabSheet;
+    cxTabSheet4: TcxTabSheet;
+    cxGroupBox2: TcxGroupBox;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    cxFolio: TcxDBTextEdit;
+    cxDBDateEdit2: TcxDBDateEdit;
+    cxDBDateEdit3: TcxDBDateEdit;
+    cxGroupBox3: TcxGroupBox;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    cdsFactura: TDACDSDataTable;
+    dsFacturas: TDADataSource;
+    cdsDetalleFactura: TDACDSDataTable;
+    dsDetalleFactura: TDADataSource;
+    cdsProductos: TDACDSDataTable;
+    dsProductos: TDADataSource;
+    cdsCliente: TDACDSDataTable;
+    dsCliente: TDADataSource;
+    cxTextEdit1: TcxTextEdit;
+    cdsObtenSeries: TDACDSDataTable;
+    dsObtenSeries: TDADataSource;
+    cxGroupBox4: TcxGroupBox;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    cxGroupBox5: TcxGroupBox;
+    cxTextEdit2: TcxTextEdit;
+    cxButton1: TcxButton;
+    cxButton2: TcxButton;
+    cxDateEdit1: TcxDateEdit;
+    cxDateEdit2: TcxDateEdit;
+    cxDBLookupComboBox3: TcxDBLookupComboBox;
+    cxCheckBox1: TcxCheckBox;
+    cxCheckBox2: TcxCheckBox;
+    cxCheckBox3: TcxCheckBox;
+    cdsGrupoFacturar: TDACDSDataTable;
+    dsGrupoFacturar: TDADataSource;
+    cdsDatosFact: TDACDSDataTable;
+    DADataSource1: TDADataSource;
+    edtSerie: TcxTextEdit;
+    edtRangoFacturaIni: TcxCurrencyEdit;
+    edtRangoFacturaFin: TcxCurrencyEdit;
+    cxPageControl1: TcxPageControl;
+    cxTabSheet5: TcxTabSheet;
+    dbgDetalleFactura: TcxGrid;
+    cxGridDBTableView3: TcxGridDBTableView;
+    cxGridDBTableView3Cantidad: TcxGridDBColumn;
+    cxGridDBTableView3ProductoID: TcxGridDBColumn;
+    cxGridDBTableView3Descripcion: TcxGridDBColumn;
+    cxGridDBTableView3Precio: TcxGridDBColumn;
+    cxGridDBTableView3ImporteCalc: TcxGridDBColumn;
+    cxGridLevel3: TcxGridLevel;
+    cxTabSheet6: TcxTabSheet;
+    cxDBMemo1: TcxDBMemo;
+    cxStyleRepository1: TcxStyleRepository;
+    cxStyle1: TcxStyle;
+    cxDBTextEdit9: TcxDBButtonEdit;
+    cxCheckGroup1: TcxCheckGroup;
+    cxButton4: TcxButton;
+    chkEliminar: TcxCheckBox;
+    cxButton5: TcxButton;
+    cxGroupBox6: TcxGroupBox;
+    Labe1: TLabel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    cxGroupBox1: TcxGroupBox;
+    cxButton3: TcxButton;
+    cxTextEdit3: TcxTextEdit;
+    cxTextEdit4: TcxTextEdit;
+    cxTextEdit5: TcxTextEdit;
+    cxTextEdit6: TcxTextEdit;
+    btnAceptar: TcxButton;
+    btnCancelar: TcxButton;
+    cxTextEdit7: TcxTextEdit;
+    dtpFechaImpresion: TcxDateEdit;
+    edtSerieGenera: TcxTextEdit;
+    edtSerieCambio: TcxTextEdit;
+    edtSerieNueva: TcxTextEdit;
+    cxTabSheet7: TcxTabSheet;
+    cxGroupBox7: TcxGroupBox;
+    Label22: TLabel;
+    Label23: TLabel;
+    edtSerieElimina: TcxTextEdit;
+    edtFolioElimina: TcxCurrencyEdit;
+    cxSerie: TcxDBTextEdit;
+    cxCheckBox4: TcxCheckBox;
+    rdaUnidadesNoRegistradas: TDARemoteDataAdapter;
+    cdsUnidadesNoRegistradas: TDAMemDataTable;
+    procedure FormCreate(Sender: TObject);
+    procedure dbgDetalleFacturaEnter(Sender: TObject);
+    procedure cxGridDBTableView3ProductoIDPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cdsDetalleFacturaCalcFields(DataTable: TDADataTable);
+    procedure cxDBTextEdit9Exit(Sender: TObject);
+    procedure cxDBTextEdit9Enter(Sender: TObject);
+    procedure cxFolioExit(Sender: TObject);
+    procedure pgcFacturasChange(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
+    procedure cxDBDateEdit2Exit(Sender: TObject);
+    procedure cxDBLookupComboBox4Enter(Sender: TObject);
+    procedure cxButton3Click(Sender: TObject);
+    procedure btnAceptarClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure pgcFacturasPageChanging(Sender: TObject; NewPage: TcxTabSheet;
+      var AllowChange: Boolean);
+    procedure cxDBBuscarClientePropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure chkEliminarClick(Sender: TObject);
+    procedure cxButton5Click(Sender: TObject);
+    procedure cxButton4Click(Sender: TObject);
+    procedure cxTextEdit2Exit(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure BuscarCliente;
+    procedure GuardarFactura;
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    procedure ActionBuscar(Action: TBasicAction);
+    procedure ActionImprimir(Action: TBasicAction);
+    procedure ActionEliminar(Action: TBasicAction);
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+  protected
+    procedure RegisterActions; override;
+  end;
+
+var
+  FolIni,Folio: Integer;
+  Ser : String;
+  frmFacturas: TfrmFacturas;
+
+implementation
+
+uses Modules, uDM, dmActions, ufrmBuscarCliente,
+   UtileriasComun, LibraryValesCupones_Intf, ufrmBuscar;
+
+{$R *.dfm}
+
+{ TfrmFacturas }
+
+procedure TfrmFacturas.BuscarCliente;
+var
+  Datos: TDatosBusqueda;
+begin
+   Datos:=PantallaBusqueda(TfrmBuscarCliente, '');
+   if Datos.OK then
+   begin
+     cdsFactura.FieldByName('ClienteID').AsInteger:=Datos.Clave;
+     cxTextEdit1.Text := Datos.Nombre;
+   end;
+end;
+
+procedure TfrmFacturas.cdsDetalleFacturaCalcFields(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsDetalleFactura.FieldByName('ImporteCalc').AsFloat :=
+           cdsDetalleFactura.FieldByName('Precio').AsFloat *
+           cdsDetalleFactura.FieldByName('Cantidad').AsFloat;
+end;
+
+procedure TfrmFacturas.chkEliminarClick(Sender: TObject);
+begin
+  inherited;
+  cxButton4.Enabled:= chkEliminar.Checked;
+  cxButton5.Enabled:= chkEliminar.Checked;
+  cxFolio.Enabled:= chkEliminar.Checked;
+  cxDBTextEdit9.Enabled:=  not (chkEliminar.Checked);
+  cxDBDateEdit2.Enabled:=  not (chkEliminar.Checked);
+  cxDBDateEdit3.Enabled:=  not (chkEliminar.Checked);
+end;
+
+procedure TfrmFacturas.cxButton1Click(Sender: TObject);
+var
+  Magna,Premium,Diesel : Boolean;
+  resultado:Integer;
+
+  P: TParametros;
+  S: String;
+begin
+  P:=TParametros.Create;
+
+  try
+    cdsUnidadesNoRegistradas.Close;
+    P.Seleccion:= cxDBLookupComboBox3.EditValue;
+    S:='SELECT DISTINCT CONSUMO.* FROM CONSUMO INNER JOIN '+
+       'CLIENTE ON CONSUMO.CLIENTEID = CONSUMO.CLIENTEID '+
+       'WHERE CLIENTE.GRUPOFACTURARID = @Seleccion AND CONSUMO.CLIENTEID = -100 AND CONSUMO.VEHICULOID = -100 '+
+       'AND CONSUMO.FACTURADO = 0 AND CONSUMO.FACTURAID = 0';
+    rdaUnidadesNoRegistradas.GetDataCall.ParamByName('SQL').AsString:=S;
+    rdaUnidadesNoRegistradas.GetDataCall.ParamByName('Parametros').AsComplexType:=P;
+    cdsUnidadesNoRegistradas.Open;
+
+    if not cdsUnidadesNoRegistradas.EOF then begin
+       MessageDlg('Existen Unidades no registradas en los consumos antes de Facturar se tienen que registrar estas unidades', mtInformation, [mbOK], 0);
+       Exit;
+    end;
+  finally
+    FreeAndNil(P);
+  end;
+
+  inherited;
+  if cxCheckBox1.Checked then Magna := true
+  else Magna := false;
+  if cxCheckBox2.Checked then Premium:= true
+  else Premium:= false;
+  if cxCheckBox3.Checked then Diesel := true
+  else Diesel := false;
+
+  resultado := DM.Servidor.GenerarFacturas(edtSerieGenera.Text,
+                              strtoint(cxTextEdit2.Text),
+                              cxDateEdit1.Date,
+                              cxDateEdit2.Date,
+                              cdsFactura.FieldByName('UsuarioID').AsInteger,
+                              Magna,
+                              Premium,
+                              Diesel,
+                              DM.Seguridad.idEmpleado);
+  if (resultado<> -1) then
+  begin
+    MessageDlg('Generacion de Factura Exitosa del Folio ' + IntToStr(FolIni) + ' Al Folio ' + inttostr(resultado - 1), mtInformation, [mbOK], 0);
+    edtRangoFacturaIni.EditValue:=FolIni;
+    edtRangoFacturaFin.EditValue:=resultado;
+    edtSerie.Text:=edtSerieGenera.Text;
+    pgcFacturas.ActivePageIndex:=1;
+    DM.Folio('FolioFactura',DM.SerieFactura)
+  end
+  else
+    MessageDlg('No se Generaron Facturas', mtInformation, [mbOK], 0)
+end;
+
+procedure TfrmFacturas.cxButton3Click(Sender: TObject);
+begin
+  inherited;
+  cdsDatosFact.Close;
+  cdsDatosFact.ParamByName('Serie').AsString:= edtSerieCambio.Text;
+  cdsDatosFact.ParamByName('Folio').AsInteger:= strtoint(cxTextEdit6.Text);
+  cdsDatosFact.Open;
+
+  cxTextEdit3.Text := cdsDatosFact.FieldbyName('Nombre').AsString;
+  cxTextEdit4.Text := DatetoStr(cdsDatosFact.FieldbyName('Fecha').AsDateTime);
+  cxTextEdit5.Text := floattostr(cdsDatosFact.FieldbyName('Total').AsFloat);
+  dtpFechaImpresion.Date:=cdsDatosFact.FieldbyName('Fecha').AsDateTime;
+
+end;
+
+procedure TfrmFacturas.cxButton4Click(Sender: TObject);
+begin
+  inherited;
+ { If MessageDlg('Desea Eliminar la Factura',
+     mtConfirmation, [mbYes,mbNo],0) = mrYes then
+  begin
+      if DM.Servidor.EliminaFactura(cdsFactura.FieldByName('Folio').AsInteger,
+                                 cdsFactura.FieldByName('Serie').AsString,
+                                 cdsFactura.FieldByName('FacturaID').AsInteger,
+                                 cdsFactura.FieldByName('MovimientoID').AsInteger,
+                                 cdsCliente.FieldByName('ClienteID').AsInteger)
+      Then MessageDld('Se a Eliminado la factura y su movimientos', mtInformation, [mbOK], 0);
+
+  end else
+      Exit; }
+end;
+
+procedure TfrmFacturas.cxButton5Click(Sender: TObject);
+var
+  Folio:Integer;
+  Serie:String;
+begin
+  inherited;
+  Folio:= cdsFactura.FieldByName('Folio').AsInteger;
+  Serie:= cdsFactura.FieldByName('Serie').AsString;
+  cdsFactura.Close;
+  cdsFactura.ParamByName('Folio').AsInteger:= Folio;
+  cdsFactura.ParamByName('Serie').AsString := Serie;
+  cdsFactura.Open;
+
+  cdsCliente.Close;
+  cdsCliente.ParamByName('Cliente').AsInteger := cdsFactura.FieldByName('CLIENTEID').AsInteger;
+  cdsCliente.Open;
+
+  if not (cdsCliente.EOF) And (dmappactions.actNuevo.Enabled=False) then
+  begin
+     cxTextEdit1.Text:= cdsCliente.FieldByName('Nombre').AsString;
+  end;
+
+  cdsDetalleFactura.Close;
+  cdsDetalleFactura.ParamByName('FacturaID').AsInteger:= cdsFactura.FieldByName('FacturaID').AsInteger;
+  cdsDetalleFactura.Open;
+end;
+
+procedure TfrmFacturas.cxDBBuscarClientePropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+begin
+  inherited;
+      BuscarCliente;
+end;
+
+procedure TfrmFacturas.cxDBDateEdit2Exit(Sender: TObject);
+begin
+  inherited;
+  cdsFactura.FieldByName('Ejercicio').AsInteger := strtoint(FormatDateTime('yyyy',strtoDate(cxDBDateEdit2.Text)));
+  cdsFactura.FieldByName('Periodo').AsInteger := strtoint(FormatDateTime('mm',strtoDate(cxDBDateEdit2.Text)));
+end;
+
+procedure TfrmFacturas.cxDBLookupComboBox4Enter(Sender: TObject);
+begin
+  inherited;
+  cdsFactura.Append;
+  cdsObtenSeries.Close;
+  cdsObtenSeries.ParamByName('param').AsString := 'Folio';
+  cdsObtenSeries.Open;
+end;
+
+procedure TfrmFacturas.cxFolioExit(Sender: TObject);
+begin
+  inherited;
+  cdsFactura.FieldByName('FacturaID').AsInteger := cdsFactura.FieldByName('Folio').AsInteger
+end;
+
+procedure TfrmFacturas.cxDBTextEdit9Enter(Sender: TObject);
+begin
+  inherited;
+  dmAppActions.actBuscar.Enabled:=((cdsFactura.State=dsEdit) or (cdsFactura.State=dsInsert));
+end;
+
+procedure TfrmFacturas.cxDBTextEdit9Exit(Sender: TObject);
+begin
+  inherited;
+  cdsCliente.Close;
+  cdsCliente.ParamByName('Cliente').AsInteger := cdsFactura.FieldByName('CLIENTEID').AsInteger;
+  cdsCliente.Open;
+
+  if not (cdsCliente.EOF) And (dmappactions.actNuevo.Enabled=False) then
+  begin
+     cdsFactura.FieldByName('ClienteID').AsInteger:= cdsCliente.FieldByName('ClienteID').AsInteger;
+     cxTextEdit1.Text:= cdsCliente.FieldByName('Nombre').AsString;
+  end;
+
+  if not (cxDBTextEdit9.Focused) then dmAppActions.actBuscar.Enabled:=False;
+end;
+
+procedure TfrmFacturas.cxGridDBTableView3ProductoIDPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+begin
+  inherited;
+  if DisplayValue > 0 then
+  begin
+     cdsProductos.Close;
+     cdsProductos.ParamByName('param').AsInteger := DisplayValue;
+     cdsProductos.Open;
+
+     if not(cdsProductos.EOF) then
+     begin
+        cdsDetalleFactura.FieldByName('Precio').AsFloat := cdsProductos.FieldByName('Precio').AsFloat;
+        cdsDetalleFactura.FieldByName('Descripcion').AsString := cdsProductos.FieldByName('Descripcion').AsString;
+        cdsDetalleFactura.FieldByName('ProductoID').AsInteger := DisplayValue;
+     end;
+  end;
+end;
+
+procedure TfrmFacturas.cxTextEdit2Exit(Sender: TObject);
+begin
+  inherited;
+  FolIni:= strToint(cxTextEdit2.Text);
+end;
+
+procedure TfrmFacturas.dbgDetalleFacturaEnter(Sender: TObject);
+begin
+  inherited;
+  if not(cdsDetalleFactura.Active) then
+  begin
+      cdsDetalleFactura.Close;
+      cdsDetalleFactura.Open;
+  end;
+end;
+
+procedure TfrmFacturas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  cdsGrupoFacturar.Open;
+  Folio:=0;
+  pgcFacturas.ActivePageIndex:=0;
+end;
+
+procedure TfrmFacturas.FormShow(Sender: TObject);
+begin
+  inherited;
+  cdsFactura.Close;
+  cdsFactura.Open;
+  cdsObtenSeries.Close;
+  cdsObtenSeries.ParamByName('param').AsString := 'Folio';
+  cdsObtenSeries.Open;
+
+  edtSerieGenera.Text:= DM.SerieFactura;
+  cxTextEdit2.Text:= inttostr(DM.FolioActual('FolioFactura',DM.SerieFactura));
+end;
+
+procedure TfrmFacturas.GuardarFactura;
+var
+  Detalle:TDetalleFactura;
+  Total,SubTotal : Real;
+  MovID,FacID :Integer;
+begin
+  Total:= cxGridDBTableView3.DataController.Summary.FooterSummaryValues[0];
+  SubTotal:=(Total / ((DM.IVA/100)+1));
+  DM.DatosFactura:=TDatosFactura.Create;
+  DM.DatosFactura.Factura:=TFactura.Create;
+  Folio:= cdsFactura.FieldByName('Folio').AsInteger;
+
+  MovID := DM.Servidor.Folio('MovimientoID', '');
+  FacID:= DM.Servidor.Folio('FacturaID','');
+  DM.DatosFactura.Factura.FacturaID:=FacID;
+  DM.DatosFactura.Factura.Serie :=cxSerie.Text;
+  DM.DatosFactura.Factura.Folio:=cdsFactura.FieldByName('Folio').AsInteger;
+  DM.DatosFactura.Factura.Fecha:=cdsFactura.FieldByName('Fecha').AsDateTime;
+  DM.DatosFactura.Factura.FechaVencimiento:=cdsFactura.FieldByName('FechaVencimiento').AsDateTime;
+  DM.DatosFactura.Factura.FechaImpresion:=cdsFactura.FieldByName('FechaImpresion').AsDateTime;
+  DM.DatosFactura.Factura.Ejercicio:=cdsFactura.FieldByName('Ejercicio').AsInteger;
+  DM.DatosFactura.Factura.Periodo:=cdsFactura.FieldByName('Periodo').AsInteger;
+  DM.DatosFactura.Factura.Subtotal:=SubTotal;
+  DM.DatosFactura.Factura.Impuesto:=SubTotal * (DM.IVA/100);
+  DM.DatosFactura.Factura.Saldo:=cdsFactura.FieldByName('Saldo').AsFloat;
+  DM.DatosFactura.Factura.Tickets:=cdsFactura.FieldByName('Tickets').AsWideString;
+  DM.DatosFactura.Factura.ClienteID:=cdsFactura.FieldByName('ClienteID').AsInteger;
+  DM.DatosFactura.Factura.UsuarioID:=DM.Seguridad.idEmpleado;
+  DM.DatosFactura.Factura.IVA:=DM.IVA;
+  DM.DatosFactura.Factura.MovimientoID:= MovID;
+
+  DM.DatosFactura.DetalleFactura:=ATDetalleFactura.Create;
+  cdsDetalleFactura.First;
+  while not cdsDetalleFactura.EOF do
+  begin
+    Detalle:=TDetalleFactura.Create;
+    Detalle.DetalleFacturaID:=DM.Servidor.Folio('DetalleFacturaID','');
+    Detalle.FacturaID:=FacID;
+    Detalle.Cantidad:=cdsDetalleFactura.FieldByName('Cantidad').AsInteger;
+    Detalle.Precio:=cdsDetalleFactura.FieldByName('Precio').AsFloat;
+    Detalle.Importe:=cdsDetalleFactura.FieldByName('ImporteCalc').AsFloat;
+    Detalle.ProductoID:=cdsDetalleFactura.FieldByName('ProductoID').AsInteger;
+    DM.DatosFactura.DetalleFactura.Add(Detalle);
+
+    cdsDetalleFactura.Next;
+  end;
+
+  DM.DatosFactura.Factura.Total:=Total;
+  DM.Servidor.GuardaDatosFactura(DM.DatosFactura);
+end;
+
+procedure TfrmFacturas.pgcFacturasChange(Sender: TObject);
+begin
+  inherited;
+  cdsFactura.Cancel;
+  cdsFactura.Close;
+  cdsFactura.open;
+  if (pgcFacturas.ActivePageIndex = 0) then
+  begin
+     cdsFactura.Append;
+
+     cdsObtenSeries.Close;
+     cdsObtenSeries.ParamByName('param').AsString := 'Folio';
+     cdsObtenSeries.Open;
+
+     cdsGrupoFacturar.Close;
+     cdsGrupoFacturar.Open;
+  end;
+
+  if pgcFacturas.ActivePageIndex = 1 then
+     dmAppActions.actImprimir.Enabled:= True
+  else
+     dmAppActions.actImprimir.Enabled:= False;
+
+  if pgcFacturas.ActivePageIndex = 2 then
+  begin
+     cdsFactura.Edit;
+     cxGroupBox2.Enabled := False;
+     cxPageControl1.Enabled := False;
+
+     cdsObtenSeries.Close;
+     cdsFactura.Close;
+     cdsFactura.Open;
+     //dmAppActions.actNuevo.Enabled:= False;
+  end
+  else
+     dmAppActions.actNuevo.Enabled:= False;
+
+  if pgcFacturas.ActivePageIndex = 3 then
+  begin
+     cdsFactura.Close;
+     cdsFactura.Open;
+  end;
+
+  if pgcFacturas.ActivePageIndex in [3, 4] then
+     UpdateActionsState;
+end;
+
+procedure TfrmFacturas.pgcFacturasPageChanging(Sender: TObject;
+  NewPage: TcxTabSheet; var AllowChange: Boolean);
+begin
+  inherited;
+  if (pgcFacturas.ActivePageIndex  = 3)and(not (dmAppActions.actNuevo.Enabled)) then
+  begin
+     AllowChange:=False;
+  end;
+end;
+
+procedure TfrmFacturas.ActionBuscar(Action: TBasicAction);
+begin
+  BuscarCliente;
+end;
+
+procedure TfrmFacturas.ActionCancelar(Action: TBasicAction);
+begin
+  if cdsFactura.State in dsEditModes then
+  begin
+    cxTextEdit1.Text := '';
+    cdsFactura.Cancel;
+    cdsDetalleFactura.Cancel;
+    cdsDetalleFactura.Close;
+  end;
+end;
+
+procedure TfrmFacturas.ActionEliminar(Action: TBasicAction);
+begin
+  if DM.Servidor.EliminaFactura(Trunc(edtFolioElimina.Value), edtSerieElimina.Text) then
+    MessageDlg(Format('La factura [%s-%d] se fue eliminada correctamente.', [edtSerieElimina.Text, Trunc(edtFolioElimina.Value)]), mtInformation, [mbOK], 0)
+  else
+    MessageDlg(Format('La factura [%s-%d] no se elimino porque no existe o tiene un pago.', [edtSerieElimina.Text, Trunc(edtFolioElimina.Value)]), mtError, [mbOK], 0);
+end;
+
+procedure TfrmFacturas.ActionGuardar(Action: TBasicAction);
+begin
+  if cdsDetalleFactura.RecordCount < 1 then
+  begin
+    MessageDlg('Debe capturar un concepto para la factura.', mtError, [mbOK], 0);
+    Exit;
+  end;
+
+  if cdsDetalleFactura.State <> dsBrowse then
+  begin
+    MessageDlg('Debe terminar la captura de conceptos de la factura.', mtError, [mbOK], 0);
+    Exit;
+  end;
+
+  if cxDBTextEdit9.EditValue = null then
+  begin
+    MessageDlg('Debe seleccionar un cliente.', mtError, [mbOK], 0);
+    Exit;
+  end;
+
+  if not DM.FechaValida(cxDBDateEdit2.Date) then
+  begin
+    cxDBDateEdit2.SetFocus;
+    MessageDlg('Fecha fuera de Ejercicio/Periodo.', mtError, [mbYes], 0);
+    Exit;
+  end;
+
+  if cdsDetalleFactura.RecordCount > 0 then
+  begin
+    if (cdsDetalleFactura.State = dsEdit) or
+      (cdsDetalleFactura.State = dsInsert) then
+      cdsDetalleFactura.Cancel;
+
+    GuardarFactura;
+    cdsFactura.CancelUpdates(true);
+    cdsDetalleFactura.CancelUpdates();
+    cdsDetalleFactura.Close;
+    cdsFactura.Close;
+    cdsFactura.Open;
+
+
+  end
+  else
+    MessageDlg('Registre al menos un Producto', mtError, [mbOK], 0);
+end;
+
+procedure TfrmFacturas.ActionImprimir(Action: TBasicAction);
+var
+  MiReporte: TReporte;
+begin
+  edtSerie.SetFocus;
+
+  if cxCheckBox4.Checked then
+     MiReporte:=DM.Servidor.BuscarReporte('FACTURAS CON TICKETS')
+  else
+     MiReporte:=DM.Servidor.BuscarReporte('FACTURAS');
+
+  if MiReporte <> nil then
+  begin
+    if DM.Parametros = nil then
+      DM.Parametros:=TParametros.Create;
+    DM.Parametros.FacturaIni:=edtRangoFacturaIni.EditValue;
+    DM.Parametros.FacturaFin:=edtRangoFacturaFin.EditValue;
+    DM.Parametros.Serie:=edtSerie.Text;
+    DM.Parametros.Identificador:=DM.Identificador;
+    DM.Imprimir(MiReporte.SQL1, MiReporte.SQL2, MiReporte.Template, '', MiReporte.CampoJoin);
+    MiReporte.Free;
+  end;
+end;
+
+procedure TfrmFacturas.ActionNuevo(Action: TBasicAction);
+begin
+  if pgcFacturas.ActivePageIndex = 1 then
+  begin
+     cdsObtenSeries.Close;
+     cdsObtenSeries.ParamByName('param').AsString := 'Folio';
+     cdsObtenSeries.Open;
+
+     cdsFactura.Append;
+
+     cxDBDateEdit2.Date:= Trunc(Now);
+     cxDBDateEdit3.Date:= Trunc(Now);
+  end;
+
+  if pgcFacturas.ActivePageIndex = 3 then
+  begin
+     cdsObtenSeries.Close;
+     cdsObtenSeries.ParamByName('param').AsString := 'Folio';
+     cdsObtenSeries.Open;
+
+     cdsFactura.Append;
+     cxSerie.Text:=DM.SerieFactura;
+     cdsFactura.FieldByName('Folio').AsInteger:=DM.Servidor.Folio('FacturaID','');
+  end;
+end;
+
+procedure TfrmFacturas.btnAceptarClick(Sender: TObject);
+var
+  Resultado:String;
+begin
+  inherited;
+  if not (cdsDatosFact.EOF) then
+  begin
+     Resultado := DM.Servidor.CambioFactura(edtSerieCambio.Text,
+                                            strtoint(cxTextEdit6.Text),
+                                            edtSerieNueva.Text,
+                                            strtoint(cxTextEdit7.Text),
+                                            dtpFechaImpresion.Date);
+
+     MessageDlg(Resultado, mtInformation, [mbOK], 0);
+
+     cxTextEdit3.Text:= '';
+     cxTextEdit4.Text:= '';
+     cxTextEdit5.Text:= '';
+     cdsDatosFact.Close;
+  end;
+end;
+
+procedure TfrmFacturas.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actCancelar, ActionCancelar);
+  RegisterAction(AppActions.actBuscar, ActionBuscar);
+  RegisterAction(AppActions.actImprimir, ActionImprimir);
+  RegisterAction(AppActions.actEliminar, ActionEliminar);
+end;
+
+procedure TfrmFacturas.UpdateActionsState;
+begin
+  inherited;
+  if (pgcFacturas.ActivePageIndex = 0) then
+     dmAppActions.actNuevo.Enabled:= False
+  else dmAppActions.actNuevo.Enabled:=cdsFactura.State = dsBrowse;
+  dmAppActions.actGuardar.Enabled:=(cdsFactura.State in dsEditModes);
+  dmAppActions.actCancelar.Enabled:=cdsFactura.State in dsEditModes;
+  dmAppActions.actEliminar.Enabled:=(pgcFacturas.ActivePageIndex = 4);
+  if not (cxDBTextEdit9.Focused) then
+    dmAppActions.actBuscar.Enabled:=False;
+
+  cxGroupBox2.Enabled := not (dmAppActions.actNuevo.Enabled);
+  cxPageControl1.Enabled := not (dmAppActions.actNuevo.Enabled);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Facturas', TfrmFacturas);
+
+end.

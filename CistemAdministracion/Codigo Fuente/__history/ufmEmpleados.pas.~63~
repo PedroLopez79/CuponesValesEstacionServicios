@@ -1,0 +1,94 @@
+unit ufmEmpleados;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufrmCatalogo, dxSkinsCore,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinscxPCPainter,
+  cxPCdxBarPopupMenu, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, dxmdaset, uDAFields,
+  uDADataTable, uROComponent, uDAScriptingProvider, uDAMemDataTable,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxPC, cxContainer, cxMaskEdit,
+  cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit,
+  cxDBEdit, cxLabel, cxGroupBox, cxCalendar, cxCheckBox, cxImage, Vcl.StdCtrls,
+  ufrmCropImage, Vcl.ExtCtrls, Vcl.DBCtrls;
+
+type
+  TfrmEmpleados = class(TfrmCatalogo)
+    dbgCatalogoDBTableView1RecID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1IDEMPLEADO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1NOMBRE: TcxGridDBColumn;
+    dbgCatalogoDBTableView1CODIGOEMPLEADO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1DOMICILIO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1CIUDAD: TcxGridDBColumn;
+    dbgCatalogoDBTableView1TELEFONO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1CUENTACONTABLE: TcxGridDBColumn;
+    dbgCatalogoDBTableView1FECHAALTA: TcxGridDBColumn;
+    dbgCatalogoDBTableView1FECHABAJA: TcxGridDBColumn;
+    dbgCatalogoDBTableView1IMSS: TcxGridDBColumn;
+    dbgCatalogoDBTableView1STATUS: TcxGridDBColumn;
+    dbgCatalogoDBTableView1FOTOEMPLEADO: TcxGridDBColumn;
+    GrpBoxDatos: TcxGroupBox;
+    LblID: TcxLabel;
+    txtId: TcxDBTextEdit;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cmbEstacion: TcxDBLookupComboBox;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxLabel4: TcxLabel;
+    cxDBTextEdit3: TcxDBTextEdit;
+    cxLabel6: TcxLabel;
+    cxDBTextEdit5: TcxDBTextEdit;
+    LblCalle: TcxLabel;
+    dtpFechaAlta: TcxDBDateEdit;
+    cxDBCheckBox1: TcxDBCheckBox;
+    cxLabel8: TcxLabel;
+    Button1: TButton;
+    cxDBDateEdit1: TcxDBDateEdit;
+    cxLabel7: TcxLabel;
+    cxDBTextEdit4: TcxDBTextEdit;
+    cxLabel5: TcxLabel;
+    cxDBTextEdit2: TcxDBTextEdit;
+    cxLabel3: TcxLabel;
+    cxDBImage1: TcxDBImage;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmEmpleados: TfrmEmpleados;
+  var
+  FrmCropImage: TFrmCropImage;
+
+implementation
+uses Modules, uDM, UtileriasComun, JPEG;
+
+{$R *.dfm}
+
+procedure TfrmEmpleados.Button1Click(Sender: TObject);
+var
+  memory:TMemoryStream;
+  jpgimg: TJPEGImage;
+begin
+  inherited;
+  jpgimg:= TJPEGImage.Create;
+  memory:= TMemoryStream.Create;
+  memory.Position:= 0;
+  memory:= ufrmCropImage.Abrir_CropImage;
+
+  cdsCatalogo.Edit;
+  cdsCatalogo.FieldByName('FOTOEMPLEADO').LoadFromStream(memory);
+  cdsCatalogo.Post;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Empleados', TFrmEmpleados);
+
+end.

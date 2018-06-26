@@ -1,0 +1,32 @@
+unit ufrmTipoMantenimiento;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufrmCatalogo, dxSkinsCore,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinscxPCPainter,
+  cxPCdxBarPopupMenu, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, dxmdaset, uDAFields,
+  uDADataTable, uROComponent, uDAScriptingProvider, uDAMemDataTable,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxPC;
+
+type
+  TfrmTipoMantenimiento = class(TfrmCatalogo)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTipoMantenimiento: TfrmTipoMantenimiento;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,204 @@
+inherited frmSalidas: TfrmSalidas
+  Caption = ''
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pgcCatalogo: TcxPageControl
+    inherited cxTabSheet1: TcxTabSheet
+      inherited dbgCatalogo: TcxGrid
+        inherited dbgCatalogoDBTableView1: TcxGridDBTableView
+          object dbgCatalogoDBTableView1SalidaID: TcxGridDBColumn
+            DataBinding.FieldName = 'SalidaID'
+          end
+          object dbgCatalogoDBTableView1Nombre: TcxGridDBColumn
+            DataBinding.FieldName = 'Nombre'
+          end
+          object dbgCatalogoDBTableView1ConceptoSalidaID: TcxGridDBColumn
+            DataBinding.FieldName = 'ConceptoSalidaID'
+            Width = 98
+          end
+        end
+      end
+    end
+    inherited cxTabSheet2: TcxTabSheet
+      ExplicitWidth = 625
+      ExplicitHeight = 424
+      object cxGroupBox1: TcxGroupBox
+        Left = 5
+        Top = 0
+        Caption = ' Salidas  '
+        TabOrder = 0
+        Height = 153
+        Width = 388
+        object txtSalida: TcxDBTextEdit
+          Left = 16
+          Top = 48
+          DataBinding.DataField = 'SalidaID'
+          DataBinding.DataSource = dsCatalogo
+          Properties.CharCase = ecUpperCase
+          Properties.ReadOnly = True
+          TabOrder = 0
+          Width = 57
+        end
+        object LblNoEstacion: TcxLabel
+          Left = 16
+          Top = 31
+          Caption = 'Salida'
+          Style.BorderStyle = ebsNone
+          Style.LookAndFeel.NativeStyle = True
+          StyleDisabled.LookAndFeel.NativeStyle = True
+          StyleFocused.LookAndFeel.NativeStyle = True
+          StyleHot.LookAndFeel.NativeStyle = True
+          Transparent = True
+        end
+        object txtNombre: TcxDBTextEdit
+          Left = 79
+          Top = 48
+          DataBinding.DataField = 'Nombre'
+          DataBinding.DataSource = dsCatalogo
+          Properties.CharCase = ecUpperCase
+          Properties.ReadOnly = False
+          TabOrder = 2
+          Width = 293
+        end
+        object cxLabel2: TcxLabel
+          Left = 79
+          Top = 31
+          Caption = 'Nombre'
+          Style.BorderStyle = ebsNone
+          Style.LookAndFeel.NativeStyle = True
+          StyleDisabled.LookAndFeel.NativeStyle = True
+          StyleFocused.LookAndFeel.NativeStyle = True
+          StyleHot.LookAndFeel.NativeStyle = True
+          Transparent = True
+        end
+        object LookUpCmboxNombre: TcxDBLookupComboBox
+          Left = 16
+          Top = 90
+          DataBinding.DataField = 'ConceptoSalidaID'
+          DataBinding.DataSource = dsCatalogo
+          Properties.CharCase = ecUpperCase
+          Properties.KeyFieldNames = 'ConceptoSalidaID'
+          Properties.ListColumns = <
+            item
+              FieldName = 'Nombre'
+            end>
+          Properties.ListSource = dsConceptoSalida
+          TabOrder = 4
+          Width = 220
+        end
+        object LblCategoria: TcxLabel
+          Left = 16
+          Top = 73
+          Caption = 'Concepto Salida'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+      end
+    end
+  end
+  inherited cdsCatalogo: TDACDSDataTable
+    Fields = <
+      item
+        Name = 'SalidaID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = True
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 40
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'ConceptoSalidaID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end>
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsCatalogoNewRecord
+    LogicalName = 'dbo Salida'
+  end
+  inherited dsCatalogo: TDADataSource
+    DataSet = cdsCatalogo.Dataset
+  end
+  object cdsConceptoSalida: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ConceptoSalidaID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = True
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 40
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'AfectaInventario'
+        DataType = datBoolean
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    AfterPost = cdsCatalogoAfterPost
+    AfterDelete = cdsCatalogoAfterPost
+    ReadOnly = False
+    DetailOptions = [dtCascadeOpenClose, dtCascadeApplyUpdates, dtAutoFetch, dtCascadeDelete, dtCascadeUpdate, dtDisableLogOfCascadeDeletes, dtDisableLogOfCascadeUpdates, dtIncludeInAllInOneFetch]
+    MasterOptions = [moCascadeOpenClose, moCascadeApplyUpdates, moCascadeDelete, moCascadeUpdate, moDisableLogOfCascadeDeletes, moDisableLogOfCascadeUpdates]
+    LogicalName = 'dbo ConceptoSalida'
+    IndexDefs = <>
+    Left = 224
+    Top = 120
+  end
+  object dsConceptoSalida: TDADataSource
+    DataSet = cdsConceptoSalida.Dataset
+    OnStateChange = dsCatalogoStateChange
+    DataTable = cdsConceptoSalida
+    Left = 256
+    Top = 120
+  end
+end

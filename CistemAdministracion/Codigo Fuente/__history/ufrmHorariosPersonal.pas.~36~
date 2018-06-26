@@ -1,0 +1,103 @@
+unit ufrmHorariosPersonal;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufrmCatalogo, CustomModule, dxSkinsCore,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinscxPCPainter,
+  cxPCdxBarPopupMenu, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, dxmdaset, uDAFields,
+  uDADataTable, uROComponent, uDAScriptingProvider, uDAMemDataTable,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxPC, cxContainer, cxSpinEdit,
+  cxTimeEdit, cxDBEdit, cxDropDownEdit, cxCalendar, cxMaskEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel, cxGroupBox,
+  uDACDSDataTable, Vcl.StdCtrls, Vcl.Mask, AdvDropDown, AdvTimePickerDropDown,
+  DBAdvTimePickerDropDown, Vcl.ComCtrls, AdvDateTimePicker, AdvDBDateTimePicker;
+
+type
+  TfrmHorariosPersonal = class(TfrmCatalogo)
+    cdsEmpleado: TDAMemDataTable;
+    dbgCatalogoDBTableView1RecID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1IDHORARIO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1IDEMPLEADO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1FECHAALTA: TcxGridDBColumn;
+    dbgCatalogoDBTableView1HORAINICIO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1HORAFINAL: TcxGridDBColumn;
+    dbgCatalogoDBTableView1REFERENCIA: TcxGridDBColumn;
+    dbgCatalogoDBTableView1NOMBREEMPLEADO: TcxGridDBColumn;
+    GrpBoxDatos: TcxGroupBox;
+    LblID: TcxLabel;
+    LblCalle: TcxLabel;
+    LblCiudad: TcxLabel;
+    LblTelefono: TcxLabel;
+    txtId: TcxDBTextEdit;
+    LblCuentaContable: TcxLabel;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    cmbEmpleado: TcxDBLookupComboBox;
+    dtpFechaAlta: TcxDBDateEdit;
+    edtReferencia: TcxDBTextEdit;
+    cmbEstacion: TcxDBLookupComboBox;
+    dsEmpleado: TDADataSource;
+    dsEstacion: TDADataSource;
+    cdsEstacion: TDACDSDataTable;
+    dtpHoraInicio: TAdvDateTimePicker;
+    dtpHoraFinal: TAdvDateTimePicker;
+    procedure cdsCatalogoNewRecord(DataTable: TDADataTable);
+    procedure FormCreate(Sender: TObject);
+    procedure cdsCatalogoBeforePost(DataTable: TDADataTable);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmHorariosPersonal: TfrmHorariosPersonal;
+  EstacionActual:Integer;
+
+implementation
+uses Modules, uDM, UtileriasComun;
+
+{$R *.dfm}
+
+{ TfrmHorariosPersonal }
+
+procedure TfrmHorariosPersonal.cdsCatalogoBeforePost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsCatalogo.FieldByName('HORAINICIO').AsDateTime:= dtpHoraInicio.Time;
+  cdsCatalogo.FieldByName('HORAFINAL').AsDateTime:= dtpHoraFinal.Time;
+  cdsCatalogo.FieldByName('NOMBREEMPLEADO').AsString:= cdsEmpleado.FieldByName('NOMBRE').AsString;
+end;
+
+procedure TfrmHorariosPersonal.cdsCatalogoNewRecord(DataTable: TDADataTable);
+var
+  myDateTime, newTime : TDateTime;
+begin
+  newTime := EncodeTime(1, 00, 00, 0);
+  cdsCatalogo.FieldByName('IDHORARIO').AsInteger:=DM.Servidor.Folio('IDHORARIO','');
+  dtpHoraInicio.Time:= newTime;
+  dtpHoraFinal.Time:= newTime;
+
+  cmbEmpleado.SetFocus;
+end;
+
+procedure TfrmHorariosPersonal.FormCreate(Sender: TObject);
+begin
+  inherited;
+  EstacionActual:=StrToInt(UtileriasComun.LeerRegistro('Estacion','4120'));
+  cdsEstacion.Close;
+  cdsEmpleado.Close;
+  cdsEstacion.Open;
+  cdsEmpleado.Open;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('HorariosPersonal', TfrmHorariosPersonal);
+
+end.

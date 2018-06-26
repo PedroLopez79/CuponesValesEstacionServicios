@@ -1,0 +1,73 @@
+unit ufrmProgramaMantenimiento;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, CustomModule, ufrmCatalogo, dxSkinsCore,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinscxPCPainter,
+  cxPCdxBarPopupMenu, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, dxmdaset, uDAFields,
+  uDADataTable, uROComponent, uDAScriptingProvider, uDAMemDataTable,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxPC, cxContainer, Vcl.ComCtrls,
+  AdvDateTimePicker, cxDropDownEdit, cxCalendar, cxDBEdit, cxMaskEdit,
+  cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, cxTextEdit, cxLabel,
+  cxGroupBox, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.DBCtrls, cxRadioGroup,
+  uDACDSDataTable;
+
+type
+  TfrmProgramaMantenimiento = class(TfrmCatalogo)
+    GrpBoxDatos: TcxGroupBox;
+    LblID: TcxLabel;
+    LblCalle: TcxLabel;
+    txtId: TcxDBTextEdit;
+    cxLabel1: TcxLabel;
+    cxLabel2: TcxLabel;
+    dtpFechaaRealizarMnto: TcxDBDateEdit;
+    cmbEstacion: TcxDBLookupComboBox;
+    edtCodigo: TcxDBTextEdit;
+    edtConcepto: TcxDBTextEdit;
+    cxLabel3: TcxLabel;
+    cmbTipoMantenimiento: TcxDBLookupComboBox;
+    cxDBRadioGroup1: TcxDBRadioGroup;
+    cxLabel4: TcxLabel;
+    dsEstacion: TDADataSource;
+    cdsEstacion: TDACDSDataTable;
+    procedure cdsCatalogoNewRecord(DataTable: TDADataTable);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProgramaMantenimiento: TfrmProgramaMantenimiento;
+  EstacionActual:Integer;
+
+implementation
+uses Modules, uDM, UtileriasComun;
+
+{$R *.dfm}
+procedure TfrmProgramaMantenimiento.cdsCatalogoNewRecord(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsCatalogo.FieldByName('IDPROGRAMAMANTENIMIENTO').AsInteger:=DM.Servidor.Folio('IDPROGRAMAMANTENIMIENTO','');
+end;
+
+procedure TfrmProgramaMantenimiento.FormCreate(Sender: TObject);
+begin
+  inherited;
+  EstacionActual:=StrToInt(UtileriasComun.LeerRegistro('Estacion','4120'));
+  cdsEstacion.Close;
+  cdsEstacion.open;
+end;
+
+initialization
+ModuleInfoManager.RegisterModule('ProgramaMantenimiento', TfrmProgramaMantenimiento);
+
+end.

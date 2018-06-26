@@ -1,0 +1,342 @@
+unit ufrmCuponInterno;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, dxSkinsCore, dxSkinsDefaultPainters,
+  dxSkinscxPCPainter, cxPC, cxControls, Menus,
+  cxLookAndFeelPainters, StdCtrls, cxButtons, jpeg, ExtCtrls, cxContainer,
+  cxEdit, cxLabel, LibraryValesCupones_Intf, dxSkinBlack, dxSkinBlue,
+  dxSkinCaramel, dxSkinCoffee, dxSkinDarkSide, dxSkinGlassOceans,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinPumpkin, dxSkinSilver, dxSkinSpringTime, dxSkinStardust,
+  dxSkinSummer2008, dxSkinValentine, dxSkinXmas2008Blue, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, cxPCdxBarPopupMenu, cxGraphics, cxLookAndFeels,
+  ufraBombaNew, ufraBomba, dxGDIPlusClasses, cxTextEdit;
+
+type
+  TfrmCuponInterno = class(TfrmCustomModule)
+    pgcPreset: TcxPageControl;
+    tbBombas: TcxTabSheet;
+    tbCupon: TcxTabSheet;
+    fraBombaNew1: TfraBombaNew;
+    fraBomba1: TfraBomba;
+    Image27: TImage;
+    cxButton1: TcxButton;
+    cxButton8: TcxButton;
+    cxButton3: TcxButton;
+    cxButton4: TcxButton;
+    cxButton9: TcxButton;
+    cxButton10: TcxButton;
+    cxButton6: TcxButton;
+    cxButton7: TcxButton;
+    cxButton2: TcxButton;
+    cxButton12: TcxButton;
+    cxButton52: TcxButton;
+    cxButton44: TcxButton;
+    cxButton43: TcxButton;
+    cxButton39: TcxButton;
+    cxButton46: TcxButton;
+    cxButton45: TcxButton;
+    cxButton49: TcxButton;
+    cxButton41: TcxButton;
+    cxButton40: TcxButton;
+    cxButton51: TcxButton;
+    cxButton48: TcxButton;
+    cxButton38: TcxButton;
+    cxButton42: TcxButton;
+    cxButton50: TcxButton;
+    cxButton47: TcxButton;
+    btnAceptar: TcxButton;
+    btnCancelar: TcxButton;
+    lblCupon: TLabel;
+    lblTitulo: TLabel;
+    btnAgregar: TcxButton;
+    lblTotal: TcxLabel;
+    cxButton5: TcxButton;
+    cxButton11: TcxButton;
+    cxTextEdit1: TcxTextEdit;
+    Image1: TImage;
+    cxButton13: TcxButton;
+    ListBox1: TListBox;
+    procedure fraBombaImage37Click(Sender: TObject);
+    procedure FormPaint(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure fraBombaNew1lvBombasClick(Sender: TObject);
+    procedure cxButton1Click(Sender: TObject);
+    procedure btnAceptarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure btnAgregarClick(Sender: TObject);
+    procedure cxButton5Click(Sender: TObject);
+    procedure fraBombaNew1Timer1Timer(Sender: TObject);
+    procedure cxButton11Click(Sender: TObject);
+    procedure cxTextEdit1Exit(Sender: TObject);
+    procedure cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+    MiBombaT: Integer;
+    Total: Double;
+    Lista: TStrings;
+    Grupo, ClienteID: Integer;
+    Cupon: TCupon;
+    MensajeError: String;
+  public
+    { Public declarations }
+    procedure DespliegaValores;
+    function KEYTOSTRING(KEY:WORD):String;
+  end;
+
+var
+  frmCuponInterno: TfrmCuponInterno;
+
+implementation
+
+
+uses Modules, UtileriasComun, uDM, ufrmMensaje;
+
+{$R *.dfm}
+
+procedure TfrmCuponInterno.cxButton11Click(Sender: TObject);
+begin
+  inherited;
+  pgcPreset.ActivePage:=tbBombas;
+end;
+
+procedure TfrmCuponInterno.cxButton1Click(Sender: TObject);
+begin
+  inherited;
+  if Length(lblCupon.Caption) < 5 then
+    lblCupon.Caption:=lblCupon.Caption + Char((Sender as TcxButton).Tag);
+end;
+
+procedure TfrmCuponInterno.cxButton5Click(Sender: TObject);
+begin
+  inherited;
+  if lblCupon.Caption <> '' then
+    lblCupon.Caption:=Copy(lblCupon.Caption, 1, Length(lblCupon.Caption) - 1);
+end;
+
+procedure TfrmCuponInterno.cxTextEdit1Exit(Sender: TObject);
+begin
+  inherited;
+  if cxTextEdit1.Text <> '' then
+  begin
+  lblCupon.Caption:= cxTextEdit1.Text;
+  btnAgregar.Click;
+  cxTextEdit1.Text:='';
+  end;
+end;
+
+procedure TfrmCuponInterno.cxTextEdit1KeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if (Key = 8) or (Key = 46) and (lblCupon.Caption <> '') then
+     lblCupon.Caption:= Copy(lblCupon.Caption, 0, length(lblCupon.Caption)-1)
+  else
+     lblCupon.Caption:= lblCupon.Caption + KEYTOSTRING(Key);
+
+end;
+
+procedure TfrmCuponInterno.btnCancelarClick(Sender: TObject);
+begin
+  inherited;
+  if Lista.Count > 0 then
+    DM.Servidor.CancelaGrupoC(MiBombaT, Grupo);
+  Total:=0;
+  Grupo:=0;
+
+  lblTitulo.Caption:= floatToStr(Grupo);
+  lblTotal.Caption:= floatToStr(Total);
+  Lista.Clear;
+  DespliegaValores;
+
+  cxTextEdit1.SetFocus;
+end;
+
+procedure TfrmCuponInterno.btnAceptarClick(Sender: TObject);
+var
+  S: String;
+begin
+  inherited;
+  MensajeError:='';
+  if lblCupon.Caption <> '' then
+    btnAgregarClick(nil);
+  if (MensajeError = '') and (Cupon <> nil) then
+  begin
+    if Lista.Count > 1 then
+      Cupon.Referencia:='GRUPO CUPONES'
+    else
+      Cupon.Referencia:=Lista[0];
+    Cupon.Importe:=Total;
+    Cupon.EstacionID:= DM.Estacion;
+    S:=DM.Servidor.PrefijaGrupo(MiBombaT, Cupon.Grupo, DM.Terminal, Cupon);
+    lblCupon.Caption:='';
+    Mensaje(S, 8);
+    FreeAndNil(Cupon);
+    if Pos('CUPON  AUTORIZADO', S) > 0 then
+    begin
+      DM.BombaAuto:=MiBombaT;
+      DM.ShowModuleByName('Preset');
+    end;
+    pgcPreset.ActivePage:=tbBombas;
+  end;
+
+  cxTextEdit1.SetFocus;
+end;
+
+procedure TfrmCuponInterno.btnAgregarClick(Sender: TObject);
+var
+  Aux: TCupon;
+begin
+  inherited;
+  if lblCupon.Caption <> '' then
+  begin
+    MensajeError:='';
+    Aux:=DM.Servidor.PrefijaCupon(MiBombaT, lblCupon.Caption, DM.Terminal, Grupo, ClienteID);
+    try
+      if Aux.Valido then
+      begin
+        Cupon:=TCupon.Create;
+        Cupon.Assign(Aux);
+        Grupo:=Aux.Grupo;
+        ClienteID:=Aux.ClienteID;
+        Total:=Total + Aux.Importe;
+        Lista.Add(lblCupon.Caption);
+      end
+      else
+      begin
+        MensajeError:='Error';
+        Mensaje(Aux.Mensaje, 3);
+      end;
+    finally
+      Aux.Free;
+    end;
+    DespliegaValores;
+  end;
+  cxTextEdit1.SetFocus;
+end;
+
+procedure TfrmCuponInterno.DespliegaValores;
+begin
+  lblTotal.Caption:=FormatFloat('"Total: "$#,#0.00', Total);
+  lblTitulo.Caption:=Format('Cupones [%d]', [Lista.Count]);
+  lblCupon.Caption:='';
+end;
+
+procedure TfrmCuponInterno.FormCreate(Sender: TObject);
+begin
+  inherited;
+  pgcPreset.ActivePageIndex:=0;
+  fraBombaNew1.Visible:=DM.BombasNew;
+  fraBomba1.Visible:=not DM.BombasNew;
+  Lista:=TStringList.Create;
+  Grupo:=0;
+  ClienteID:=0;
+end;
+
+procedure TfrmCuponInterno.FormDestroy(Sender: TObject);
+begin
+  inherited;
+  Lista.Free;
+end;
+
+procedure TfrmCuponInterno.FormPaint(Sender: TObject);
+begin
+  inherited;
+  //fraBomba1.FramePaint;
+  //lblCupon.Top:=69;
+  //lblCupon.Left:=432;
+  //lblTitulo.Top:=44;
+  //lblTitulo.Left:=467;
+  //lblTotal.Left:=432;
+  //lblTotal.Top:=16;
+end;
+
+procedure TfrmCuponInterno.fraBombaImage37Click(Sender: TObject);
+var
+  S: String;
+  Aux, I: Integer;
+  Bomba: Integer;
+begin
+  inherited;
+  if not DM.PoleaServidorGlobal.Conexion then
+  begin
+    fraBomba1.lblPrefijaBomba.Caption:='';
+    Exit;
+  end;
+
+  if fraBomba1.lblPrefijaBomba.Caption = '' then
+    Exit;
+  Bomba:=StrToInt(fraBomba1.lblPrefijaBomba.Caption);
+
+  if Bomba <> 0 then
+  begin
+    I:=0;
+    Aux:=0;
+    repeat
+      S:=GetParsedItem(DM.Bombas, ',', I);
+      if (S <> '') and (StrToInt(S) = Bomba) then
+        Aux:=1;
+      Inc(I);
+    until (s = '') or (Aux <> 0);
+  end
+  else
+    Aux:=1;
+
+  if (Bomba <= DM.Global.TotalBombas) and (Bomba > 0) and (Aux > 0) then
+  begin
+    MiBombaT:=Bomba;
+    fraBomba1.lblBomba.Caption:='';
+    pgcPreset.ActivePage:=tbCupon;
+  end;
+
+  fraBomba1.lblPrefijaBomba.Caption:='';
+end;
+
+procedure TfrmCuponInterno.fraBombaNew1lvBombasClick(Sender: TObject);
+begin
+  inherited;
+  if fraBombaNew1.lvBombas.Selected <> nil then
+  begin
+    //if DM.Global.Bombas[fraBombaNew1.lvBombas.Selected.StateIndex].Estado = eEstadoBomba.eEstadoBomba_ebIdle then
+    //begin
+      MiBombaT:=fraBombaNew1.lvBombas.Selected.StateIndex;
+      fraBomba1.lblBomba.Caption:='';
+      pgcPreset.ActivePage:=tbCupon;
+      cxTextEdit1.SetFocus;
+    //end;
+  end;
+end;
+
+procedure TfrmCuponInterno.fraBombaNew1Timer1Timer(Sender: TObject);
+begin
+  inherited;
+  fraBombaNew1.Timer1Timer(Sender);
+end;
+
+function TfrmCuponInterno.KEYTOSTRING(KEY: WORD): String;
+var
+    keyboardState: TKeyboardState;
+    asciiResult: Integer;
+ begin
+    GetKeyboardState(keyboardState);
+    SetLength(Result, 2);
+    asciiResult := ToAscii(KEY, MapVirtualKey(key, 0), keyboardState, @Result[1], 0);
+    case asciiResult of
+      1: SetLength(Result, 1);
+      2:;
+      else Result := '';
+    end;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Cupón Interno', TfrmCuponInterno);
+
+end.

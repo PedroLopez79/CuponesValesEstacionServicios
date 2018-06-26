@@ -1,0 +1,38 @@
+unit ufrmReportesEspecificos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ufrmPantallaReportes, ComCtrls, dxSkinsCore, dxSkinsDefaultPainters,
+  ImgList, uDAScriptingProvider, uDADataTable, uDAMemDataTable, cxControls,
+  cxContainer, cxListView;
+
+type
+  TfrmReportesEspecificos = class(TfrmPantallaReportes)
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmReportesEspecificos: TfrmReportesEspecificos;
+
+implementation
+
+uses Modules;
+
+{$R *.dfm}
+
+procedure TfrmReportesEspecificos.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DespliegaReportes(5);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Especificos', TfrmReportesEspecificos);
+
+end.

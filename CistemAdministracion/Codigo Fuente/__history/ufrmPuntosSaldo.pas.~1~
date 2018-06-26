@@ -1,0 +1,84 @@
+unit ufrmPuntosSaldo;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary,
+  dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
+  dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinSilver, dxSkinStardust, dxSkinSummer2008, dxSkinsDefaultPainters,
+  dxSkinValentine, dxSkinXmas2008Blue, cxControls, cxContainer, cxEdit,
+  cxGroupBox, cxStyles, dxSkinscxPCPainter, cxCustomData, cxGraphics, cxFilter,
+  cxData, cxDataStorage, DB, cxDBData, cxGridLevel, cxClasses, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxTextEdit,
+  cxLabel, cxMaskEdit, cxDropDownEdit, cxCalendar, cxCurrencyEdit,
+  cxLookAndFeels, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinPumpkin,
+  dxSkinSeven, dxSkinSharp, dxSkinSpringTime;
+
+type
+  TfrmPuntosSaldo = class(TfrmCustomModule)
+    gbDatos: TcxGroupBox;
+    cxGrid1: TcxGrid;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxLabel1: TcxLabel;
+    edtCliente: TcxTextEdit;
+    edtNombre: TcxTextEdit;
+    edtSaldo: TcxCurrencyEdit;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+  private
+    { Private declarations }
+    procedure ActionProcesar(Action: TBasicAction);
+  protected
+    { Protected declarations }
+    procedure RegisterActions; override;
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+  end;
+
+var
+  frmPuntosSaldo: TfrmPuntosSaldo;
+
+implementation
+
+uses Modules, uDM, dmActions, LibraryAdministracion_Intf;
+
+{$R *.dfm}
+
+{ TfrmPuntosSaldo }
+
+procedure TfrmPuntosSaldo.ActionProcesar(Action: TBasicAction);
+var
+  Datos: TDatosCliente;
+begin
+  Datos:=TDatosCliente.Create;
+  try
+    Datos.Assign(DM.Servidor.DatosCliente(StrToInt(edtCliente.Text), ''));
+    edtSaldo.EditValue:=Datos.Saldo;
+    edtNombre.Text:=Datos.Nombre;
+  finally
+    Datos.Free;
+  end;
+end;
+
+procedure TfrmPuntosSaldo.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actProcesar, ActionProcesar);
+end;
+
+procedure TfrmPuntosSaldo.UpdateActionsState;
+begin
+  inherited;
+  AppActions.actProcesar.Enabled:=True;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Saldo Puntos', TfrmPuntosSaldo);
+
+end.

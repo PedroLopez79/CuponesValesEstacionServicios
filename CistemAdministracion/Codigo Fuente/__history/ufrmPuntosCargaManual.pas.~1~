@@ -1,0 +1,253 @@
+unit ufrmPuntosCargaManual;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxContainer, cxEdit, dxSkinsCore, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinFoggy, dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue, cxTextEdit,
+  cxLabel, cxGroupBox, cxStyles, dxSkinscxPCPainter, cxCustomData, cxFilter,
+  cxData, cxDataStorage, DB, cxDBData, Menus, StdCtrls, cxButtons, cxGridLevel,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
+  cxGridCustomView, cxGrid, dxmdaset, uDAScriptingProvider, uDADataTable,
+  uDAMemDataTable;
+
+type
+  TfrmPuntosCargaManual = class(TfrmCustomModule)
+    gbDatos: TcxGroupBox;
+    cxLabel1: TcxLabel;
+    edtCliente: TcxTextEdit;
+    cxLabel3: TcxLabel;
+    edtNombre: TcxTextEdit;
+    cxGroupBox1: TcxGroupBox;
+    cxGrid1: TcxGrid;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGroupBox2: TcxGroupBox;
+    cxLabel2: TcxLabel;
+    edtTicket: TcxTextEdit;
+    btnAgregar: TcxButton;
+    dsConsumo: TDataSource;
+    tblConsumo: TdxMemData;
+    tblConsumoClienteID: TIntegerField;
+    tblConsumoTicket: TIntegerField;
+    tblConsumoVolumen: TFloatField;
+    tblConsumoImporte: TFloatField;
+    cxGrid1DBTableView1RecId: TcxGridDBColumn;
+    cxGrid1DBTableView1Ticket: TcxGridDBColumn;
+    cxGrid1DBTableView1Volumen: TcxGridDBColumn;
+    cxGrid1DBTableView1Importe: TcxGridDBColumn;
+    cdsDatosCliente: TDAMemDataTable;
+    tblConsumoProductoID: TIntegerField;
+    tblConsumoPrecio: TFloatField;
+    tblConsumoFecha: TDateTimeField;
+    tblConsumoEstacionID: TIntegerField;
+    tblConsumoBombaID: TIntegerField;
+    procedure btnAgregarClick(Sender: TObject);
+    procedure edtClienteKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure edtClienteExit(Sender: TObject);
+  private
+    { Private declarations }
+    Lista: TStringList;
+
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure BuscarCliente;
+  protected
+    procedure RegisterActions; override;
+  public
+    { Public declarations }
+     procedure UpdateActionsState; override;
+  end;
+
+var
+  frmPuntosCargaManual: TfrmPuntosCargaManual;
+
+implementation
+
+uses dmActions, Modules, LibraryCistemGas_Intf, uDM, ufrmBuscarCliente,
+  LibraryAdministracion_Intf, UtileriasComun;
+
+{$R *.dfm}
+
+{ TfrmPuntos }
+
+procedure TfrmPuntosCargaManual.ActionGuardar(Action: TBasicAction);
+var
+  Consumo: TConsumoExpress;
+  Respuesta: Boolean;
+begin
+  Consumo := TConsumoExpress.Create;
+  tblConsumo.First;
+
+  while not tblConsumo.Eof do
+  begin
+    Respuesta := False;
+    Consumo.Secuencia := tblConsumo.FieldByName('Ticket').AsInteger;
+    Consumo.EstacionID := tblConsumo.FieldByName('EstacionID').AsInteger;
+    Consumo.ClienteID := tblConsumo.FieldByName('ClienteID').AsInteger;
+    Consumo.FechaConsumo := tblConsumo.FieldByName('Fecha').AsDateTime;
+    Consumo.BombaID := tblConsumo.FieldByName('BombaID').AsInteger;
+    Consumo.Volumen := tblConsumo.FieldByName('Volumen').AsFloat;
+    Consumo.Precio := tblConsumo.FieldByName('Precio').AsFloat;
+    Consumo.Importe := tblConsumo.FieldByName('Importe').AsFloat;
+    Consumo.ProductoID:= tblConsumo.FieldByName('ProductoID').AsInteger;
+    Consumo.Facturado := False;
+    Consumo.FacturaID := 0;
+
+    Respuesta := DM.Servidor.GuardaConsumoExpress(Consumo);
+    tblConsumo.Next;
+  end;
+
+  Consumo.Free;
+  ActionNuevo(nil);
+  MessageDlg('Cargas Enviadas.', mtInformation, [mbOK], 0);
+end;
+
+procedure TfrmPuntosCargaManual.ActionNuevo(Action: TBasicAction);
+begin
+  tblConsumo.Close;
+  tblConsumo.Open;
+  edtCliente.Clear;
+  edtNombre.Clear;
+  edtCliente.SetFocus;
+  Lista.Clear;
+end;
+
+procedure TfrmPuntosCargaManual.btnAgregarClick(Sender: TObject);
+var
+  Aux: TTicket;
+  Valor: Boolean;
+begin
+  inherited;
+  Aux := TTicket.Create;
+  try
+    Aux.Assign(DM.ServidorEstacion(DM.Estacion).BuscaTicket(StrToInt(edtTicket.Text)));
+    if (Aux.TicketID > 0) then
+    begin
+      if (Aux.Tipo = 0) then
+      begin
+        if Lista.IndexOf(IntToStr(Aux.TicketID)) = 0 then
+          MessageDlg('El ticket ya se encuentra dado de alta', mtError, [mbOK], 0)
+        else
+        begin
+          tblConsumo.Append;
+          tblConsumoTicket.AsInteger := Aux.TicketID;
+          tblConsumoImporte.AsFloat := Aux.Importe;
+          tblConsumoVolumen.AsFloat := Aux.Volumen;
+          tblConsumoEstacionID.AsInteger := Aux.EstacionID;
+          tblConsumoFecha.AsDateTime := Aux.Fecha;
+          //tblConsumoBombaID.AsInteger := Aux.BombaID;
+          tblConsumo.FieldByName('BombaID').AsInteger := Aux.BombaID;
+          tblConsumoPrecio.AsFloat := Aux.Precio;
+          tblConsumoProductoID.AsInteger := Aux.ProductoID;
+          tblConsumoClienteID.AsInteger := edtCliente.EditingValue;
+
+
+          tblConsumo.Post;
+          Lista.Add(IntToStr(Aux.TicketID));
+
+          UpdateActionsState;
+        end;
+      end
+      else
+        MessageDlg('El ticket debe ser de efectivo', mtError, [mbOK], 0);
+    end
+    else
+      MessageDlg('El ticket que capturo no existe', mtError, [mbOK], 0);
+  finally
+    Aux.Free;
+    edtTicket.Text := '';
+  end;
+end;
+
+procedure TfrmPuntosCargaManual.BuscarCliente;
+var
+  frmBuscarCliente: TfrmBuscarCliente;
+  ClienteID: Integer;
+  DatosCliente: TdatosCliente;
+begin
+  frmBuscarCliente:=TfrmBuscarCliente.Create(nil);
+  frmBuscarCliente.ShowModal;
+  if (frmBuscarCliente.OK) or (frmBuscarCliente.OKClienteNuevo) then
+  begin
+    ClienteID := frmBuscarCliente.Clave;
+    DatosCliente := TDatosCliente.Create;
+    DatosCliente := DM.Servidor.DatosCliente(ClienteID, '-99');
+    edtNombre.Text := DatosCliente.Nombre;
+    edtCliente.EditValue := ClienteID;
+  end;
+end;
+
+procedure TfrmPuntosCargaManual.edtClienteExit(Sender: TObject);
+var
+  Datos: TDatosCliente;
+  Aux: Integer;
+begin
+  inherited;
+  UpdateActionsState;
+  if (edtCliente.Text <> '') then
+  begin
+    Datos := TDatosCliente.Create;
+    try
+      Aux:=0;
+      if (Length(edtCliente.Text) < 8) and (IsNumeric(edtCliente.Text)) then
+        Aux := StrToInt(edtCliente.Text);
+      Datos.Assign(DM.Servidor.DatosCliente(Aux, edtCliente.Text));
+      edtNombre.Text := Datos.Nombre;
+      edtCliente.Text := IntToStr(Datos.ClienteID);
+      if Datos.ClienteID < 1 then
+      begin
+        edtCliente.Text := '';
+        edtCliente.SetFocus;
+        MessageDlg('Cliente NO Existe', mtError, [mbOK], 0);
+      end;
+    finally
+      Datos.Free;
+    end;
+  end;
+end;
+
+procedure TfrmPuntosCargaManual.edtClienteKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+  begin
+    BuscarCliente;
+  end;
+end;
+
+procedure TfrmPuntosCargaManual.FormCreate(Sender: TObject);
+begin
+  inherited;
+  tblConsumo.Open;
+  Lista := TStringList.Create;
+end;
+
+procedure TfrmPuntosCargaManual.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+end;
+
+procedure TfrmPuntosCargaManual.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actGuardar.Enabled := (tblConsumo.RecordCount > 0);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Puntos Carga Manual', TfrmPuntosCargaManual);
+
+end.

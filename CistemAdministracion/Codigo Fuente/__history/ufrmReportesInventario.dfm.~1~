@@ -1,0 +1,12 @@
+inherited frmReportesInventario: TfrmReportesInventario
+  Caption = 'frmReportesInventario'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited lvReportes: TcxListView
+    LargeImages = frmPantallaReportes.ImageList1
+    Style.IsFontAssigned = True
+  end
+  inherited cdsReportes: TDAMemDataTable
+    RemoteDataAdapter = DM.RemoteDataAdapter
+  end
+end

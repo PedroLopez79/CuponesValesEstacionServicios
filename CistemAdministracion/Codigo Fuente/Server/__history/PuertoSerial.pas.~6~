@@ -1,0 +1,295 @@
+unit PuertoSerial;
+
+interface
+
+uses
+  SysUtils, CPort;
+
+type
+  eCodeTrama = (eCodeTrama_ctContinue,eCodeTrama_ctOut,eCodeTrama_ctOK,
+                eCodeTrama_ctAkc,eCodeTrama_ctNak,eCodeTrama_ctFrame,eCodeTrama_ctOverRun);
+  
+  TPuertoSerial = class
+  private
+    Puerto: TComPort;
+    FRespuesta: String;
+    FInicioTrama: String;
+    FValorRespuesta: String;
+    FTrama: String;
+    FComando: String;
+    FStatus: eCodeTrama;
+    FFinTrama: String;
+    FLeyendo: Boolean;
+    FVelocidad: TBaudRate;
+    FBitsDatos: TDataBits;
+    FParidad: TParityBits;
+    FBitsParo: TStopBits;
+    FNumPuerto: Integer;
+    FRetardoLectura: Integer;
+    FRetardoCiclo: Integer;
+    FDTR: TDTRFlowControl;
+    FRTS: TRTSFlowControl;
+    FHandShake: TFlowControl;
+    procedure SetComando(const Value: String);
+    procedure SetFinTrama(const Value: String);
+    procedure SetInicioTrama(const Value: String);
+    procedure SetRespuesta(const Value: String);
+    procedure SetStatus(const Value: eCodeTrama);
+    procedure SetTrama(const Value: String);
+    procedure SetValorRespuesta(const Value: String);
+    procedure SetLeyendo(const Value: Boolean);
+    procedure SetBitsDatos(const Value: TDataBits);
+    procedure SetBitsParo(const Value: TStopBits);
+    procedure SetParidad(const Value: TParityBits);
+    procedure SetVelocidad(const Value: TBaudRate);
+    procedure SetNumPuerto(const Value: Integer);
+    procedure SetRetardoCiclo(const Value: Integer);
+    procedure SetRetardoLectura(const Value: Integer);
+    procedure SetDTR(const Value: TDTRFlowControl);
+    procedure SetHandShake(const Value: TFlowControl);
+    procedure SetRTS(const Value: TRTSFlowControl);
+    property Leyendo: Boolean read FLeyendo write SetLeyendo;
+  public
+    property NumPuerto: Integer read FNumPuerto write SetNumPuerto;
+    property Velocidad: TBaudRate read FVelocidad write SetVelocidad;
+    property BitsParo: TStopBits read FBitsParo write SetBitsParo;
+    property BitsDatos: TDataBits read FBitsDatos write SetBitsDatos;
+    property Paridad: TParityBits read FParidad write SetParidad;
+    property HandShake: TFlowControl read FHandShake write SetHandShake;
+    property DTR: TDTRFlowControl read FDTR write SetDTR;
+    property RTS: TRTSFlowControl read FRTS write SetRTS;
+
+    property Status: eCodeTrama read FStatus write SetStatus;
+    property Comando: String read FComando write SetComando;
+    property Trama: String read FTrama write SetTrama;
+    property Respuesta: String read FRespuesta write SetRespuesta;
+    property ValorRespuesta: String read FValorRespuesta write SetValorRespuesta;
+
+    property InicioTrama: String read FInicioTrama write SetInicioTrama;
+    property FinTrama: String read FFinTrama write SetFinTrama;
+
+    property RetardoLectura: Integer read FRetardoLectura write SetRetardoLectura;
+    property RetardoCiclo: Integer read FRetardoCiclo write SetRetardoCiclo;
+
+    function Active: Boolean;
+
+    constructor Create; virtual;
+    destructor Destroy; override;
+    procedure Conectarse;
+    procedure Desconectarse;
+
+    function ArmaComando(Cad: String): String; virtual; abstract;
+    function CheckSum(Cad: String): String; virtual; abstract;
+    function ValidaRespuesta(Cad: String): Boolean; virtual; abstract;
+    function ExtraeValorRespuesta(Cad: String): String; virtual; abstract;
+    function LeerDatos: String;
+    function EnviaComando(Cad: String; Leer: Boolean = True): String;
+  end;
+
+implementation
+
+uses UtileriasComun;
+
+{ TPuertoSerial }
+
+function TPuertoSerial.Active: Boolean;
+begin
+  Result:=False;
+  if Puerto <> nil then
+    Result:=Puerto.Connected;
+end;
+
+procedure TPuertoSerial.Conectarse;
+begin
+  try
+    Puerto.Close;
+    Puerto.Baudrate:=Velocidad;
+    Puerto.Stopbits:=BitsParo;
+    Puerto.Databits:=BitsDatos;
+    Puerto.Parity.Bits:=Paridad;
+    Puerto.Port:=Format('COM%d', [NumPuerto]);
+    Puerto.FlowControl.FlowControl:=HandShake;
+    Puerto.FlowControl.ControlDTR:=DTR;
+    Puerto.FlowControl.ControlRTS:=RTS;
+    Puerto.Open;
+  except
+  end;
+end;
+
+constructor TPuertoSerial.Create;
+begin
+  Puerto:=TComPort.Create(nil);
+  Puerto.Connected:=False;
+  HandShake:=fcNone;
+  DTR:=dtrDisable;
+  RTS:=rtsDisable;
+  Status:=eCodeTrama_ctOK;
+end;
+
+procedure TPuertoSerial.Desconectarse;
+begin
+  try
+    Puerto.Close;
+  except
+  end;
+end;
+
+destructor TPuertoSerial.Destroy;
+begin
+  Puerto.Free;
+  inherited;
+end;
+
+function TPuertoSerial.EnviaComando(Cad: String; Leer: Boolean = True): String;
+begin
+  Result:='';
+  if (Leyendo) or (not Puerto.Connected) then
+    Exit;
+  try
+    Comando:=Cad;
+    Trama:=ArmaComando(Cad) + #13;
+    Status:=eCodeTrama_ctContinue;
+    // Solo en Debug
+    EscribeSerialLog('SerialCistem', FormatDateTime('dd/mm/yyyy hh:nn:ss.zzz', Now) + '->' + Trama);
+
+    if Puerto.WriteStr(Trama) <> 0 then
+    begin
+      if Leer then
+      begin
+        Result:=LeerDatos;
+        // Solo Debug
+        EscribeSerialLog('SerialCistem', FormatDateTime('dd/mm/yyyy hh:nn:ss.zzz', Now) + '<-' + Result);
+        if Result <> '' then
+          Status:=eCodeTrama_ctFrame
+      end;
+    end
+    else
+      Status:=eCodeTrama_ctOut;
+    if Respuesta = '' then
+      Status:=ctOut;
+  except
+  end;
+end;
+
+function TPuertoSerial.LeerDatos: String;
+var
+  MiChar: String;
+  Tiempo: TDateTime;
+begin
+  Leyendo:=True;
+  try
+    //Sleep(RetardoLectura);
+    Tiempo:=Now;
+    michar:='';
+    Result:='';
+    while (Puerto.InputCount > 0) or ((MiChar = '') and ((Now-Tiempo) < 3/24/60/60)) do
+    begin
+      if Puerto.InputCount > 0 then
+        Puerto.ReadStr(MiChar, Puerto.InputCount);
+      Sleep(RetardoCiclo);
+      Result:=Result + MiChar;
+    end;
+    if ValidaRespuesta(Result) then
+    begin
+      Status:=ctFrame;
+      ValorRespuesta:=ExtraeValorRespuesta(Result);
+    end
+    else
+      ValorRespuesta:='';
+  finally
+    Leyendo:=False;
+    Respuesta:=Result;
+  end;
+end;
+
+procedure TPuertoSerial.SetBitsDatos(const Value: TDataBits);
+begin
+  FBitsDatos := Value;
+end;
+
+procedure TPuertoSerial.SetBitsParo(const Value: TStopBits);
+begin
+  FBitsParo := Value;
+end;
+
+procedure TPuertoSerial.SetComando(const Value: String);
+begin
+  FComando := Value;
+end;
+
+procedure TPuertoSerial.SetDTR(const Value: TDTRFlowControl);
+begin
+  FDTR := Value;
+end;
+
+procedure TPuertoSerial.SetFinTrama(const Value: String);
+begin
+  FFinTrama := Value;
+end;
+
+procedure TPuertoSerial.SetHandShake(const Value: TFlowControl);
+begin
+  FHandShake := Value;
+end;
+
+procedure TPuertoSerial.SetInicioTrama(const Value: String);
+begin
+  FInicioTrama := Value;
+end;
+
+procedure TPuertoSerial.SetLeyendo(const Value: Boolean);
+begin
+  FLeyendo := Value;
+end;
+
+procedure TPuertoSerial.SetNumPuerto(const Value: Integer);
+begin
+  FNumPuerto := Value;
+end;
+
+procedure TPuertoSerial.SetParidad(const Value: TParityBits);
+begin
+  FParidad := Value;
+end;
+
+procedure TPuertoSerial.SetRespuesta(const Value: String);
+begin
+  FRespuesta := Value;
+end;
+
+procedure TPuertoSerial.SetRetardoCiclo(const Value: Integer);
+begin
+  FRetardoCiclo := Value;
+end;
+
+procedure TPuertoSerial.SetRetardoLectura(const Value: Integer);
+begin
+  FRetardoLectura := Value;
+end;
+
+procedure TPuertoSerial.SetRTS(const Value: TRTSFlowControl);
+begin
+  FRTS := Value;
+end;
+
+procedure TPuertoSerial.SetStatus(const Value: eCodeTrama);
+begin
+  FStatus := Value;
+end;
+
+procedure TPuertoSerial.SetTrama(const Value: String);
+begin
+  FTrama := Value;
+end;
+
+procedure TPuertoSerial.SetValorRespuesta(const Value: String);
+begin
+  FValorRespuesta := Value;
+end;
+
+procedure TPuertoSerial.SetVelocidad(const Value: TBaudRate);
+begin
+  FVelocidad := Value;
+end;
+
+end.

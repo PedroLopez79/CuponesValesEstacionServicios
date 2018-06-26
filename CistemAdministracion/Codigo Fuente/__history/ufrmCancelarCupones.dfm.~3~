@@ -1,0 +1,466 @@
+inherited frmCancelarCupones: TfrmCancelarCupones
+  Caption = 'frmCancelarCupones'
+  ExplicitWidth = 625
+  ExplicitHeight = 449
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pgcCancelar: TcxPageControl
+    Left = 0
+    Top = 0
+    Width = 625
+    Height = 449
+    Hint = ''
+    Align = alClient
+    TabOrder = 0
+    Properties.ActivePage = cxTabSheet2
+    Properties.CustomButtons.Buttons = <>
+    Properties.Images = dmImages.Imagenes
+    Properties.TabPosition = tpBottom
+    OnChange = pgcCancelarChange
+    ClientRectBottom = 424
+    ClientRectLeft = 4
+    ClientRectRight = 621
+    ClientRectTop = 4
+    object cxTabSheet2: TcxTabSheet
+      Caption = 'Cancelar Cupones'
+      ImageIndex = 7
+      object cxGroupBox2: TcxGroupBox
+        Left = 0
+        Top = 0
+        Hint = ''
+        Align = alTop
+        Caption = 'Datos del Cupon'
+        TabOrder = 0
+        Height = 81
+        Width = 617
+        object cxLabel9: TcxLabel
+          Left = 16
+          Top = 24
+          Hint = ''
+          Caption = 'Cupon'
+          Transparent = True
+        end
+        object edtCupon: TcxTextEdit
+          Left = 16
+          Top = 40
+          Hint = ''
+          Properties.CharCase = ecUpperCase
+          TabOrder = 1
+          OnEnter = edtCuponEnter
+          OnExit = edtCuponExit
+          OnKeyPress = edtCuponKeyPress
+          Width = 121
+        end
+      end
+      object cxLabel10: TcxLabel
+        Left = 16
+        Top = 104
+        Hint = ''
+        Caption = 'Lista de Cupones a Cancelar'
+        Transparent = True
+      end
+      object lvCupones: TcxListView
+        Left = 16
+        Top = 120
+        Width = 153
+        Height = 209
+        Hint = ''
+        Columns = <
+          item
+            Caption = 'Codigo del cup'#243'n'
+            Width = 125
+          end>
+        TabOrder = 2
+        ViewStyle = vsReport
+        OnKeyDown = lvCuponesKeyDown
+      end
+    end
+    object cxTabSheet1: TcxTabSheet
+      Caption = 'Cancelar Lote'
+      ImageIndex = 86
+      object cxGroupBox1: TcxGroupBox
+        Left = 0
+        Top = 0
+        Hint = ''
+        Align = alTop
+        Caption = 'Datos del Lote'
+        TabOrder = 0
+        Height = 153
+        Width = 617
+        object edtLoteCuponID: TcxCurrencyEdit
+          Left = 16
+          Top = 40
+          Hint = ''
+          Properties.DecimalPlaces = 0
+          Properties.DisplayFormat = '#0'
+          TabOrder = 0
+          OnExit = edtLoteCuponIDExit
+          Width = 65
+        end
+        object cxLabel1: TcxLabel
+          Left = 16
+          Top = 24
+          Hint = ''
+          Caption = 'Lote ID'
+          Transparent = True
+        end
+        object cxLabel3: TcxLabel
+          Left = 16
+          Top = 64
+          Hint = ''
+          Caption = 'Cliente'
+          Transparent = True
+        end
+        object cxDBTextEdit2: TcxDBTextEdit
+          Left = 16
+          Top = 80
+          Hint = ''
+          DataBinding.DataField = 'Cliente'
+          DataBinding.DataSource = dsLote
+          Properties.ReadOnly = True
+          TabOrder = 3
+          Width = 313
+        end
+        object cxLabel4: TcxLabel
+          Left = 16
+          Top = 104
+          Hint = ''
+          Caption = 'Estaci'#243'n ID'
+          Transparent = True
+        end
+        object cxDBTextEdit3: TcxDBTextEdit
+          Left = 16
+          Top = 120
+          Hint = ''
+          DataBinding.DataField = 'EstacionID'
+          DataBinding.DataSource = dsLote
+          Properties.ReadOnly = True
+          TabOrder = 5
+          Width = 65
+        end
+        object cxLabel5: TcxLabel
+          Left = 96
+          Top = 104
+          Hint = ''
+          Caption = 'Estacion'
+          Transparent = True
+        end
+        object cxDBTextEdit4: TcxDBTextEdit
+          Left = 96
+          Top = 120
+          Hint = ''
+          DataBinding.DataField = 'Estacion'
+          DataBinding.DataSource = dsLote
+          Properties.ReadOnly = True
+          TabOrder = 7
+          Width = 425
+        end
+        object cxLabel2: TcxLabel
+          Left = 344
+          Top = 64
+          Hint = ''
+          Caption = 'Usuario'
+          Transparent = True
+        end
+        object cxDBTextEdit1: TcxDBTextEdit
+          Left = 344
+          Top = 80
+          Hint = ''
+          DataBinding.DataField = 'Usuario'
+          DataBinding.DataSource = dsLote
+          Properties.ReadOnly = True
+          TabOrder = 9
+          Width = 177
+        end
+        object cxDBDateEdit1: TcxDBDateEdit
+          Left = 96
+          Top = 40
+          Hint = ''
+          DataBinding.DataField = 'Fecha'
+          DataBinding.DataSource = dsLote
+          Properties.ReadOnly = True
+          TabOrder = 10
+          Width = 113
+        end
+        object cxLabel6: TcxLabel
+          Left = 96
+          Top = 24
+          Hint = ''
+          Caption = 'Fecha'
+          Transparent = True
+        end
+        object cxDBCurrencyEdit1: TcxDBCurrencyEdit
+          Left = 224
+          Top = 40
+          Hint = ''
+          DataBinding.DataField = 'Total'
+          DataBinding.DataSource = dsLote
+          Properties.ReadOnly = True
+          TabOrder = 12
+          Width = 105
+        end
+        object cxLabel7: TcxLabel
+          Left = 224
+          Top = 24
+          Hint = ''
+          Caption = 'Importe'
+          Transparent = True
+        end
+        object cxDBImageComboBox1: TcxDBImageComboBox
+          Left = 344
+          Top = 40
+          Hint = ''
+          DataBinding.DataField = 'Status'
+          DataBinding.DataSource = dsLote
+          Properties.Images = dmImages.Imagenes
+          Properties.Items = <
+            item
+              Description = 'Activo'
+              ImageIndex = 10
+              Value = 'A'
+            end
+            item
+              Description = 'Cancelado'
+              ImageIndex = 7
+              Value = 'C'
+            end>
+          Properties.ReadOnly = True
+          TabOrder = 14
+          Width = 177
+        end
+        object cxLabel8: TcxLabel
+          Left = 344
+          Top = 24
+          Hint = ''
+          Caption = 'Status'
+          Transparent = True
+        end
+      end
+      object cxGrid1: TcxGrid
+        Left = 0
+        Top = 153
+        Width = 617
+        Height = 267
+        Hint = ''
+        Align = alClient
+        TabOrder = 1
+        object cxGrid1DBTableView1: TcxGridDBTableView
+          Navigator.Buttons.CustomButtons = <>
+          DataController.DataSource = dsCuponesLote
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.Indicator = True
+          Styles.ContentEven = DM.cxStyle1
+          object cxGrid1DBTableView1CuponID: TcxGridDBColumn
+            DataBinding.FieldName = 'Clave'
+          end
+          object cxGrid1DBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            Width = 82
+          end
+          object cxGrid1DBTableView1Status: TcxGridDBColumn
+            DataBinding.FieldName = 'Status'
+            PropertiesClassName = 'TcxImageComboBoxProperties'
+            Properties.Images = dmImages.Imagenes
+            Properties.Items = <
+              item
+                Description = 'Activo'
+                ImageIndex = 10
+                Value = 'A'
+              end
+              item
+                Description = 'Inactivo'
+                ImageIndex = 7
+                Value = 'I'
+              end
+              item
+                Description = 'Consumido'
+                ImageIndex = 60
+                Value = 'C'
+              end
+              item
+                Description = 'Cancelado'
+                ImageIndex = 9
+                Value = 'X'
+              end>
+            Width = 84
+          end
+          object cxGrid1DBTableView1FechaConsumo: TcxGridDBColumn
+            Caption = 'Fecha Consumo'
+            DataBinding.FieldName = 'FechaConsumo'
+            Width = 131
+          end
+          object cxGrid1DBTableView1ConsumoEstacionID: TcxGridDBColumn
+            Caption = 'Estacion'
+            DataBinding.FieldName = 'ConsumoEstacionID'
+            Width = 76
+          end
+          object cxGrid1DBTableView1ConsumoSecuencia: TcxGridDBColumn
+            Caption = 'Ticket'
+            DataBinding.FieldName = 'ConsumoSecuencia'
+          end
+          object cxGrid1DBTableView1ConsumoBombaID: TcxGridDBColumn
+            Caption = 'Bomba'
+            DataBinding.FieldName = 'ConsumoBombaID'
+          end
+          object cxGrid1DBTableView1ConsumoTurnoID: TcxGridDBColumn
+            Caption = 'Turno'
+            DataBinding.FieldName = 'ConsumoTurnoID'
+          end
+          object cxGrid1DBTableView1ConsumoImporte: TcxGridDBColumn
+            Caption = 'Importe'
+            DataBinding.FieldName = 'ConsumoImporte'
+            Width = 82
+          end
+        end
+        object cxGrid1Level1: TcxGridLevel
+          GridView = cxGrid1DBTableView1
+        end
+      end
+    end
+  end
+  object cdsLote: TDAMemDataTable
+    Fields = <
+      item
+        Name = 'LoteCuponID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Fecha'
+        DataType = datDateTime
+      end
+      item
+        Name = 'Status'
+        DataType = datString
+        Size = 1
+      end
+      item
+        Name = 'Total'
+        DataType = datFloat
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Estacion'
+        DataType = datString
+        Size = 100
+      end
+      item
+        Name = 'ClienteID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Cliente'
+        DataType = datString
+        Size = 70
+      end
+      item
+        Name = 'UsuarioID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Usuario'
+        DataType = datString
+        Size = 70
+      end>
+    LogicalName = 'spBuscaLoteCupon'
+    Params = <
+      item
+        Name = 'LoteCuponID'
+        DataType = datInteger
+        Value = '11'
+        ParamType = daptInput
+      end>
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    RemoteUpdatesOptions = []
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    IndexDefs = <>
+    Left = 296
+    Top = 208
+  end
+  object dsLote: TDADataSource
+    DataSet = cdsLote.Dataset
+    DataTable = cdsLote
+    Left = 376
+    Top = 208
+  end
+  object cdsCuponesLote: TDAMemDataTable
+    Fields = <
+      item
+        Name = 'CuponID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+        DisplayFormat = '#,#0.00'
+      end
+      item
+        Name = 'VolumenImporte'
+        DataType = datString
+        Size = 1
+      end
+      item
+        Name = 'Status'
+        DataType = datString
+        Size = 1
+      end
+      item
+        Name = 'FechaConsumo'
+        DataType = datDateTime
+      end
+      item
+        Name = 'ConsumoEstacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'ConsumoSecuencia'
+        DataType = datInteger
+      end
+      item
+        Name = 'ConsumoBombaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'ConsumoTurnoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'ConsumoImporte'
+        DataType = datFloat
+        DisplayFormat = '#,#0.00'
+        Alignment = taRightJustify
+      end
+      item
+        Name = 'Clave'
+        DataType = datString
+        Size = 6
+        LogChanges = False
+        Calculated = True
+      end>
+    LogicalName = 'spCuponesPorLote'
+    Params = <
+      item
+        Name = 'LoteCuponID'
+        Value = '1'
+      end>
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    RemoteUpdatesOptions = []
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    OnCalcFields = cdsCuponesLoteCalcFields
+    IndexDefs = <>
+    Left = 296
+    Top = 264
+  end
+  object dsCuponesLote: TDADataSource
+    DataSet = cdsCuponesLote.Dataset
+    DataTable = cdsCuponesLote
+    Left = 376
+    Top = 264
+  end
+end

@@ -1,0 +1,638 @@
+inherited frmConsultadeFacturas: TfrmConsultadeFacturas
+  Caption = 'Consulta de Facturas'
+  ExplicitWidth = 625
+  ExplicitHeight = 449
+  PixelsPerInch = 96
+  TextHeight = 13
+  object cxPageControl1: TcxPageControl
+    Left = 0
+    Top = 0
+    Width = 625
+    Height = 449
+    ActivePage = cxTabSheet1
+    Align = alClient
+    Images = dmImages.Imagenes
+    TabOrder = 0
+    TabPosition = tpBottom
+    ClientRectBottom = 424
+    ClientRectRight = 625
+    ClientRectTop = 0
+    object cxTabSheet1: TcxTabSheet
+      Caption = ' Consulta de Facturas '
+      ImageIndex = 17
+      object cxGroupBox1: TcxGroupBox
+        Left = 0
+        Top = 0
+        Align = alTop
+        Caption = ' Consultas '
+        TabOrder = 0
+        Height = 115
+        Width = 625
+      end
+      object MasterView: TdxMasterView
+        Left = 0
+        Top = 115
+        Width = 625
+        Height = 309
+        Align = alClient
+        TabOrder = 1
+        OptionsBehavior = [mobShowHourGlassCursor]
+        object Level1: TdxMasterViewLevel
+          Caption = 'Level1'
+          DataSource = dsCliente
+          ID = 'ClienteID'
+          object Level1ClienteID: TdxMasterViewColumn
+            FieldName = 'ClienteID'
+            RowIndex = 0
+            ColIndex = 0
+          end
+          object Level1Nombre: TdxMasterViewColumn
+            FieldName = 'Nombre'
+            RowIndex = 0
+            ColIndex = 1
+            SortIndex = 0
+            SortOrder = soAscending
+          end
+          object Level1Calle: TdxMasterViewColumn
+            FieldName = 'Calle'
+            RowIndex = 0
+            ColIndex = 2
+          end
+          object Level1Colonia: TdxMasterViewColumn
+            FieldName = 'Colonia'
+            RowIndex = 0
+            ColIndex = 3
+          end
+          object Level1Ciudad: TdxMasterViewColumn
+            FieldName = 'Ciudad'
+            RowIndex = 0
+            ColIndex = 4
+          end
+          object Level1Telefono: TdxMasterViewColumn
+            FieldName = 'Telefono'
+            RowIndex = 0
+            ColIndex = 5
+          end
+          object Level1CodigoPostal: TdxMasterViewColumn
+            FieldName = 'CodigoPostal'
+            RowIndex = 0
+            ColIndex = 6
+          end
+          object Level1RFC: TdxMasterViewColumn
+            FieldName = 'RFC'
+            RowIndex = 0
+            ColIndex = 7
+          end
+          object Level2: TdxMasterViewLevel
+            Caption = 'Level2'
+            DataSource = dsFactura
+            DetailKey = 'ClienteID'
+            ID = 'FacturaID'
+            MasterKey = 'ClienteID'
+            object Level2FacturaID: TdxMasterViewColumn
+              FieldName = 'FacturaID'
+              RowIndex = 0
+              ColIndex = 0
+            end
+            object Level2Folio: TdxMasterViewColumn
+              FieldName = 'Folio'
+              RowIndex = 0
+              ColIndex = 1
+            end
+            object Level2Serie: TdxMasterViewColumn
+              FieldName = 'Serie'
+              RowIndex = 0
+              ColIndex = 2
+            end
+            object Level2Subtotal: TdxMasterViewColumn
+              FieldName = 'Subtotal'
+              RowIndex = 0
+              ColIndex = 3
+            end
+            object Level2Impuesto: TdxMasterViewColumn
+              FieldName = 'Impuesto'
+              RowIndex = 0
+              ColIndex = 4
+            end
+            object Level2Total: TdxMasterViewColumn
+              FieldName = 'Total'
+              RowIndex = 0
+              ColIndex = 5
+            end
+            object Level2EstacionID: TdxMasterViewColumn
+              FieldName = 'EstacionID'
+              RowIndex = 0
+              ColIndex = 6
+            end
+            object Level2ClienteID: TdxMasterViewColumn
+              FieldName = 'ClienteID'
+              RowIndex = 0
+              ColIndex = 7
+            end
+          end
+        end
+      end
+    end
+  end
+  object cdsCliente: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ClienteID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = True
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Codigo'
+        DataType = datString
+        Size = 10
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 80
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Grupo'
+        DataType = datString
+        Size = 30
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Calle'
+        DataType = datString
+        Size = 40
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Colonia'
+        DataType = datString
+        Size = 30
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Ciudad'
+        DataType = datString
+        Size = 30
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Telefono'
+        DataType = datString
+        Size = 20
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'CodigoPostal'
+        DataType = datString
+        Size = 5
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'RFC'
+        DataType = datString
+        Size = 15
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Curp'
+        DataType = datString
+        Size = 20
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Status'
+        DataType = datBoolean
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'AutorizaCheque'
+        DataType = datBoolean
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'TicketBoucher'
+        DataType = datBoolean
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'AutorizaValeCredito'
+        DataType = datBoolean
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'CuentaContableAnticipo'
+        DataType = datString
+        Size = 20
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'CuentaContableCredito'
+        DataType = datString
+        Size = 20
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'LimiteCredito'
+        DataType = datFloat
+        BlobType = dabtUnknown
+        Required = True
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Credito'
+        DataType = datBoolean
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'DiasCredito'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    ReadOnly = False
+    DetailOptions = [dtCascadeOpenClose, dtCascadeApplyUpdates, dtAutoFetch, dtCascadeDelete, dtCascadeUpdate, dtDisableLogOfCascadeDeletes, dtDisableLogOfCascadeUpdates, dtIncludeInAllInOneFetch]
+    MasterOptions = [moCascadeOpenClose, moCascadeApplyUpdates, moCascadeDelete, moCascadeUpdate, moDisableLogOfCascadeDeletes, moDisableLogOfCascadeUpdates]
+    LogicalName = 'dbo Cliente'
+    IndexDefs = <>
+    Left = 472
+    Top = 32
+  end
+  object dsCliente: TDADataSource
+    DataSet = cdsCliente.Dataset
+    DataTable = cdsCliente
+    Left = 504
+    Top = 40
+  end
+  object cdsFactura: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'FacturaID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Folio'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Serie'
+        DataType = datString
+        Size = 5
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Ejercicio'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Periodo'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Dia'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Fecha'
+        DataType = datDateTime
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Subtotal'
+        DataType = datFloat
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Impuesto'
+        DataType = datFloat
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Total'
+        DataType = datFloat
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'ImpuestoPorcentaje'
+        DataType = datFloat
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Turno'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Cancelada'
+        DataType = datBoolean
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'ClienteID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'FormaPagoID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'TipoFacturaID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'Tickets'
+        DataType = datWideString
+        Size = 250
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end
+      item
+        Name = 'UsuarioID'
+        DataType = datInteger
+        BlobType = dabtUnknown
+        DisplayWidth = 0
+        Alignment = taLeftJustify
+        InPrimaryKey = False
+        Calculated = False
+        Lookup = False
+        LookupCache = False
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    ReadOnly = False
+    DetailOptions = [dtCascadeOpenClose, dtCascadeApplyUpdates, dtAutoFetch, dtCascadeDelete, dtCascadeUpdate, dtDisableLogOfCascadeDeletes, dtDisableLogOfCascadeUpdates, dtIncludeInAllInOneFetch]
+    MasterOptions = [moCascadeOpenClose, moCascadeApplyUpdates, moCascadeDelete, moCascadeUpdate, moDisableLogOfCascadeDeletes, moDisableLogOfCascadeUpdates]
+    LogicalName = 'ConsultaFactura'
+    IndexDefs = <>
+    Left = 480
+    Top = 80
+  end
+  object dsFactura: TDADataSource
+    DataSet = cdsFactura.Dataset
+    DataTable = cdsFactura
+    Left = 512
+    Top = 80
+  end
+end

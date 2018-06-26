@@ -1,0 +1,188 @@
+unit ufrmSagarpa;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, cxLookAndFeelPainters, StdCtrls, cxButtons, dxSkinsCore,
+  dxSkinBlack, dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinSilver, dxSkinStardust, dxSkinSummer2008, dxSkinsDefaultPainters,
+  dxSkinValentine, dxSkinXmas2008Blue, cxLabel, cxTextEdit, cxControls,
+  cxContainer, cxEdit, cxGroupBox, LibraryCistemGas_Intf, cxCurrencyEdit,
+  cxMaskEdit, cxButtonEdit;
+
+type
+  TfrmSagarpa = class(TForm)
+    btnAceptar: TcxButton;
+    btnCancelar: TcxButton;
+    cxGroupBox1: TcxGroupBox;
+    edtTicket: TcxTextEdit;
+    gbCliente: TcxGroupBox;
+    cxLabel1: TcxLabel;
+    edtSagarpa: TcxCurrencyEdit;
+    cxLabel2: TcxLabel;
+    edtPemex: TcxCurrencyEdit;
+    cxLabel3: TcxLabel;
+    edtEfectivo: TcxCurrencyEdit;
+    cxLabel4: TcxLabel;
+    cxLabel6: TcxLabel;
+    edtImporte: TcxCurrencyEdit;
+    cxLabel7: TcxLabel;
+    edtDiferencia: TcxCurrencyEdit;
+    edtCredito: TcxCurrencyEdit;
+    edtVehiculo: TcxButtonEdit;
+    cxLabel8: TcxLabel;
+    cxLabel5: TcxLabel;
+    Voucher: TcxLabel;
+    edtVoucher: TcxCurrencyEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure edtSagarpaPropertiesEditValueChanged(Sender: TObject);
+    procedure edtVehiculoPropertiesButtonClick(Sender: TObject;
+      AButtonIndex: Integer);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure btnAceptarClick(Sender: TObject);
+    procedure edtTicketExit(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure edtVehiculoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+    { Private declarations }
+    MiTicket: TTicket;
+    Datos: TDatosSagarpa;
+    procedure Calcular;
+  public
+    { Public declarations }
+    TurnoID: Integer;
+  end;
+
+  function TicketSagarpa(TurnoID: Integer): TDatosSagarpa;
+
+implementation
+
+uses UtileriasComun, uDM, ufrmBuscaVehiculoFlotillas, LibraryFlotillas_Intf;
+
+{$R *.dfm}
+
+function TicketSagarpa(TurnoID: Integer): TDatosSagarpa;
+var
+  frmSagarpa: TfrmSagarpa;
+begin
+  Result:=TDatosSagarpa.Create;
+  frmSagarpa:=TfrmSagarpa.Create(nil);
+  frmSagarpa.TurnoID:=TurnoID;
+  try
+    frmSagarpa.ShowModal;
+    Result.Assign(frmSagarpa.Datos);
+  finally
+    FreeAndNil(frmSagarpa);
+  end;
+end;
+
+procedure TfrmSagarpa.btnAceptarClick(Sender: TObject);
+begin
+  if Decimales(edtDiferencia.Value, 2) = 0 then
+  begin
+    if (edtCredito.Value > 0) and (edtVehiculo.Text = '') then
+    begin
+      MessageDlg('Debe capturar un cliente para aplicar el credito.', mtError, [mbOK], 0);
+      Exit;
+    end;
+    Datos.Ticket:=StrToInt(edtTicket.Text);
+    Datos.SagarpaImporte:=edtSagarpa.EditValue;
+    Datos.PemexImporte:=edtPemex.EditValue;
+    Datos.CreditoImporte:=edtCredito.EditValue;
+    if edtVehiculo.Text <> '' then
+      Datos.CreditoCliente:=edtVehiculo.EditValue;
+    Datos.VoucherCliente:=DM.CteSagarpaVoucher;
+    with DM.Servidor.BuscaSagarpa(DM.Estacion) do
+    begin
+      Datos.SagarpaCliente:=ClienteSagarpa;
+      Datos.PemexCliente:=ClienteSagarpaPemex;
+    end;
+    Close;
+  end
+  else
+    MessageDlg('Existen diferencias con el importe del tikcet.', mtError, [mbOK], 0);
+end;
+
+procedure TfrmSagarpa.btnCancelarClick(Sender: TObject);
+begin
+  Datos.Ticket:=-1;
+  Close;
+end;
+
+procedure TfrmSagarpa.Calcular;
+begin
+  edtDiferencia.Value:=edtImporte.Value - edtSagarpa.EditValue - edtPemex.EditValue - edtEfectivo.EditValue - edtCredito.EditValue;
+end;
+
+procedure TfrmSagarpa.edtSagarpaPropertiesEditValueChanged(Sender: TObject);
+begin
+  Calcular;
+end;
+
+procedure TfrmSagarpa.edtTicketExit(Sender: TObject);
+begin
+  if edtTicket.Text <> '' then
+  begin
+    try
+      MiTicket.Assign(DM.ServidorEstacion(DM.Estacion).BuscaTicket(StrToInt(edtTicket.Text)));
+      if MiTicket.Tipo = 0 then
+      begin
+        if MiTicket.TurnoID = TurnoID then
+        begin
+          edtImporte.Value:=Decimales(MiTicket.Importe, 2);
+          edtEfectivo.SetFocus;
+          Calcular;
+        end
+        else
+          MessageDlg('El ticket no pertenece al turno', mtError, [mbOK], 0);
+      end
+      else
+        MessageDlg('El ticket debe de ser de una venta en efectivo', mtError, [mbOK], 0);
+    finally
+    end;
+  end;
+end;
+
+procedure TfrmSagarpa.edtVehiculoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_F2 then
+    edtVehiculoPropertiesButtonClick(nil, 0);
+end;
+
+procedure TfrmSagarpa.edtVehiculoPropertiesButtonClick(Sender: TObject;
+  AButtonIndex: Integer);
+var
+  Aux: TDatosVehiculo;
+begin
+  Aux:=TDatosVehiculo.Create;
+  try
+    Aux.Assign(BuscaVehiculoFlotillas);
+    edtVehiculo.EditValue:=Aux.VehiculoID;
+  finally
+    Aux.Free;
+  end;
+end;
+
+procedure TfrmSagarpa.FormCreate(Sender: TObject);
+begin
+  MiTicket:=TTicket.Create;
+  Datos:=TDatosSagarpa.Create;
+  Datos.Ticket:=-1;
+end;
+
+procedure TfrmSagarpa.FormKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key = #13 then
+  begin
+    Perform(WM_NEXTDLGCTL, 0, 0);
+    Key:=#0;
+  end;
+end;
+
+end.

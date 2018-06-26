@@ -1,0 +1,177 @@
+unit ufrmCambiaAgrupacion;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, dxRibbonForm, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinCaramel,
+  dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinSilver, dxSkinStardust,
+  dxSkinSummer2008, dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue,
+  dxSkinsdxRibbonPainter, cxControls, dxRibbon, ComCtrls, Menus,
+  cxLookAndFeelPainters, StdCtrls, cxButtons, cxContainer, cxTreeView,
+  uDAScriptingProvider, uDADataTable, uDAMemDataTable, LibraryAdministracion_Intf,
+  cxGraphics, cxLookAndFeels, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSpringTime;
+
+type
+  TfrmCambiaAgrupacion = class(TdxCustomRibbonForm)
+    dxRibbon1: TdxRibbon;
+    tvItems: TcxTreeView;
+    btnAceptar: TcxButton;
+    btnCancelar: TcxButton;
+    btnDefault: TcxButton;
+    cdsCambiaAgrupacion: TDAMemDataTable;
+    procedure tvItemsCompare(Sender: TObject; Node1, Node2: TTreeNode;
+      Data: Integer; var Compare: Integer);
+    procedure FormCreate(Sender: TObject);
+    procedure tvItemsDragOver(Sender, Source: TObject; X, Y: Integer;
+      State: TDragState; var Accept: Boolean);
+    procedure tvItemsDragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure btnAceptarClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    MiAgrupacion: AAgrupacion;
+    procedure GeneraNodos;
+  end;
+
+function CambiaAgrupacion: AAgrupacion;
+
+implementation
+
+uses dmImagenes, uDM, UtileriasComun;
+
+{$R *.dfm}
+
+function CambiaAgrupacion: AAgrupacion;
+var
+  frmCambiaAgrupacion: TfrmCambiaAgrupacion;
+begin
+  frmCambiaAgrupacion:=TfrmCambiaAgrupacion.Create(nil);
+  Result:=AAgrupacion.Create;
+  try
+    if frmCambiaAgrupacion.ShowModal = mrOk then
+      Result:=frmCambiaAgrupacion.MiAgrupacion;
+  except
+    frmCambiaAgrupacion.Free;
+  end;
+  frmCambiaAgrupacion.Free;
+end;
+
+procedure TfrmCambiaAgrupacion.GeneraNodos;
+var
+  Aux: Integer;
+  Nodo: TTreeNode;
+begin
+  tvItems.Items.Clear;
+  cdsCambiaAgrupacion.ParamByName('EstacionID').AsInteger:=DM.Estacion;
+  cdsCambiaAgrupacion.Open;
+  Aux:=0;
+  Nodo:=nil;
+  tvItems.SortType:=stNone;
+  while not cdsCambiaAgrupacion.EOF do
+  begin
+    if cdsCambiaAgrupacion.FieldByName('AgrupacionID').AsInteger <> Aux then
+    begin
+      Nodo:=tvItems.Items.Add(nil, cdsCambiaAgrupacion.FieldByName('Nombre').AsString);
+      Nodo.ImageIndex:=14;
+      Nodo.SelectedIndex:=14;
+      Nodo.StateIndex:=cdsCambiaAgrupacion.FieldByName('AgrupacionID').AsInteger;
+    end;
+    Aux:=Nodo.StateIndex;
+    with tvItems.Items.AddChild(Nodo, 'Bomba ' + cdsCambiaAgrupacion.FieldByName('BombaID').AsString) do
+    begin
+      ImageIndex:=71;
+      SelectedIndex:=71;
+      StateIndex:=cdsCambiaAgrupacion.FieldByName('BombaID').AsInteger;
+    end;
+    cdsCambiaAgrupacion.Next;
+  end;
+  cdsCambiaAgrupacion.Close;
+  for Aux := 0 to tvItems.Items.Count - 1 do
+  begin
+    tvItems.Items[Aux].Expand(True);
+    if not tvItems.Items[Aux].HasChildren then
+      tvItems.Items[Aux].StateIndex := tvItems.Items[Aux].StateIndex;
+  end;
+  tvItems.SortType:=stData;
+end;
+
+procedure TfrmCambiaAgrupacion.tvItemsCompare(Sender: TObject; Node1,
+  Node2: TTreeNode; Data: Integer; var Compare: Integer);
+var
+  n1, n2: integer;
+begin
+  n1 := Node1.StateIndex;
+  n2 := Node2.StateIndex;
+  if n1 > n2 then
+    Compare := 1
+  else if n1 < n2 then
+    Compare := -1
+  else
+    Compare := 0;
+end;
+
+procedure TfrmCambiaAgrupacion.tvItemsDragDrop(Sender, Source: TObject; X,
+  Y: Integer);
+var
+  SN, TN: TTreeNode;
+begin
+   SN:=tvItems.Selected;  // the node beeing dragged
+   TN:=tvItems.GetNodeAt(X,Y); // the node over which SN is dragged
+   if SN = nil then exit;
+   if TN = nil then exit;
+
+   SN.MoveTo(TN, naAddChild);
+   tvItems.SortType:=stNone;
+   tvItems.SortType:=stData;
+end;
+
+procedure TfrmCambiaAgrupacion.tvItemsDragOver(Sender, Source: TObject; X,
+  Y: Integer; State: TDragState; var Accept: Boolean);
+var
+  SN, TN: TTreeNode;
+begin
+// source and target trees and nodes
+   Accept:=False;
+   SN:=tvItems.Selected;  // the node beeing dragged
+   TN:=tvItems.GetNodeAt(X,Y); // the node over which SN is dragged
+   if SN = nil then Exit;
+   if TN = nil then Exit;
+   Accept:=(TN.ImageIndex = 14) and (SN.ImageIndex = 71);
+end;
+
+procedure TfrmCambiaAgrupacion.btnAceptarClick(Sender: TObject);
+var
+  I, Aux: Integer;
+  Nodo: TAgrupacion;
+begin
+  MiAgrupacion:=AAgrupacion.Create;
+  Aux := 0;
+  Nodo:=nil;
+  for I := 0 to tvItems.Items.Count - 1 do
+  begin
+    if (tvItems.Items[I].ImageIndex = 14) and (tvItems.Items[I].StateIndex <> Aux) then
+    begin
+      Aux:=tvItems.Items[I].StateIndex;
+      Nodo:=MiAgrupacion.Add;
+      Nodo.AgrupacionID:=Aux;
+    end;
+    if tvItems.Items[I].ImageIndex = 71 then
+      Nodo.Bombas.Add(tvItems.Items[I].StateIndex);
+  end;
+  ModalResult:=mrOk;
+end;
+
+procedure TfrmCambiaAgrupacion.FormCreate(Sender: TObject);
+begin
+  MiAgrupacion:=nil;
+  dxRibbon1.ColorSchemeName:=RibbonSchema[ColorRibbonSchema];
+  GeneraNodos;
+end;
+
+end.

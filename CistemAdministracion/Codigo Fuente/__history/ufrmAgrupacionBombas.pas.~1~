@@ -1,0 +1,263 @@
+unit ufrmAgrupacionBombas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxGraphics, cxMaskEdit, cxDropDownEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, uDAScriptingProvider, uDADataTable,
+  uDACDSDataTable, DB, dxmdaset, cxLabel, cxControls, cxContainer, cxEdit,
+  cxTextEdit, cxDBEdit, cxStyles, cxCustomData, cxFilter, cxData, cxDataStorage,
+  cxDBData, cxGridLevel, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxClasses, cxGridCustomView, cxGrid, cxPC, cxGroupBox;
+
+type
+  TfrmAgrupacionBombas = class(TfrmCustomModule)
+    dsAgrupacion: TDADataSource;
+    tblCatalogo: TdxMemData;
+    cdsAgrupacion: TDACDSDataTable;
+    dsBombas: TDADataSource;
+    cdsBombas: TDACDSDataTable;
+    cdsAgrupacionBomba: TDACDSDataTable;
+    dsAgrupacionBomba: TDADataSource;
+    cdsProductos: TDACDSDataTable;
+    dsProductos: TDADataSource;
+    cdsBombasDisponibles: TDACDSDataTable;
+    dsBombasDisponibles: TDADataSource;
+    cdsAgrupacionPorEstacion: TDACDSDataTable;
+    dsAgrupacionPorEstacion: TDADataSource;
+    cdsEstacion: TDACDSDataTable;
+    dsEstacion: TDADataSource;
+    pgcAgrupacion: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    cxTabSheet2: TcxTabSheet;
+    dbgCatalogo: TcxGrid;
+    dbgCatalogoDBTableView1: TcxGridDBTableView;
+    dbgCatalogoDBTableView1BombaID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1NoBomba: TcxGridDBColumn;
+    dbgCatalogoDBTableView1PosicionCarga: TcxGridDBColumn;
+    dbgCatalogoDBTableView1Nombre: TcxGridDBColumn;
+    dbgCatalogoLevel1: TcxGridLevel;
+    cdsObtenerBombasDeAgrupacion: TDACDSDataTable;
+    dsObtenerBombasDeAgrupacion: TDADataSource;
+    dbgAgrupacion: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    cxGridDBTableView1AgrupacionID: TcxGridDBColumn;
+    cxGridDBTableView1Nombre: TcxGridDBColumn;
+    cxGridDBTableView1EstacionID: TcxGridDBColumn;
+    cxGridDBTableView1AlmacenID: TcxGridDBColumn;
+    cxGroupBox1: TcxGroupBox;
+    cxLabel3: TcxLabel;
+    cxLabel5: TcxLabel;
+    dbBomba: TcxDBLookupComboBox;
+    dbAgrupacion: TcxDBLookupComboBox;
+    procedure FormCreate(Sender: TObject);
+    procedure cdsAgrupacionBombaBeforePost(DataTable: TDADataTable);
+    procedure cdsAgrupacionBombaAfterPost(DataTable: TDADataTable);
+    procedure cdsAgrupacionBombaAfterDelete(DataTable: TDADataTable);
+    procedure txtAgrupacionExit(Sender: TObject);
+    procedure cxGridDBTableView1DblClick(Sender: TObject);
+    procedure dbAgrupacionExit(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    procedure ActionEliminar(Action: TBasicAction);
+    procedure ActionBuscar(Action: TBasicAction);
+  protected
+    procedure RegisterActions; override;
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+  end;
+
+var
+  frmAgrupacionBombas: TfrmAgrupacionBombas;
+  EstacionActual:Integer;
+  NoAgrupacion:Integer;
+
+implementation
+
+uses Modules, uDM, dmActions, UtileriasComun; //, ufrmBuscarAgrupacion;
+
+{$R *.dfm}
+procedure TfrmAgrupacionBombas.FormCreate(Sender: TObject);
+begin
+  inherited;
+  EstacionActual:=StrToInt(UtileriasComun.LeerRegistro('Estacion','4120'));
+  {cdsAgrupacion.Close;
+  cdsAgrupacion.Open;
+  cdsAgrupacionBomba.Open;
+  cdsBombas.Open;
+  cdsProductos.Close;
+  cdsProductos.ParamByName('EstacionID').AsInteger:=EstacionActual;
+  cdsProductos.ParamByName('Tipo').AsInteger:=1;
+  cdsProductos.Open;
+  cdsBombasDisponibles.Close;
+  cdsBombasDisponibles.ParamByName('Estacion').AsInteger:=EstacionActual;
+  cdsBombasDisponibles.Open;
+  cdsAgrupacionPorEstacion.Close;
+  cdsAgrupacionPorEstacion.ParamByName('EstacionID').AsInteger:=EstacionActual;
+  cdsAgrupacionPorEstacion.Open;
+  pgcAgrupacion.ActivePageIndex:=0; }
+
+  cdsProductos.Close;
+  cdsProductos.ParamByName('EstacionID').AsInteger:=EstacionActual;
+  cdsProductos.ParamByName('Tipo').AsInteger:=1;
+  cdsProductos.Open;
+
+  cdsAgrupacionBomba.Open;
+  cdsAgrupacionPorEstacion.Close;
+  //Obtenemos las agrupaciones que pertenecen a la estacion
+  cdsAgrupacionPorEstacion.ParamByName('EstacionID').AsInteger:=EstacionActual;
+  cdsAgrupacionPorEstacion.Open;
+
+
+  pgcAgrupacion.ActivePageIndex:=0;
+end;
+
+procedure TfrmAgrupacionBombas.ActionGuardar(Action: TBasicAction);
+begin
+  cdsAgrupacionBomba.Post;
+  cdsBombasDisponibles.Close;
+  cdsBombasDisponibles.ParamByName('Estacion').AsInteger:=EstacionActual;
+  cdsBombasDisponibles.Open;
+
+  cdsObtenerBombasDeAgrupacion.Close;
+  cdsObtenerBombasDeAgrupacion.ParamByName('Agrupacion').AsInteger:=NoAgrupacion;
+  cdsObtenerBombasDeAgrupacion.Open;
+
+  pgcAgrupacion.ActivePageIndex:=1;
+  dbAgrupacion.Enabled:=False;
+  dbBomba.Enabled:=False;
+end;
+
+procedure TfrmAgrupacionBombas.ActionNuevo(Action: TBasicAction);
+begin
+
+  cdsAgrupacionBomba.Append;
+
+  cdsBombasDisponibles.ParamByName('Estacion').AsInteger:=EstacionActual;
+  cdsBombasDisponibles.Open;
+  pgcAgrupacion.ActivePageIndex:=1;
+
+  dbAgrupacion.Enabled:=True;
+  dbAgrupacion.SetFocus;
+  //cbxBombas.SetFocus;
+end;
+procedure TfrmAgrupacionBombas.ActionBuscar(Action: TBasicAction);
+begin
+  pgcAgrupacion.ActivePageIndex:=0;
+end;
+procedure TfrmAgrupacionBombas.cdsAgrupacionBombaAfterDelete(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsAgrupacionBomba.ApplyUpdates(true);
+
+
+end;
+
+procedure TfrmAgrupacionBombas.cdsAgrupacionBombaAfterPost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsObtenerBombasDeAgrupacion.Close;
+  cdsObtenerBombasDeAgrupacion.ParamByName('Agrupacion').AsInteger:=NoAgrupacion;
+  cdsObtenerBombasDeAgrupacion.Open;
+
+  cdsAgrupacionBomba.ApplyUpdates(true);
+end;
+
+procedure TfrmAgrupacionBombas.cdsAgrupacionBombaBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  //cdsAgrupacionBomba.FieldByName('AgrupacionId').AsInteger:=cdsAgrupacionPorEstacion.FieldByName('AgrupacionId').AsInteger;
+  //cdsAgrupacionBomba.FieldByName('BombaID').AsInteger:=cdsBombasDisponibles.FieldByName('BombaId').AsInteger;
+end;
+
+procedure TfrmAgrupacionBombas.cxGridDBTableView1DblClick(Sender: TObject);
+begin
+  inherited;
+  cdsAgrupacionBomba.Append;
+  pgcAgrupacion.ActivePageIndex:=1;
+  //cbxBombas.SetFocus;
+end;
+
+procedure TfrmAgrupacionBombas.dbAgrupacionExit(Sender: TObject);
+begin
+  inherited;
+  //Mandamos limpiar el grid haciendo una consulta con agrupacion 0 la cual nunca debe existir
+  cdsObtenerBombasDeAgrupacion.Close;
+  cdsObtenerBombasDeAgrupacion.ParamByName('Agrupacion').AsInteger:=0;
+  cdsObtenerBombasDeAgrupacion.Open;
+  //Mangamos buscar todas las bombas de esa agrupacion
+  cdsObtenerBombasDeAgrupacion.Close;
+  cdsObtenerBombasDeAgrupacion.ParamByName('Agrupacion').AsInteger:=cdsAgrupacionBomba.FieldByName('AgrupacionID').AsInteger;
+  cdsObtenerBombasDeAgrupacion.Open;
+
+  NoAgrupacion:=cdsAgrupacionBomba.FieldByName('AgrupacionId').AsInteger;
+  dbBomba.Enabled:=true;
+  dbBomba.SetFocus;
+end;
+
+procedure TfrmAgrupacionBombas.ActionEliminar(Action: TBasicAction);
+begin
+  cdsAgrupacionBomba.Locate('BombaID;AgrupacionID',VarArrayOf([cdsObtenerBombasDeAgrupacion.FieldByName('BombaID').AsInteger,cdsObtenerBombasDeAgrupacion.FieldByName('AgrupacionID').AsInteger]),[loCaseInsensitive]);
+  cdsAgrupacionBomba.Delete;
+  cdsAgrupacionBomba.ApplyUpdates(true);
+  //cbxBombas.SetFocus;
+  cdsBombasDisponibles.Close;
+  cdsBombasDisponibles.ParamByName('Estacion').AsInteger:=EstacionActual;
+  cdsBombasDisponibles.Open;
+  cdsObtenerBombasDeAgrupacion.Close;
+  cdsObtenerBombasDeAgrupacion.ParamByName('Agrupacion').AsInteger:=cdsAgrupacionPorEstacion.FieldByName('AgrupacionID').AsInteger;
+  cdsObtenerBombasDeAgrupacion.Open;
+end;
+
+procedure TfrmAgrupacionBombas.ActionCancelar(Action: TBasicAction);
+begin
+  cdsAgrupacionBomba.Cancel;
+  //txtAgrupacion.SetFocus;
+  cdsBombasDisponibles.Close;
+  cdsBombasDisponibles.ParamByName('Estacion').AsInteger:=EstacionActual;
+  cdsBombasDisponibles.Open;
+  cdsObtenerBombasDeAgrupacion.Close;
+  cdsObtenerBombasDeAgrupacion.ParamByName('Agrupacion').AsInteger:=cdsAgrupacionPorEstacion.FieldByName('AgrupacionID').AsInteger;
+  cdsObtenerBombasDeAgrupacion.Open;
+end;
+
+procedure TfrmAgrupacionBombas.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actCancelar, ActionCancelar);
+  RegisterAction(AppActions.actEliminar, ActionEliminar);
+  RegisterAction(AppActions.actBuscar, ActionBuscar);
+end;
+
+procedure TfrmAgrupacionBombas.txtAgrupacionExit(Sender: TObject);
+begin
+  inherited;
+  cdsObtenerBombasDeAgrupacion.Close;
+  cdsObtenerBombasDeAgrupacion.ParamByName('Agrupacion').AsInteger:=cdsAgrupacionPorEstacion.FieldByName('AgrupacionID').AsInteger;
+  cdsObtenerBombasDeAgrupacion.Open;
+end;
+
+procedure TfrmAgrupacionBombas.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actNuevo.Enabled:=(cdsAgrupacionBomba.State = dsBrowse) or (pgcAgrupacion.ActivePageIndex=0);
+  dmAppActions.actGuardar.Enabled:=(cdsAgrupacionBomba.State in dsEditModes) and (pgcAgrupacion.ActivePageIndex=1);
+  dmAppActions.actCancelar.Enabled:=(cdsAgrupacionBomba.State in dsEditModes) and (pgcAgrupacion.ActivePageIndex=1);
+  dmAppActions.actEliminar.Enabled:=(cdsAgrupacionBomba.State = dsBrowse) and (cdsAgrupacionBomba.RecordCount > 0) and (pgcAgrupacion.ActivePageIndex=1);
+  dmAppActions.actBuscar.Enabled:=(pgcAgrupacion.ActivePageIndex=1);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Agrupacion Bombas', TfrmAgrupacionBombas);
+end.

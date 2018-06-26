@@ -1,0 +1,282 @@
+unit ufrmDatosPuntos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue,
+  dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinSilver, dxSkinStardust,
+  dxSkinSummer2008, dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue,
+  cxTextEdit, cxLabel, cxControls, cxContainer, cxEdit, cxGroupBox, StdCtrls,
+  cxButtons, cxMaskEdit, cxDropDownEdit, cxCalendar, cxGraphics, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, cxCheckBox, ComCtrls, cxListView,
+  cxImageComboBox, LibraryAdministracion_Intf, DB, uDAInterfaces, uDADataTable,
+  uDAScriptingProvider, uDAMemDataTable, cxLookAndFeels, dxSkinDarkRoom,
+  dxSkinDarkSide, dxSkinFoggy, dxSkinPumpkin, dxSkinSeven, dxSkinSharp,
+  dxSkinSpringTime, cxRadioGroup, cxCheckGroup;
+
+type
+  TfrmDatosPuntos = class(TForm)
+    btnAceptar: TcxButton;
+    btnCancelar: TcxButton;
+    cxGroupBox1: TcxGroupBox;
+    cxLabel1: TcxLabel;
+    edtApellidoPaterno: TcxTextEdit;
+    cxLabel2: TcxLabel;
+    edtApellidoMaterno: TcxTextEdit;
+    cxLabel3: TcxLabel;
+    edtNombres: TcxTextEdit;
+    edtemail: TcxTextEdit;
+    cxLabel4: TcxLabel;
+    cxLabel5: TcxLabel;
+    dtpNacimiento: TcxDateEdit;
+    cxGroupBox2: TcxGroupBox;
+    cxLabel10: TcxLabel;
+    edtReferencia: TcxTextEdit;
+    chkFacturacionExpress: TcxCheckBox;
+    cxLabel6: TcxLabel;
+    cbCategoria: TcxLookupComboBox;
+    cxGroupBox3: TcxGroupBox;
+    lvTelefonos: TcxListView;
+    btnAgregar: TcxButton;
+    btnEliminar: TcxButton;
+    edtCelular: TcxTextEdit;
+    cxLabel7: TcxLabel;
+    edtDescripcion: TcxTextEdit;
+    cxLabel8: TcxLabel;
+    cxLabel9: TcxLabel;
+    cbCompania: TcxImageComboBox;
+    cdsCategoria: TDAMemDataTable;
+    dsCategoria: TDADataSource;
+    rgSexo: TcxRadioGroup;
+    cxLabel11: TcxLabel;
+    dtpFechaRegistro: TcxDateEdit;
+    cdsPuntosCriterio: TDAMemDataTable;
+    chkCriterios: TcxCheckGroup;
+    cdsPuntosClub: TDAMemDataTable;
+    dsPuntosClub: TDADataSource;
+    cxLabel12: TcxLabel;
+    cmbClub: TcxLookupComboBox;
+    cdsPuntosClienteCriterio: TDAMemDataTable;
+    procedure FormCreate(Sender: TObject);
+    procedure btnAceptarClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure btnAgregarClick(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure cdsPuntosClienteCriterioNewRecord(DataTable: TDADataTable);
+  private
+    { Private declarations }
+    Celulares: ADatosCelular;
+    function BuscaCriterio(PuntosCriterioID: Integer): Boolean;
+  public
+    { Public declarations }
+    Datos: TDatosPuntos;
+    procedure DespliegaDatos;
+  end;
+
+procedure DatosPuntos(ClienteID: Integer);
+
+implementation
+
+uses uDM, uROStreamSerializer;
+
+{$R *.dfm}
+
+procedure DatosPuntos(ClienteID: Integer);
+var
+  frmDatosPuntos: TfrmDatosPuntos;
+begin
+  frmDatosPuntos:=TfrmDatosPuntos.Create(nil);
+  try
+    frmDatosPuntos.Datos.Assign(DM.Servidor.PuntosDatos(ClienteID));
+    frmDatosPuntos.DespliegaDatos;
+    frmDatosPuntos.ShowModal;
+  finally
+    frmDatosPuntos.Free;
+  end;
+end;
+
+procedure TfrmDatosPuntos.btnAceptarClick(Sender: TObject);
+var
+  Aux: TStringStream;
+  X: Integer;
+begin
+  //Valida que el numero de llavero no este en uso
+  Datos.ApellidoPaterno:=edtApellidoPaterno.Text;
+  Datos.ApellidoMaterno:=edtApellidoMaterno.Text;
+  Datos.Nombres:=edtNombres.Text;
+  Datos.email:=edtemail.Text;
+  Datos.Nacimiento:=Trunc(dtpNacimiento.Date);
+  Datos.Referencia:=edtReferencia.Text;
+  Datos.PuntosCategoriaID:=cbCategoria.EditValue;
+  Datos.FacturaExpress:=chkFacturacionExpress.Checked;
+  Datos.Sexo := rgSexo.ItemIndex + 1;
+  Datos.UsuarioID := DM.MiLoginInfo.EmpleadoID;
+  Datos.PuntosClubID := cmbClub.EditValue;
+
+  Aux := TStringStream.Create('');
+  try
+    ObjectToStream(Celulares, Aux);
+    Aux.Position := 0;
+    Datos.Telefonos := Aux.DataString;
+  finally
+    Aux.Free;
+  end;
+
+  //
+
+  cdsPuntosClienteCriterio.First;
+  while not cdsPuntosClienteCriterio.EOF do
+    cdsPuntosClienteCriterio.Delete;
+
+  for X := 0 to chkCriterios.Properties.Items.Count - 1 do
+  begin
+    if chkCriterios.States[X] = cbschecked then
+    begin
+      cdsPuntosClienteCriterio.Insert;
+      cdsPuntosClienteCriterio.FieldByName('PuntosCriterioID').AsInteger := chkCriterios.Properties.Items.Items[X].Tag;
+    end;
+  end;
+
+  cdsPuntosClienteCriterio.ApplyUpdates();
+
+  DM.Servidor.PuntosGuardaDatos(Datos);
+  Close;
+end;
+
+procedure TfrmDatosPuntos.btnAgregarClick(Sender: TObject);
+var
+  I: Integer;
+begin
+  if (edtCelular.Text = '') or (edtDescripcion.Text = '') or (cbCompania.EditValue = null) then
+  begin
+    MessageDlg('Debe capturar todos los datos del celular', mtError, [mbOK], 0);
+    Exit;
+  end;
+  for I := 0 to lvTelefonos.Items.Count - 1 do
+  begin
+    if (edtDescripcion.Text = lvTelefonos.Items[I].Caption) or (edtCelular.Text = lvTelefonos.Items[I].SubItems[0]) then
+    begin
+      MessageDlg('La informacion del celular ya existe', mtError, [mbOK], 0);
+      Exit;
+    end;
+  end;
+
+  with Celulares.Add do
+  begin
+    Descripcion:=edtDescripcion.Text;
+    Telefono:=edtCelular.Text;
+    Compania:=cbCompania.EditValue;
+  end;
+  with lvTelefonos.Items.Add do
+  begin
+    Caption:=edtDescripcion.Text;
+    SubItems.Add(edtCelular.Text);
+  end;
+end;
+
+procedure TfrmDatosPuntos.btnCancelarClick(Sender: TObject);
+begin
+  Close;
+end;
+
+function TfrmDatosPuntos.BuscaCriterio(PuntosCriterioID: Integer): Boolean;
+begin
+  Result := False;
+  cdsPuntosClienteCriterio.First;
+  while not cdsPuntosClienteCriterio.EOF do
+  begin
+    if cdsPuntosClienteCriterio.FieldByName('PuntosCriterioId').AsInteger = PuntosCriterioID then
+    begin
+      Result := True;
+      Break;
+    end;
+    cdsPuntosClienteCriterio.Next;
+  end;
+end;
+
+procedure TfrmDatosPuntos.cdsPuntosClienteCriterioNewRecord(
+  DataTable: TDADataTable);
+begin
+  DataTable.FieldByName('ClienteID').AsInteger := Datos.ClienteID;
+end;
+
+procedure TfrmDatosPuntos.DespliegaDatos;
+var
+  I: Integer;
+  Aux: TStringStream;
+begin
+  edtApellidoPaterno.Text:=Datos.ApellidoPaterno;
+  edtApellidoMaterno.Text:=Datos.ApellidoMaterno;
+  edtNombres.Text:=Datos.Nombres;
+  edtemail.Text:=Datos.email;
+  dtpNacimiento.Date:=Datos.Nacimiento;
+  edtReferencia.Text:=Datos.Referencia;
+  cbCategoria.EditValue:=Datos.PuntosCategoriaID;
+  chkFacturacionExpress.Checked:=Datos.FacturaExpress;
+  edtDescripcion.Text:='';
+  edtCelular.Text:='';
+  lvTelefonos.Items.Clear;
+  cmbClub.EditValue := Datos.PuntosClubID;
+
+  if StrToInt(FormatDateTime('yyyy', Datos.FechaRegistro)) > 1899  then
+    dtpFechaRegistro.Date := Trunc(Datos.FechaRegistro);
+  if Datos.Sexo > 0 then
+    rgSexo.ItemIndex := Datos.Sexo - 1;
+
+  if Datos.Telefonos <> '' then
+  begin
+    Aux:=TStringStream.Create(Datos.Telefonos);
+    try
+      Celulares.Assign(ADatosCelular(StreamToObject(Aux)));
+      for I := 0 to Celulares.Count - 1 do
+      begin
+        with lvTelefonos.Items.Add do
+        begin
+          Caption:=Celulares[I].Descripcion;
+          SubItems.Add(Celulares[I].Telefono);
+        end;
+      end;
+    finally
+      Aux.Free;
+    end;
+  end;
+
+  cdsPuntosClienteCriterio.ParamByName('ClienteID').AsInteger := Datos.ClienteID;
+  cdsPuntosClienteCriterio.Open;
+
+  cdsPuntosCriterio.Open;
+  while not cdsPuntosCriterio.EOF do
+  begin
+    with chkCriterios.Properties.Items.Add do
+    begin
+      Caption := cdsPuntosCriterio.FieldByName('Nombre').AsString;
+      Tag := cdsPuntosCriterio.FieldByName('PuntosCriterioID').AsInteger;
+    end;
+
+    if BuscaCriterio(cdsPuntosCriterio.FieldByName('PuntosCriterioID').AsInteger) then
+      chkCriterios.States[chkCriterios.Properties.Items.Count - 1] := cbsChecked;
+
+    cdsPuntosCriterio.Next;
+  end;
+end;
+
+procedure TfrmDatosPuntos.FormCreate(Sender: TObject);
+begin
+  Datos:=TDatosPuntos.Create;
+  Celulares:=ADatosCelular.Create;
+
+  cdsCategoria.Open;
+  cdsPuntosClub.open;
+end;
+
+procedure TfrmDatosPuntos.FormDestroy(Sender: TObject);
+begin
+  Datos.Free;
+  Celulares.Free;
+end;
+
+end.

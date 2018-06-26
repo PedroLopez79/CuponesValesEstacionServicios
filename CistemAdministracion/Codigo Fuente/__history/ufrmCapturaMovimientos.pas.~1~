@@ -1,0 +1,234 @@
+unit ufrmCapturaMovimientos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, dxSkinsCore, dxSkinsDefaultPainters, DB, uDAInterfaces,
+  uDADataTable, uDAScriptingProvider, uDACDSDataTable, cxTextEdit, StdCtrls,
+  cxControls, cxContainer, cxEdit, cxGroupBox, cxStyles, dxSkinscxPCPainter,
+  cxCustomData, cxGraphics, cxFilter, cxData, cxDataStorage, cxDBData,
+  cxGridLevel, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxClasses, cxGridCustomView, cxGrid, cxCalendar, cxDBLookupComboBox,
+  cxLookAndFeelPainters, dxSkinBlack, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
+  dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
+  dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinSilver, dxSkinStardust, dxSkinValentine,
+  dxSkinXmas2008Blue;
+
+type
+  TfrmCapturaMovimientos = class(TfrmCustomModule)
+    cxGroupBox1: TcxGroupBox;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    edtNombre: TcxTextEdit;
+    edtRFC: TcxTextEdit;
+    cdsDatosCliente: TDACDSDataTable;
+    dsDatosCliente: TDADataSource;
+    edtClienteID: TcxTextEdit;
+    cdsMovimientoCartera: TDACDSDataTable;
+    dsMovimientoCartera: TDADataSource;
+    dsTipoMovimiento: TDADataSource;
+    cdsTipoMovimiento: TDACDSDataTable;
+    cxGrid2: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridDBTableView1Column1: TcxGridDBColumn;
+    cxGridDBColumn2: TcxGridDBColumn;
+    cxGridDBColumn3: TcxGridDBColumn;
+    cxGridDBColumn4: TcxGridDBColumn;
+    cxGridDBColumn5: TcxGridDBColumn;
+    cxGridLevel1: TcxGridLevel;
+    procedure edtClienteIDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cdsMovimientoCarteraNewRecord(DataTable: TDADataTable);
+    procedure FormCreate(Sender: TObject);
+    procedure cdsMovimientoCarteraBeforePost(DataTable: TDADataTable);
+    procedure edtClienteIDExit(Sender: TObject);
+    procedure cxGrid2Enter(Sender: TObject);
+    procedure cxGrid2Exit(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    procedure ActionBuscar(Action: TBasicAction);
+    procedure BuscarCliente;
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+  protected
+    procedure RegisterActions; override;
+  end;
+
+var
+  frmCapturaMovimientos: TfrmCapturaMovimientos;
+
+implementation
+
+uses Modules, dmActions, ufrmBuscarCliente, uDM, UtileriasComun;
+
+{$R *.dfm}
+
+procedure TfrmCapturaMovimientos.ActionBuscar(Action: TBasicAction);
+begin
+   BuscarCliente;
+end;
+
+procedure TfrmCapturaMovimientos.ActionCancelar(Action: TBasicAction);
+begin
+    edtClienteID.Clear;
+    edtNombre.Clear;
+    edtRFC.Clear;
+    cdsMovimientoCartera.Close;
+    cxGrid2.Enabled:=False;
+    cdsMovimientoCartera.Close;
+    cdsMovimientoCartera.Open;
+end;
+
+procedure TfrmCapturaMovimientos.ActionGuardar(Action: TBasicAction);
+begin
+  cdsMovimientoCartera.First;
+  while not cdsMovimientoCartera.EOF do
+  begin
+    cdsMovimientoCartera.ApplyUpdates();
+    cdsMovimientoCartera.Next;
+  end;
+    cdsMovimientoCartera.Close;
+    cdsMovimientoCartera.Open;
+
+    edtClienteID.Clear;
+    edtNombre.Clear;
+    edtRFC.Clear;
+    cxGrid2.Enabled:=False;
+    cxGroupBox1.Enabled:=False;
+
+end;
+
+procedure TfrmCapturaMovimientos.ActionNuevo(Action: TBasicAction);
+begin
+    cxGrid2.Enabled:=True;
+    cxGroupBox1.Enabled:=True;
+    cdsMovimientoCartera.Append;
+    cdsTipoMovimiento.Close;
+    cdsTipoMovimiento.Open;
+
+    edtClienteID.SetFocus;
+end;
+
+procedure TfrmCapturaMovimientos.BuscarCliente;
+begin
+  frmBuscarCliente:=TfrmBuscarCliente.Create(nil);
+  frmBuscarCliente.ShowModal;
+  if (frmBuscarCliente.OK) or (frmBuscarCliente.OKClienteNuevo) then
+  begin
+    edtClienteID.Text:=IntToStr(frmBuscarCliente.Clave);
+    edtClienteIDExit(edtClienteID);
+  end;
+end;
+
+procedure TfrmCapturaMovimientos.cdsMovimientoCarteraBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsMovimientoCartera.FieldByName('MovimientoCarteraID').AsInteger:=DM.Servidor.Folio('MovimientoCarteraID','');
+  cdsMovimientoCartera.FieldByName('FechaVencimiento').AsDateTime:=cdsMovimientoCartera.FieldByName('Fecha').AsDateTime;
+  cdsMovimientoCartera.FieldByName('Ejercicio').AsString:=FormatDateTime('yyyy', cdsMovimientoCartera.FieldByName('Fecha').AsDateTime);
+  cdsMovimientoCartera.FieldByName('Periodo').AsString:=FormatDateTime('m', cdsMovimientoCartera.FieldByName('Fecha').AsDateTime);
+  cdsMovimientoCartera.FieldByName('Dia').AsString:=FormatDateTime('d', cdsMovimientoCartera.FieldByName('Fecha').AsDateTime);
+  cdsMovimientoCartera.FieldByName('ClienteID').AsInteger:=edtClienteID.EditValue;
+  cdsMovimientoCartera.FieldByName('UsuarioID').AsInteger:=DM.Seguridad.idEmpleado;
+  cdsTipoMovimiento.Locate('TipoMovimientoCarteraID', cdsMovimientoCartera.FieldByName('TipoMovimientoCarteraID').AsString, []);
+  cdsMovimientoCartera.FieldByName('CargoAbono').AsString:=cdsTipoMovimiento.FieldByName('CargoAbono').AsString;
+  if cdsMovimientoCartera.FieldByName('Cargo').AsString = '' then
+    cdsMovimientoCartera.FieldByName('Cargo').AsInteger:=0;
+  if cdsMovimientoCartera.FieldByName('Abono').AsString = '' then
+    cdsMovimientoCartera.FieldByName('Abono').AsInteger:=0;
+
+  if (cdsMovimientoCartera.FieldByName('CargoAbono').AsString = 'A') and (cdsMovimientoCartera.FieldByName('Cargo').AsFloat > 0) then
+    raise Exception.Create('Cargo no corresponde con el tipo de movimiento.');
+  if (cdsMovimientoCartera.FieldByName('TipoMovimientoCarteraID').AsString = 'C') and (cdsMovimientoCartera.FieldByName('Abono').AsFloat > 0) then
+    raise Exception.Create('Abono no corresponde con el tipo de movimiento.');
+end;
+
+procedure TfrmCapturaMovimientos.cdsMovimientoCarteraNewRecord(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsMovimientoCartera.FieldByName('Cargo').AsFloat:=0;
+  cdsMovimientoCartera.FieldByName('Abono').AsFloat:=0;
+  cdsMovimientoCartera.FieldByName('Fecha').AsDateTime:=Trunc(Now);
+  cdsMovimientoCartera.FieldByName('EstacionID').AsInteger:=DM.Estacion;
+end;
+
+procedure TfrmCapturaMovimientos.cxGrid2Enter(Sender: TObject);
+begin
+  inherited;
+  OkEnter:=False;
+end;
+
+procedure TfrmCapturaMovimientos.cxGrid2Exit(Sender: TObject);
+begin
+  inherited;
+  OkEnter:=True;
+end;
+
+procedure TfrmCapturaMovimientos.edtClienteIDExit(Sender: TObject);
+begin
+  inherited;
+    cdsDatosCliente.Close;
+    cdsDatosCliente.ParamByName('ClienteID').AsInteger:=StrToInt(edtClienteID.Text);
+    cdsDatosCliente.Open;
+    if cdsDatosCliente.RecordCount < 1 then
+    begin
+       ShowMessage('Cliente no existe');
+       Exit;
+    end
+    else
+    begin
+       edtNombre.Text:=cdsDatosCliente.FieldByName('Nombre').AsString;
+       edtRFC.Text:=cdsDatosCliente.FieldByName('RFC').AsString;
+    end;
+end;
+
+procedure TfrmCapturaMovimientos.edtClienteIDKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if key=VK_F2 then
+  begin
+      BuscarCliente;
+  end;
+end;
+
+procedure TfrmCapturaMovimientos.FormCreate(Sender: TObject);
+begin
+  inherited;
+    cdsMovimientoCartera.Close;
+    cdsMovimientoCartera.Open;
+    cxGroupBox1.Enabled:=False;
+end;
+
+procedure TfrmCapturaMovimientos.RegisterActions;
+begin
+  inherited RegisterActions;
+    RegisterAction(dmAppActions.actNuevo, ActionNuevo);
+    RegisterAction(dmAppActions.actGuardar, ActionGuardar);
+    RegisterAction(dmAppActions.actCancelar, ActionCancelar);
+    RegisterAction(dmAppActions.actBuscar, ActionBuscar);
+end;
+
+procedure TfrmCapturaMovimientos.UpdateActionsState;
+begin
+  inherited;
+    dmAppActions.actNuevo.Enabled:=cdsMovimientoCartera.State = dsBrowse;
+    dmAppActions.actGuardar.Enabled:=(cdsMovimientoCartera.State in dsEditModes);
+    dmAppActions.actCancelar.Enabled:=cdsMovimientoCartera.State in dsEditModes;
+    dmAppActions.actBuscar.Enabled:=((cdsMovimientoCartera.State=dsEdit) or (cdsMovimientoCartera.State=dsInsert))
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Captura de Movimientos', TfrmCapturaMovimientos);
+
+end.

@@ -1,0 +1,507 @@
+unit ufrmReciboCredito;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxTextEdit, cxDBEdit, StdCtrls, cxControls,
+  cxContainer, cxEdit, cxGroupBox, cxGraphics, cxDropDownEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, cxMaskEdit, cxCalendar, cxStyles,
+  cxCustomData, cxFilter, cxData, cxDataStorage, DB, cxDBData, cxGridLevel,
+  cxClasses, cxGridCustomView, cxGridCustomTableView, cxGridTableView,
+  cxGridDBTableView, cxGrid, uDADataTable, uDAScriptingProvider, uDACDSDataTable,
+  cxCurrencyEdit, cxImageComboBox, LibraryValesCupones_Intf, dxSkinsCore,
+  dxSkinsDefaultPainters, dxSkinscxPCPainter, uDAInterfaces,
+  cxLookAndFeelPainters, dxSkinBlack, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
+  dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
+  dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinSilver, dxSkinStardust, dxSkinValentine,
+  dxSkinXmas2008Blue, dxSkinSummer2008, cxLookAndFeels, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, cxNavigator, uDAFields, uROComponent, Vcl.Menus,
+  cxButtons, cxSpinEdit, Vcl.ExtCtrls, uDAMemDataTable;
+
+type
+  TfrmReciboCredito = class(TfrmCustomModule)
+    cxGroupBox2: TcxGroupBox;
+    Labe1: TLabel;
+    cxGroupBox5: TcxGroupBox;
+    gbCliente: TcxGroupBox;
+    cxGroupBox6: TcxGroupBox;
+    cxGroupBox1: TcxGroupBox;
+    dbgFacturas: TcxGrid;
+    dbtvFacturas: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    cdsRecibo: TDACDSDataTable;
+    dsRecibo: TDADataSource;
+    cdsReciboFactura: TDACDSDataTable;
+    dsReciboFactura: TDADataSource;
+    dbtvFacturasColumn1: TcxGridDBColumn;
+    dbtvFacturasColumn2: TcxGridDBColumn;
+    cdsBancos: TDACDSDataTable;
+    dsBancos: TDADataSource;
+    edtFolio: TcxCurrencyEdit;
+    cdsCliente: TDACDSDataTable;
+    dsCliente: TDADataSource;
+    cdsMovimientos: TDACDSDataTable;
+    dsMovimientos: TDADataSource;
+    cdsTipoMovimiento: TDACDSDataTable;
+    dsTipoMovimiento: TDADataSource;
+    cxGroupBox4: TcxGroupBox;
+    Label1: TLabel;
+    Label10: TLabel;
+    Label12: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label18: TLabel;
+    dtpFecha: TcxDBDateEdit;
+    cxDBDateEdit2: TcxDBDateEdit;
+    dbeCheque: TcxDBTextEdit;
+    cxDBTextEdit2: TcxDBTextEdit;
+    dbeImporte: TcxDBCurrencyEdit;
+    cxDBLookupComboBox1: TcxDBLookupComboBox;
+    Splitter1: TSplitter;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    edtCliente: TcxCurrencyEdit;
+    Label2: TLabel;
+    Label13: TLabel;
+    edtNombre: TcxTextEdit;
+    edtEjercicio: TcxSpinEdit;
+    Label6: TLabel;
+    Label7: TLabel;
+    cbPeriodoIni: TcxImageComboBox;
+    cbPeriodoFin: TcxImageComboBox;
+    Label8: TLabel;
+    BtnConsultarSaldo: TcxButton;
+    Label4: TLabel;
+    cxDBTextEdit3: TcxDBTextEdit;
+    Label3: TLabel;
+    cxDBTextEdit1: TcxDBTextEdit;
+    Label5: TLabel;
+    cxDBTextEdit4: TcxDBTextEdit;
+    Label9: TLabel;
+    cxDBTextEdit5: TcxDBTextEdit;
+    cxDBTextEdit7: TcxDBTextEdit;
+    Label11: TLabel;
+    BtnImprimir: TcxButton;
+    cxGrid2: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGrid1DBTableView1CargoAbonoID: TcxGridDBColumn;
+    cxGrid1DBTableView1FechaMovimiento: TcxGridDBColumn;
+    cxGrid1DBTableView1Referencia: TcxGridDBColumn;
+    cxGrid1DBTableView1Cargo: TcxGridDBColumn;
+    cxGrid1DBTableView1Abono: TcxGridDBColumn;
+    cxGrid1DBTableView1Column1: TcxGridDBColumn;
+    cxGridLevel2: TcxGridLevel;
+    cdsSaldo: TDAMemDataTable;
+    dsSaldo: TDADataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure edtClienteEnter(Sender: TObject);
+    procedure edtClienteExit(Sender: TObject);
+    procedure cdsReciboFacturaNewRecord(DataTable: TDADataTable);
+    procedure cdsReciboAfterPost(DataTable: TDADataTable);
+    procedure cdsReciboBeforePost(DataTable: TDADataTable);
+    procedure cdsReciboNewRecord(DataTable: TDADataTable);
+    procedure edtClienteKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure BtnConsultarSaldoClick(Sender: TObject);
+  private
+    { Private declarations }
+    Documentos: TDocumentosConSaldoArray;
+    procedure BuscarCliente;
+    function  DocumentosConSaldo(MovimientoID: Integer): TDocumentosConSaldo;
+    function  ValidaReciboFacturas : Boolean;
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    procedure ActionBuscar(Action: TBasicAction);
+    procedure ActionImprimir(Action: TBasicAction);
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+  protected
+    procedure RegisterActions; override;
+  end;
+
+var
+  frmReciboCredito: TfrmReciboCredito;
+  ImprimeRec : Integer;
+
+implementation
+
+uses Modules, uDM, dmActions, ufrmBuscarCliente,
+   UtileriasComun, ufrmBuscar;
+
+{$R *.dfm}
+
+{ TfrmReciboCredito }
+
+procedure TfrmReciboCredito.ActionBuscar(Action: TBasicAction);
+begin
+   BuscarCliente;
+end;
+
+procedure TfrmReciboCredito.ActionCancelar(Action: TBasicAction);
+begin
+  if cdsRecibo.State in dsEditModes then
+  begin
+    edtFolio.Text:='0';
+    edtCliente.Text:='0';
+    edtNombre.Text:= '';
+    cdsRecibo.Cancel;
+
+    cdsRecibo.Close;
+    cdsRecibo.Open;
+
+    cdsReciboFactura.Close;
+    cdsReciboFactura.Open;
+  end;
+end;
+
+procedure TfrmReciboCredito.ActionGuardar(Action: TBasicAction);
+begin
+  dbeCheque.SetFocus;
+  if not ValidaReciboFacturas then
+    Exit;
+
+  try
+    Screen.Cursor:=crHourGlass;
+    if (not DM.FechaValida(cdsRecibo.FieldByName('FechaMovimiento').AsDateTime)) then
+    begin
+      if not DM.PermiteFechaRecibos then
+      begin
+        dtpFecha.SetFocus;
+        MessageDlg('Fecha fuera de Ejercicio/Periodo.', mtError, [mbOK], 0);
+        Exit;
+      end;
+    end;
+    if cdsRecibo.State in dsEditModes then
+    begin
+      cdsRecibo.FieldByName('Ejercicio').AsString:=FormatDateTime('yyyy', cdsRecibo.FieldByName('FechaMovimiento').AsDateTime);
+      cdsRecibo.FieldByName('Periodo').AsString:=FormatDateTime('m', cdsRecibo.FieldByName('FechaMovimiento').AsDateTime);
+      cdsRecibo.FieldByName('UsuarioID').AsInteger:=DM.Seguridad.idEmpleado;
+      cdsRecibo.FieldByName('MovimientoID').AsInteger:=DM.Servidor.Folio('MovimientoID', '');
+      cdsRecibo.FieldByName('FechaCaptura').AsDateTime:=Now;
+      cdsRecibo.Post;
+
+      cdsReciboFactura.First;
+      while not cdsReciboFactura.EOF do
+      begin
+        cdsReciboFactura.Edit;
+        cdsReciboFactura.FieldByName('Fecha').AsDateTime:=cdsRecibo.FieldByName('FechaMovimiento').AsDateTime;
+        cdsReciboFactura.FieldByName('ReciboID').AsInteger:=cdsRecibo.FieldByName('ReciboID').AsInteger;
+        cdsReciboFactura.FieldByName('BancoID').AsInteger:=cdsRecibo.FieldByName('BancoID').AsInteger;
+        ImprimeRec:= cdsRecibo.FieldByName('ReciboID').AsInteger;
+        cdsReciboFactura.Post;
+        cdsReciboFactura.Next
+      end;    // while}
+
+      cdsReciboFactura.ApplyUpdates();
+      if Documentos <> nil then
+        FreeAndNil(Documentos);
+    end;
+  finally
+    Screen.Cursor:=crDefault;
+    cdsRecibo.Close;
+    cdsRecibo.Open;
+    cdsReciboFactura.Close;
+    cdsReciboFactura.Open;
+
+    edtCliente.Value:=0;
+  end;
+end;
+
+procedure TfrmReciboCredito.ActionImprimir(Action: TBasicAction);
+var
+  //Aux: TReporteF;
+  Aux: TReporte;
+begin
+  Aux:=DM.Servidor.BuscarReporte('REPORTE DE RECIBO');
+  Try
+     DM.Parametros.Seleccion:= ImprimeRec;
+     DM.Imprimir(Aux.SQL1, Aux.SQL2, Aux.Template, 'IMPRIMIENDO...', Aux.CampoJoin);
+  Finally
+     Aux.Free;
+  end;
+end;
+
+procedure TfrmReciboCredito.ActionNuevo(Action: TBasicAction);
+begin
+    cdsRecibo.Append;
+    cdsRecibo.FieldByName('FechaMovimiento').AsDateTime:=Trunc(DM.Servidor.Fecha);
+
+    cdsBancos.Close;
+    cdsBancos.Open;
+
+    cdsTipoMovimiento.Close;
+    cdsTipoMovimiento.Open;
+
+    cdsReciboFactura.Close;
+    cdsReciboFactura.Open;
+
+    edtFolio.Text:='';
+    gbCliente.Enabled:=True;
+    edtCliente.Enabled:=True;
+    edtCliente.SetFocus;
+end;
+
+procedure TfrmReciboCredito.BtnConsultarSaldoClick(Sender: TObject);
+begin
+  inherited;
+   try
+    Screen.Cursor:=crHourGlass;
+    cdsSaldo.Close;
+    cdsSaldo.ParamByName('Ejercicio').AsInteger:=Trunc(edtEjercicio.Value);
+    cdsSaldo.ParamByName('ClienteIni').AsInteger:=edtCliente.Value;
+    cdsSaldo.ParamByName('ClienteFin').AsInteger:=edtCliente.Value;
+    cdsSaldo.ParamByName('Ini').AsInteger:= cbPeriodoIni.EditValue;
+    cdsSaldo.ParamByName('Fin').AsInteger:= cbPeriodoFin.EditValue;
+    cdsSaldo.ParamByName('GrupoFacturarID').AsInteger:=0;
+    cdsSaldo.ParamByName('FormaCompraID').AsInteger:=0;
+    cdsSaldo.ParamByName('Grupo').AsString:='';
+    cdsSaldo.Open;
+  finally
+    Screen.Cursor:=crDefault;
+ end;
+end;
+
+procedure TfrmReciboCredito.BuscarCliente;
+var
+   Datos : TDatosBusqueda;
+begin
+   Datos:= PantallaBusqueda(TfrmBuscarCliente,'1,2,3');
+   if Datos.OK then
+   begin
+     if Datos.Estatus <> 'A' then
+     begin
+        MessageDlg('Cliente no esta Activo', mtError, [mbOK], 0);
+        Exit;
+     end;
+     cdsRecibo.FieldByName('ClienteID').AsInteger:=Datos.Clave;
+     edtCliente.Text :=inttostr(Datos.Clave);
+     edtNombre.Text := Datos.Nombre;
+   end;
+end;
+
+procedure TfrmReciboCredito.cdsReciboAfterPost(DataTable: TDADataTable);
+begin
+  inherited;
+    cdsMovimientos.open;
+    cdsMovimientos.Append;
+    cdsMovimientos.FieldByName('MovimientoID').AsInteger:=cdsRecibo.FieldByName('MovimientoID').AsInteger;
+    cdsMovimientos.FieldByName('FechaMovimiento').AsDateTime:=cdsRecibo.FieldByName('FechaMovimiento').AsDateTime;
+    cdsMovimientos.FieldByName('FechaVencimiento').AsDateTime:=cdsRecibo.FieldByName('FechaMovimiento').AsDateTime;
+    cdsMovimientos.FieldByName('Referencia').AsString:=cxDBTextEdit2.Text;
+    cdsMovimientos.FieldByName('Ejercicio').AsInteger:=cdsRecibo.FieldByName('Ejercicio').AsInteger;
+    cdsMovimientos.FieldByName('Periodo').AsInteger:=cdsRecibo.FieldByName('Periodo').AsInteger;
+    cdsMovimientos.FieldByName('CargoAbono').AsString:='A';
+    cdsMovimientos.FieldByName('Cargo').AsFloat:=0;
+    cdsMovimientos.FieldByName('Abono').AsFloat:=cdsRecibo.FieldByName('Importe').AsFloat;
+    cdsMovimientos.FieldByName('FechaRegistro').AsDateTime:=cdsRecibo.FieldByName('FechaCaptura').AsDateTime;
+    cdsMovimientos.FieldByName('Origen').AsString:='AUTO';
+    cdsMovimientos.FieldByName('ClienteID').AsInteger:=cdsRecibo.FieldByName('ClienteID').AsInteger;
+    cdsMovimientos.FieldByName('TipoMovimientoID').AsString:= 'REC';
+    cdsMovimientos.FieldByName('AfectaSaldos').AsBoolean:=True;
+    cdsMovimientos.FieldByName('UsuarioID').AsInteger:=DM.Seguridad.idEmpleado;
+    cdsMovimientos.Post;
+    edtFolio.EditValue:=cdsRecibo.FieldByName('ReciboID').AsInteger;
+    cdsMovimientos.ApplyUpdates();
+    cdsMovimientos.Close;
+    cdsRecibo.ApplyUpdates();
+end;
+
+procedure TfrmReciboCredito.cdsReciboBeforePost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsRecibo.FieldByName('ReciboID').AsInteger:=DM.Servidor.Folio('ReciboID','');
+  cdsRecibo.FieldByName('Folio').AsInteger:=cdsRecibo.FieldByName('ReciboID').AsInteger;
+
+  edtFolio.Text := inttostr(cdsRecibo.FieldByName('ReciboID').AsInteger);
+end;
+
+procedure TfrmReciboCredito.cdsReciboFacturaNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsReciboFactura.FieldByName('ClienteID').AsInteger:=cdsRecibo.FieldByName('ClienteID').AsInteger;
+  cdsReciboFactura.FieldByName('Referencia').AsString:=cdsRecibo.FieldByName('Referencia').AsString;
+  cdsReciboFactura.FieldByName('SaldoDocumentoID').AsInteger:= DM.Servidor.Folio('SaldoDocID','');
+  cdsReciboFactura.FieldByName('FechaVencimiento').AsDateTime:= DocumentosConSaldo(TcxImageComboBoxProperties(dbtvFacturasColumn1.Properties).Items.Items[0].Value).Vencimiento;
+  cdsReciboFactura.FieldByName('Fecha').AsDateTime:=Now;
+  cdsReciboFactura.FieldByName('MovimientoID').AsInteger:=DocumentosConSaldo(TcxImageComboBoxProperties(dbtvFacturasColumn1.Properties).Items.Items[0].Value).MovimientoID;
+  cdsReciboFactura.FieldByName('Cargo').AsInteger:=0;
+end;
+
+procedure TfrmReciboCredito.cdsReciboNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsRecibo.FieldByName('EstacionID').AsInteger:=DM.EstacionID;
+  cdsRecibo.FieldByName('Referencia').AsString:='.';
+  cdsRecibo.FieldByName('Cheque').AsString:='.';
+  cdsRecibo.FieldByName('FechaMovimiento').AsDateTime:=Trunc(DM.Servidor.Fecha);
+  cdsRecibo.FieldByName('FechaAplicacion').AsDateTime:=Trunc(DM.Servidor.Fecha);
+end;
+
+procedure TfrmReciboCredito.edtClienteEnter(Sender: TObject);
+begin
+  inherited;
+  UpdateActionsState;
+end;
+
+procedure TfrmReciboCredito.edtClienteExit(Sender: TObject);
+var
+  I: Integer;
+begin
+  inherited;
+  cdsCliente.Close;
+  if edtCliente.Text <> '' then
+  begin
+    cdsCliente.ParamByName('Cliente').AsInteger := strToInt(edtCliente.Text);
+    cdsCliente.Open;
+    edtCliente.Enabled:=False;
+  end
+  else
+    Exit;
+
+  if not (cdsCliente.EOF) then
+  begin
+     if (cdsCliente.FieldByName('FormaCompraID').AsInteger <> 1) then
+     begin
+       MessageDlg('Cliente no es de Credito', mtError, [mbOK], 0);
+       ActionCancelar(nil);
+       Exit;
+     end;
+     if (cdsCliente.FieldByName('Estatus').AsString <> 'A') then
+     begin
+       MessageDlg('Cliente no esta Activo', mtError, [mbOK], 0);
+       Exit;
+     end;
+     cdsRecibo.FieldByName('ClienteID').AsInteger:= cdsCliente.FieldByName('ClienteID').AsInteger;
+     edtCliente.Text := cdsCliente.FieldByName('ClienteID').AsString;
+     edtNombre.Text:= cdsCliente.FieldByName('Nombre').AsString;
+
+     cdsRecibo.FieldByName('ClienteID').AsInteger:=cdsCliente.FieldByName('ClienteID').AsInteger;
+     cdsRecibo.FieldByName('CuentaContableCliente').AsString:=cdsCliente.FieldByName('CuentaContable').AsString;
+
+     Documentos:=DM.Servidor.DocumentosConSaldo(edtCliente.EditValue);
+     TcxImageComboBoxProperties(dbtvFacturasColumn1.Properties).Items.Clear;
+     if Documentos <> nil then
+     begin
+        for I := 0 to Documentos.Count - 1 do    // Iterate
+          DM.AgregarOpcionCombo(TcxImageComboBoxProperties(dbtvFacturasColumn1.Properties).Items,
+                                Documentos[I].Referencia,
+                                Documentos[I].MovimientoID);
+     end;
+  end else MessageDlg('El Cliente no existe', mtError, [mbOK], 0);
+
+  UpdateActionsState;
+end;
+
+procedure TfrmReciboCredito.edtClienteKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    BuscarCliente;
+end;
+
+function TfrmReciboCredito.DocumentosConSaldo(
+  MovimientoID: Integer): TDocumentosConSaldo;
+var
+  I: Integer;
+begin
+  Result:=nil;
+  for I := 0 to Documentos.Count - 1 do    // Iterate
+  begin
+    if Documentos[I].MovimientoID = MovimientoID then
+    begin
+      Result:=Documentos[I];
+      Exit;
+    end;
+  end;
+
+end;
+
+procedure TfrmReciboCredito.FormCreate(Sender: TObject);
+begin
+  inherited;
+  cdsRecibo.Close;
+  cdsRecibo.Open;
+  ImprimeRec:= 0;
+  dtpFecha.Enabled:=DM.ModificaFechaRecibo;
+end;
+
+procedure TfrmReciboCredito.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actCancelar, ActionCancelar);
+  RegisterAction(AppActions.actBuscar, ActionBuscar);
+  RegisterAction(AppActions.actImprimir, ActionImprimir);
+end;
+
+procedure TfrmReciboCredito.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actNuevo.Enabled:=cdsRecibo.State = dsBrowse;
+  dmAppActions.actGuardar.Enabled:=(cdsRecibo.State in dsEditModes);
+  dmAppActions.actCancelar.Enabled:=cdsRecibo.State in dsEditModes;
+  dmAppActions.actEliminar.Enabled:=(cdsRecibo.State = dsBrowse) and (cdsRecibo.RecordCount > 0);
+  dmAppActions.actBuscar.Enabled:=(edtCliente.Focused) and (cdsRecibo.State in dsEditModes);
+
+
+  cxGroupBox1.Enabled := not (dmAppActions.actNuevo.Enabled);
+  cxGroupBox2.Enabled := not (dmAppActions.actNuevo.Enabled);
+  gbCliente.Enabled := not (dmAppActions.actNuevo.Enabled);
+  cxGroupBox4.Enabled := not (dmAppActions.actNuevo.Enabled);
+  if dmAppActions.actNuevo.Enabled then
+    edtNombre.Text:='';
+end;
+
+function TfrmReciboCredito.ValidaReciboFacturas: Boolean;
+var
+  I:Integer;
+begin
+  Result:= False;
+
+  try
+
+    if cdsReciboFactura.State in dsEditModes then
+    begin
+      MessageDlg('Existen cambios pendientes en las facturas.', mtError, [mbOK], 0);
+      Exit;
+    end;
+
+    if (Abs(dbtvFacturas.DataController.Summary.FooterSummaryValues[0] - cdsRecibo.FieldByName('Importe').AsFloat) > 0.1) then
+    begin
+        MessageDlg('El Importe del recibo y la suma de las facturas no coinciden.', mtError, [mbOK], 0);
+        Exit;
+    end;
+
+    for I := 0 to Documentos.Count - 1 do    // Iterate
+        Documentos[I].EnRecibo:=0;
+
+    cdsReciboFactura.First;
+    while not cdsReciboFactura.EOF do
+    begin
+      I:=cdsReciboFactura.FieldByName('MovimientoID').AsInteger;
+      DocumentosConSaldo(I).EnRecibo:=DocumentosConSaldo(I).EnRecibo + cdsReciboFactura.FieldByName('Abono').AsFloat;
+      if (DocumentosConSaldo(I).EnRecibo - DocumentosConSaldo(I).Saldo) > 0.1 then
+      begin
+        MessageDlg('Existe una factura con sobrepago.', mtError, [mbOK], 0);
+        Exit;
+      end;
+      cdsReciboFactura.Next;
+    end;    // while
+    Result:=True;
+  except
+  end;
+
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Recibos Crédito', TfrmReciboCredito);
+
+end.

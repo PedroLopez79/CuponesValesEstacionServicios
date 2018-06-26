@@ -1,0 +1,80 @@
+unit ufrmPantallaReportes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, ComCtrls, uDAScriptingProvider, uDADataTable,
+  uDACDSDataTable, cxControls, cxContainer, cxListView, ImgList, dxSkinsCore,
+  dxSkinsDefaultPainters, dxSkinsdxRibbonPainter, uDAMemDataTable,
+  dxSkinBlack, dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinSilver, dxSkinStardust, dxSkinValentine, dxSkinXmas2008Blue, cxGraphics,
+  cxLookAndFeels, cxLookAndFeelPainters, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinFoggy, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSpringTime,
+  dxSkinSummer2008, dxSkinMetropolis, dxSkinMetropolisDark,
+  dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray, dxSkinOffice2013White,
+  uROComponent, cxEdit;
+
+type
+  TfrmPantallaReportes = class(TfrmCustomModule)
+    cdsReportes: TDAMemDataTable;
+    ImageList1: TImageList;
+    lvReportes: TcxListView;
+    procedure lvReportesDblClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure DespliegaReportes(Cual:Integer; Empleado:String);
+  end;
+
+var
+  frmPantallaReportes: TfrmPantallaReportes;
+
+implementation
+
+uses Modules, uDM, uDAInterfaces, ufrmParametros;
+
+{$R *.dfm}
+
+{ TfrmConsumos }
+
+procedure TfrmPantallaReportes.DespliegaReportes(Cual: Integer; Empleado:String);
+begin
+  cdsReportes.ParamByName('Tipo').AsInteger:=Cual;
+  cdsReportes.ParamByName('USUARIOS').AsString:=Empleado;
+  cdsReportes.Open;
+  while not cdsReportes.EOF do
+  begin
+    with lvReportes.Items.Add do
+    begin
+      Caption:=cdsReportes.FieldByName('Nombre').AsString;
+      StateIndex:=cdsReportes.FieldByName('ReporteID').AsInteger;
+      ImageIndex:=0;
+    end;
+    cdsReportes.Next;
+  end;    // while
+end;
+
+procedure TfrmPantallaReportes.lvReportesDblClick(Sender: TObject);
+begin
+  inherited;
+  if lvReportes.Selected <> nil then
+  begin
+    cdsReportes.Locate('ReporteID', lvReportes.Selected.StateIndex, []);
+    DM.Parametros:=ObtenParametros(cdsReportes.FieldByName('Parametros').AsString, cdsReportes.FieldByName('Nombre').AsString);
+    if DM.Parametros = nil then
+      Exit;
+
+    DM.Imprimir(cdsReportes.FieldByName('SQL1').AsString,
+                cdsReportes.FieldByName('SQL2').AsString,
+                cdsReportes.FieldByName('Template').AsString,
+                lvReportes.Selected.Caption,
+                cdsReportes.FieldByName('CampoJoin').AsString);
+  end;
+end;
+
+end.

@@ -1,0 +1,314 @@
+unit Controlador;
+
+interface
+uses
+  Protocolo, ProtocoloBennett, CistemCore, PuertoSerieBennett,
+  LibraryValesCupones_Intf fServerDataModule, Dialogs, Forms;
+
+Type
+  TProcesoPoleo = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoCambiaPrecios = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoObtenerVentas = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoPresetVolumen = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoPresetImporte = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoPresetTanqueLLeno = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoDetenerBomba = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoContinuarBomba = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoFlujoAlto = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoFlujoBajo = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoCortaBomba = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoIniciaCorte = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoReiniciaAplicacion = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TProcesoLimiteMaximo = class(TProceso)
+  public
+    procedure Ejecutar; override;
+  end;
+
+  TControlador = class
+  private
+  public
+    Protocolo: TProtocolo;
+    Procesos: TListaProcesos;
+    constructor Create;
+    destructor Destroy; override;
+    procedure IniciarPoleo;
+  end;
+
+var
+  Control: TControlador;
+
+implementation
+
+{ TProcesoPoleo }
+
+procedure TProcesoPoleo.Ejecutar;
+begin
+  inherited;
+  Terminado:=False;
+  Control.Protocolo.Poleo;
+  Control.Protocolo.Preset(True);
+  Terminado:=True;
+end;
+
+{ TControlador }
+
+constructor TControlador.Create;
+begin
+  case Global.Fabricante of
+    fBennett: begin
+               Protocolo:=TProtocoloBennet.Create;
+               Puerto:=TPuertoSerieBennett.Create;
+               Puerto.Conectarse;
+             end;
+  else
+    begin
+      ShowMessage('El tipo de dispensario no es soportado en esta version.');
+      Application.Terminate;
+    end;
+  end;
+  Protocolo.PoleoActivo:=True;
+  Procesos:=TListaProcesos.Create(200);
+  Procesos.AgregarProceso(TProcesoPoleo);
+  Procesos.AgregarProceso(TProcesoCambiaPrecios);
+  Procesos.AgregarProceso(TProcesoObtenerVentas);
+  Procesos.AgregarProceso(TProcesoIniciaCorte);
+  Procesos.AgregarProceso(TProcesoLimiteMaximo);
+end;
+
+destructor TControlador.Destroy;
+begin
+
+  inherited;
+end;
+
+procedure TControlador.IniciarPoleo;
+begin
+  Protocolo.PoleoActivo:=True;
+  Protocolo.LeerProtecciones;
+  Procesos.Inicia;
+end;
+
+{ TProcesoCambiaPrecios }
+
+procedure TProcesoCambiaPrecios.Ejecutar;
+var
+  I: Integer;
+begin
+  inherited;
+    Terminado:=False;
+  for I := 1 to 3 do
+    Control.Protocolo.ProcCambiaPrecios(I, 0);
+  Terminado:=True;
+end;
+
+{ TProcesoObtenerVentas }
+
+procedure TProcesoObtenerVentas.Ejecutar;
+var
+  I: Integer;
+begin
+  inherited;
+  Terminado:=False;
+  for I := 1 to Global.TotalBombas do
+    Control.Protocolo.DespliegaVenta(I);
+  Terminado:=True;
+end;
+
+{ TProcesoPresetVolumenProducto }
+
+procedure TProcesoPresetVolumen.Ejecutar;
+begin
+  inherited;
+  Terminado:=False;
+//  for I := 1 to 3 do
+//  begin
+    if Gasolina > 0 then
+      Control.Protocolo.PresetLitrosConProducto(Bomba, Gasolina, Cantidad)
+    else
+      Control.Protocolo.PresetLitrosSinProducto(Bomba, Gasolina, Cantidad);
+//  end;
+  Terminado:=True;
+end;
+
+{ TProcesoPresetImporte }
+
+procedure TProcesoPresetImporte.Ejecutar;
+begin
+  inherited;
+  Terminado:=False;
+  if Gasolina > 0 then
+    Control.Protocolo.PresetDineroConProducto(Bomba, Gasolina, Cantidad)
+  else
+    Control.Protocolo.PresetDineroSinProducto(Bomba, Gasolina, Cantidad);
+  Terminado:=True;
+end;
+
+{ TProcesoDetenerBomba }
+
+procedure TProcesoDetenerBomba.Ejecutar;
+var
+  I: Integer;
+begin
+  inherited;
+  Terminado:=False;
+  Global.Bombas[Bomba].VentaProceso.VentaAutorizada:=0;
+  for I := 1 to 3 do
+  begin
+    if (Global.Bombas[Bomba].Estado in [ebAuto, ebStop]) then
+      Control.Protocolo.DesAutorizaVenta(Bomba)
+    else
+      Control.Protocolo.DetieneDispensario(Bomba);
+  end;
+  Terminado:=True;
+end;
+
+{ TProcesoContinuarBomba }
+
+procedure TProcesoContinuarBomba.Ejecutar;
+begin
+  inherited;
+  Terminado:=False;
+  Control.Protocolo.ContinuaDispensario(Bomba);
+  Terminado:=True;
+end;
+
+{ TProcesoFlujoBajo }
+
+procedure TProcesoFlujoBajo.Ejecutar;
+var
+  I: Integer;
+begin
+  inherited;
+  Terminado:=False;
+  for I := 0 to 2 do
+    Control.Protocolo.ProcDwChPrices;
+  Terminado:=True;
+end;
+
+{ TProcesoFlujoAlto }
+
+procedure TProcesoFlujoAlto.Ejecutar;
+var
+  I: Integer;
+begin
+  inherited;
+  Terminado:=False;
+  for I := 0 to 2 do
+    Control.Protocolo.ProcUpChPrices;
+  Terminado:=True;
+end;
+
+{ TProcesoCortaBomba }
+
+procedure TProcesoCortaBomba.Ejecutar;
+var
+  I: Integer;
+begin
+  inherited;
+  Terminado:=False;
+  if Bomba > 0 then
+    Control.Protocolo.CorteBomba(Bomba)
+  else
+  begin
+    for I := 1 to Global.TotalBombas do
+      Control.Protocolo.CorteBomba(I);
+  end;
+  Terminado:=True;
+end;
+
+{ TProcesoIniciaCorte }
+
+procedure TProcesoIniciaCorte.Ejecutar;
+begin
+  inherited;
+  Terminado:=False;
+  Control.Protocolo.IniciaCorteBombas;
+  Terminado:=True;
+end;
+
+{ TProcesoPresetTanqueLLeno }
+
+procedure TProcesoPresetTanqueLLeno.Ejecutar;
+begin
+  inherited;
+  Terminado:=False;
+  Global.Bombas[Bomba].Clasificacion:=Control.Protocolo.Verifica(Bomba, 1, 5000);
+  Control.Protocolo.AutoLLenar(Bomba);
+  Terminado:=True;
+end;
+
+{ TProcesoReiniciaAplicacion }
+
+procedure TProcesoReiniciaAplicacion.Ejecutar;
+begin
+  inherited;
+  try
+    Control.Protocolo.ReiniciaAplicacion;
+  except
+  end;
+end;
+
+{ TProcesoLimiteMaximo }
+
+procedure TProcesoLimiteMaximo.Ejecutar;
+var
+  I: Integer;
+begin
+  inherited;
+  for I := 1 to Global.TotalBombas do
+    Control.Protocolo.FijaLimiteLitros(I, 9999);
+end;
+
+end.

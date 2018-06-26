@@ -1,0 +1,347 @@
+unit ufrmReciboDebito;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, StdCtrls, cxControls, cxContainer, cxEdit, cxGroupBox,
+  cxGraphics, cxDBEdit, cxTextEdit, cxMaskEdit, cxDropDownEdit, cxImageComboBox,
+  cxButtonEdit, cxCalendar, DB, uDADataTable, uDAScriptingProvider,
+  uDACDSDataTable, cxCurrencyEdit, dxSkinsCore, dxSkinsDefaultPainters,
+  uDAInterfaces, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox, LibraryFlotillas_Intf,
+  cxLookAndFeelPainters, dxSkinBlack, dxSkinBlue, dxSkinCaramel, dxSkinCoffee,
+  dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky,
+  dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black,
+  dxSkinOffice2007Blue, dxSkinOffice2007Green, dxSkinOffice2007Pink,
+  dxSkinOffice2007Silver, dxSkinSilver, dxSkinStardust, dxSkinSummer2008,
+  dxSkinValentine, dxSkinXmas2008Blue, Menus, cxButtons, cxLookAndFeels,
+  dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSharp, dxSkinSpringTime;
+
+type
+  TfrmReciboDebito = class(TfrmCustomModule)
+    Folio: TLabel;
+    cdsMovimientos: TDACDSDataTable;
+    dsMovimientos: TDADataSource;
+    cxGroupBox1: TcxGroupBox;
+    cdsRecibo: TDACDSDataTable;
+    dsRecibo: TDADataSource;
+    cdsCliente: TDACDSDataTable;
+    dsCliente: TDADataSource;
+    cxGroupBox2: TcxGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    edtNombre: TcxTextEdit;
+    edtRFC: TcxTextEdit;
+    edtCuenta: TcxTextEdit;
+    edtCliente: TcxCurrencyEdit;
+    cxGroupBox3: TcxGroupBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    cxDBTextEdit5: TcxDBTextEdit;
+    cxDBTextEdit6: TcxDBTextEdit;
+    cxDBCurrencyEdit1: TcxDBCurrencyEdit;
+    dtpFecha: TcxDateEdit;
+    Label9: TLabel;
+    cxDBLookupComboBox1: TcxDBLookupComboBox;
+    cdsBancos: TDACDSDataTable;
+    dsBancos: TDADataSource;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxButton1: TcxButton;
+    lblProducto: TLabel;
+    cbProducto: TcxLookupComboBox;
+    Label10: TLabel;
+    cdEstacion: TcxLookupComboBox;
+    cdsProductos: TDACDSDataTable;
+    dsProductos: TDADataSource;
+    cdsEstacion: TDACDSDataTable;
+    dsEstacion: TDADataSource;
+    procedure edtClienteEnter(Sender: TObject);
+    procedure edtClienteExit(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure cdsReciboAfterPost(DataTable: TDADataTable);
+    procedure cdsReciboNewRecord(DataTable: TDADataTable);
+    procedure edtClienteKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cxButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+    MiFactura: Integer;
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    procedure ActionBuscar(Action: TBasicAction);
+    procedure ActionImprimir(Action: TBasicAction);
+    procedure ActionFacturar(Action: TBasicAction);
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+  protected
+    procedure RegisterActions; override;
+  end;
+
+var
+  frmReciboDebito: TfrmReciboDebito;
+  ImprimeRec : Integer;
+
+implementation
+
+uses Modules, uDM, dmActions, ufrmBuscarCliente,
+   UtileriasComun, ufrmBuscar;
+
+{$R *.dfm}
+
+{ TfrmReciboDebito }
+
+procedure TfrmReciboDebito.ActionBuscar(Action: TBasicAction);
+var
+  Datos : TDatosBusqueda;
+begin
+  Datos:= PantallaBusqueda(TfrmBuscarCliente,'2');
+  if Datos.OK then
+  begin
+    if Datos.Estatus <> 'A' then
+    begin
+      MessageDlg('Cliente no esta Activo', mtError, [mbOK], 0);
+      Exit;
+    end;
+    cdsRecibo.FieldByName('ClienteID').AsInteger:=Datos.Clave;
+    edtCliente.Text :=inttostr(Datos.Clave);
+    edtNombre.Text := Datos.Nombre;
+    edtRFC.Text := Datos.RFC;
+    edtCuenta.Text := Datos.Cuenta;
+  end;
+end;
+
+procedure TfrmReciboDebito.ActionCancelar(Action: TBasicAction);
+begin
+  if cdsRecibo.State in dsEditModes then
+  begin
+    edtNombre.Text:='';
+    edtRFC.Text:='';
+    edtCuenta.Text:='';
+    edtCliente.Text:='0';
+    cdsRecibo.Cancel;
+  end;
+end;
+
+procedure TfrmReciboDebito.ActionFacturar(Action: TBasicAction);
+var
+  Aux: TReporteF;
+begin
+  MiFactura:=DM.Servidor.FacturaRecibo(cdsRecibo.FieldByName('ClienteID').AsInteger,
+                                       cdsRecibo.FieldByName('Importe').AsFloat,
+                                       cdEstacion.EditValue,
+                                       DM.Seguridad.idEmpleado,
+                                       DM.SerieFactura,
+                                       cbProducto.EditValue);
+
+  if MiFactura > 0 then
+  begin
+    Aux:=DM.Servidor.BuscarReporte(DM.FacturaReciboDebito);
+    try
+      DM.Parametros.Serie:= DM.SerieFactura;
+      DM.Parametros.FacturaIni:=MiFactura;
+      DM.Parametros.FacturaFin:=MiFactura;
+      DM.Imprimir(Aux.SQL1, Aux.SQL2, Aux.Template, 'IMPRIMIENDO...', Aux.CampoJoin);
+     finally
+      MiFactura:=0;
+      Aux.Free;
+    end;
+  end;
+end;
+
+procedure TfrmReciboDebito.ActionGuardar(Action: TBasicAction);
+begin
+   try
+    Screen.Cursor:=crHourGlass;
+    //if not DM.FechaValida(dtpFecha.Date) then
+    //begin
+      if not DM.PermiteFechaRecibos then
+      begin
+        dtpFecha.SetFocus;
+        MessageDlg('Fecha fuera de Ejercicio/Periodo.', mtError, [mbOK], 0);
+        Exit;
+      end;
+    //end;
+
+    if cdsRecibo.State = dsInsert then
+    begin
+      cdsRecibo.FieldByName('ReciboID').AsInteger:=DM.Servidor.Folio('ReciboID','');;
+      cdsRecibo.FieldByName('Folio').AsInteger:=cdsRecibo.FieldByName('ReciboID').AsInteger;
+      cdsRecibo.FieldByName('MovimientoID').AsInteger:=DM.Servidor.Folio('MovimientoID','');
+      cdsRecibo.FieldByName('FechaMovimiento').AsDateTime:= Trunc(dtpFecha.Date);
+      cdsRecibo.FieldByName('FechaAplicacion').AsDateTime:= Trunc(dtpFecha.Date);
+      cdsRecibo.FieldByName('Ejercicio').AsString:=FormatDateTime('yyyy', cdsRecibo.FieldByName('FechaMovimiento').AsDateTime);
+      cdsRecibo.FieldByName('Periodo').AsString:=FormatDateTime('m', cdsRecibo.FieldByName('FechaMovimiento').AsDateTime);
+      cdsRecibo.FieldByName('UsuarioID').AsInteger:=DM.Seguridad.idEmpleado;
+      cdsRecibo.FieldByName('FechaCaptura').AsDateTime:=Now;
+    end;
+
+      cdsMovimientos.Close;
+      cdsMovimientos.Open;
+
+      ImprimeRec:= cdsRecibo.FieldByName('ReciboID').AsInteger;
+      cdsRecibo.Post;
+      MiFactura:=1;
+
+  finally
+    Screen.Cursor:=crDefault;
+  end;
+end;
+
+procedure TfrmReciboDebito.ActionImprimir(Action: TBasicAction);
+var
+  Aux: TReporteF;
+begin
+  Aux:=DM.Servidor.BuscarReporte('REPORTE DE RECIBO');
+  Try
+     DM.Parametros.Seleccion:= ImprimeRec;
+     DM.Imprimir(Aux.SQL1, Aux.SQL2, Aux.Template, 'IMPRIMIENDO...', Aux.CampoJoin);
+  Finally
+     Aux.Free;
+  end;
+end;
+
+procedure TfrmReciboDebito.ActionNuevo(Action: TBasicAction);
+begin
+  MiFactura:=0;
+  edtCliente.Enabled:=True;
+  cdsRecibo.Append;
+  if cdsRecibo.State = dsInsert then
+  begin
+     dtpFecha.Date:= Trunc(DM.Servidor.Fecha);
+     cxDBCurrencyEdit1.Value:= 0;
+  end;
+end;
+
+procedure TfrmReciboDebito.cdsReciboAfterPost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsMovimientos.Append;
+  cdsMovimientos.FieldByName('MovimientoID').AsInteger:=cdsRecibo.FieldByName('MovimientoID').AsInteger;
+  cdsMovimientos.FieldByName('FechaMovimiento').AsDateTime:=cdsRecibo.FieldByName('FechaMovimiento').AsDateTime;
+  cdsMovimientos.FieldByName('FechaVencimiento').AsDateTime:=cdsRecibo.FieldByName('FechaMovimiento').AsDateTime;
+  cdsMovimientos.FieldByName('Referencia').AsString:=cdsRecibo.FieldByName('Referencia').AsString;
+  cdsMovimientos.FieldByName('Ejercicio').AsInteger:=cdsRecibo.FieldByName('Ejercicio').AsInteger;
+  cdsMovimientos.FieldByName('Periodo').AsInteger:=cdsRecibo.FieldByName('Periodo').AsInteger;
+  cdsMovimientos.FieldByName('CargoAbono').AsString:='A';
+  cdsMovimientos.FieldByName('Cargo').AsFloat:=0;
+  cdsMovimientos.FieldByName('Abono').AsFloat:=cdsRecibo.FieldByName('Importe').AsFloat;
+  cdsMovimientos.FieldByName('FechaRegistro').AsDateTime:=cdsRecibo.FieldByName('FechaCaptura').AsDateTime;
+  cdsMovimientos.FieldByName('Origen').AsString:='AUTO';
+  cdsMovimientos.FieldByName('ClienteID').AsInteger:=cdsRecibo.FieldByName('ClienteID').AsInteger;
+  cdsMovimientos.FieldByName('TipoMovimientoID').AsString:='REC';
+  cdsMovimientos.FieldByName('UsuarioID').AsInteger:= DM.Seguridad.idEmpleado;
+  cdsMovimientos.FieldByName('AfectaSaldos').AsBoolean:=True;
+  cdsMovimientos.Post;
+  cdsMovimientos.ApplyUpdates();
+  cdsRecibo.ApplyUpdates();
+end;
+
+procedure TfrmReciboDebito.cdsReciboNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsRecibo.FieldByName('EstacionID').AsInteger:=DM.EstacionID;
+  cdsRecibo.FieldByName('FechaMovimiento').AsDateTime:=Trunc(DM.Servidor.Fecha);
+end;
+
+procedure TfrmReciboDebito.cxButton1Click(Sender: TObject);
+begin
+  inherited;
+  //DM.Servidor.Bancaria('', 'LLAVE', 0, DM.EstacionID, '', '', cdsRecibo.FieldByName('Importe').AsFloat, 1, 'BPD', 0, 1, DM.CajaID);
+end;
+
+procedure TfrmReciboDebito.edtClienteEnter(Sender: TObject);
+begin
+  inherited;
+  dmAppActions.actBuscar.Enabled:=((cdsRecibo.State=dsEdit) or (cdsRecibo.State=dsInsert));
+end;
+
+procedure TfrmReciboDebito.edtClienteExit(Sender: TObject);
+begin
+  inherited;
+  if edtCliente.Text <> '' then
+  begin
+    edtCliente.Enabled:=False;
+    cdsCliente.Close;
+    cdsCliente.ParamByName('Cliente').AsInteger := strToInt(edtCliente.Text);
+    cdsCliente.Open;
+    if (cdsCliente.RecordCount > 0) then
+    begin
+      if (cdsCliente.FieldByName('Estatus').AsString = 'A') then
+      begin
+        if cdsCliente.FieldByName('FormaCompraID').AsInteger = 2 then
+        begin
+          edtCliente.Text:=cdsCliente.FieldByName('ClienteID').AsString;
+          edtNombre.Text:=cdsCliente.FieldByName('Nombre').AsString;
+          edtRFC.Text:=cdsCliente.FieldByName('RFC').AsString;
+          edtCuenta.Text:=cdsCliente.FieldByName('CuentaContable').AsString;
+          cdsRecibo.FieldByName('ClienteID').AsInteger:=cdsCliente.FieldByName('ClienteID').AsInteger;
+        end
+        else
+          MessageDlg('El cliente no es de debito.', mtError, [mbOK], 0);
+      end
+      else
+        MessageDlg('El cliente no se encuentra activo.', mtError, [mbOK], 0);
+    end
+    else
+      MessageDlg('El cliente no existe.', mtError, [mbOK], 0);
+  end;
+end;
+
+procedure TfrmReciboDebito.edtClienteKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key=VK_F2 then
+    ActionBuscar(nil);
+end;
+
+procedure TfrmReciboDebito.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MiFactura:=0;
+  cdsRecibo.Close;
+  cdsRecibo.Open;
+  cdsProductos.Close;
+  cdsProductos.Open;
+  cdsEstacion.Close;
+  cdsEstacion.Open;
+  cdsBancos.Open;
+end;
+
+procedure TfrmReciboDebito.RegisterActions;
+begin
+  inherited;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actCancelar, ActionCancelar);
+  RegisterAction(AppActions.actBuscar, ActionBuscar);
+  RegisterAction(AppActions.actImprimir, ActionImprimir);
+  RegisterAction(AppActions.actFacturar, ActionFacturar);
+end;
+
+procedure TfrmReciboDebito.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actNuevo.Enabled:=cdsRecibo.State = dsBrowse;
+  dmAppActions.actGuardar.Enabled:=(cdsRecibo.State in dsEditModes);
+  dmAppActions.actCancelar.Enabled:=cdsRecibo.State in dsEditModes;
+  dmAppActions.actBuscar.Enabled:=(cdsRecibo.State in dsEditModes);
+  dmAppActions.actImprimir.Enabled:=(cdsRecibo.State = dsBrowse) and (cdsRecibo.RecordCount > 0);
+  dmAppActions.actFacturar.Enabled:=(cdsRecibo.State = dsBrowse) and (cdsRecibo.RecordCount > 0) and (MiFactura > 0);
+
+  cxGroupBox1.Enabled := not (dmAppActions.actNuevo.Enabled);
+  cxGroupBox2.Enabled := not (dmAppActions.actNuevo.Enabled);
+  cxGroupBox3.Enabled := not (dmAppActions.actNuevo.Enabled);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Recibos Débito', TfrmReciboDebito);
+
+end.

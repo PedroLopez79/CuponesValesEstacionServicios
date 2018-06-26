@@ -1,0 +1,66 @@
+unit ufrmConsultadeFacturas;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, dxSkinsCore, dxSkinsDefaultPainters,
+  dxSkinscxPCPainter, cxPC, cxControls, dxMasterView, cxContainer, cxEdit,
+  cxGroupBox, DB, uDADataTable, uDAScriptingProvider, uDACDSDataTable;
+
+type
+  TfrmConsultadeFacturas = class(TfrmCustomModule)
+    cxPageControl1: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    cxGroupBox1: TcxGroupBox;
+    cdsCliente: TDACDSDataTable;
+    dsCliente: TDADataSource;
+    cdsFactura: TDACDSDataTable;
+    dsFactura: TDADataSource;
+    MasterView: TdxMasterView;
+    Level1: TdxMasterViewLevel;
+    Level2: TdxMasterViewLevel;
+    Level1ClienteID: TdxMasterViewColumn;
+    Level1Nombre: TdxMasterViewColumn;
+    Level1Calle: TdxMasterViewColumn;
+    Level1Colonia: TdxMasterViewColumn;
+    Level1Ciudad: TdxMasterViewColumn;
+    Level1Telefono: TdxMasterViewColumn;
+    Level1CodigoPostal: TdxMasterViewColumn;
+    Level1RFC: TdxMasterViewColumn;
+    Level2FacturaID: TdxMasterViewColumn;
+    Level2Folio: TdxMasterViewColumn;
+    Level2Serie: TdxMasterViewColumn;
+    Level2Subtotal: TdxMasterViewColumn;
+    Level2Impuesto: TdxMasterViewColumn;
+    Level2Total: TdxMasterViewColumn;
+    Level2EstacionID: TdxMasterViewColumn;
+    Level2ClienteID: TdxMasterViewColumn;
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConsultadeFacturas: TfrmConsultadeFacturas;
+
+implementation
+
+uses Modules, uDM, dmActions,dmImagenes, UtileriasComun;
+
+{$R *.dfm}
+
+
+procedure TfrmConsultadeFacturas.FormCreate(Sender: TObject);
+begin
+  inherited;
+   cdsCliente.Open;
+   cdsFactura.Open;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Consulta de Facturas', TfrmConsultadeFacturas);
+
+end.

@@ -1,0 +1,254 @@
+unit ufrmBitacoraServiciosEst;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, CustomModule, Vcl.ExtCtrls, dxSkinsCore,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinscxPCPainter,
+  cxPCdxBarPopupMenu, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxPC, Vcl.StdCtrls, Vcl.DBCtrls, Data.DB, uDAFields,
+  uDADataTable, uROComponent, uDAScriptingProvider, uDAMemDataTable,
+  Vcl.ComCtrls, cxContainer, cxEdit, dxCore, cxDateUtils, cxTextEdit,
+  cxMaskEdit, cxDropDownEdit, cxCalendar, uROTypes;
+
+type
+  TfrmBitacoraServicioEst = class(TfrmCustomModule)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Panel5: TPanel;
+    Panel4: TPanel;
+    Image1: TImage;
+    Button1: TButton;
+    Button2: TButton;
+    cdsUsuario: TDAMemDataTable;
+    dsUsuario: TDADataSource;
+    Panel6: TPanel;
+    Label2: TLabel;
+    Label1: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    lblNumFolio: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    lblNoEstacion: TLabel;
+    Label7: TLabel;
+    lblNombre: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    lblDomicilio: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Memo1: TMemo;
+    Memo2: TMemo;
+    Memo4: TMemo;
+    cdsEstacion: TDAMemDataTable;
+    dsEstacion: TDADataSource;
+    cxDateEdit1: TcxDateEdit;
+    cxDateEdit2: TcxDateEdit;
+    cdsBitacoraServ: TDAMemDataTable;
+    dsBitacoraServ: TDADataSource;
+    Panel7: TPanel;
+    Label14: TLabel;
+    Button3: TButton;
+    Button4: TButton;
+    Label15: TLabel;
+    DBImage1: TDBImage;
+    procedure Image1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Image1MouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
+    procedure Image1MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Button1Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure cdsBitacoraServAfterPost(DataTable: TDADataTable);
+    procedure Button4Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ActionNuevo(Action: TBasicAction);
+  protected
+    procedure RegisterActions; override;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBitacoraServicioEst: TfrmBitacoraServicioEst;
+
+implementation
+
+uses Modules, ufrmPrincipal, uDM, dmActions, DateUtils;
+var
+  Bandera: Boolean;
+  GuardaFirmaDefault: Boolean;
+
+{$R *.dfm}
+
+procedure TfrmBitacoraServicioEst.ActionNuevo(Action: TBasicAction);
+begin
+  Panel3.Enabled:= True;
+  lblNumFolio.Caption:= formatdatetime('ddmmyyyy', cxDateEdit1.Date);
+
+  cdsBitacoraServ.Append;
+  Memo1.SetFocus;
+end;
+
+procedure TfrmBitacoraServicioEst.Button1Click(Sender: TObject);
+begin
+  inherited;
+  image1.Picture.Assign(nil);
+end;
+
+procedure TfrmBitacoraServicioEst.Button2Click(Sender: TObject);
+var
+  Jpg : TPicture;
+  S : TMemoryStream;
+  SD: TROBinaryMemoryStream;
+  resultado:String;
+begin
+  inherited;
+  Jpg := TPicture.Create;
+  S := TMemoryStream.Create;
+  SD:= TROBinaryMemoryStream.Create;
+
+  image1.Picture.Graphic.SaveToStream(S);
+  image1.Picture.Graphic.SaveToStream(SD);
+
+  if (GuardaFirmaDefault) then
+  begin
+     //Actualiza campo firmadefault del empleado
+     resultado:=DM.Servidor.ActualizaFirmaDefault(DM.EmpleadoID, SD);
+
+     if resultado <> 'OK' then
+        label15.Caption:= resultado;
+  end;
+
+  cdsBitacoraServ.FieldByName('BITACORAID').AsInteger:= DM.Folio('BITACORAID','');
+  cdsBitacoraServ.FieldByName('USUARIOID').AsInteger:= DM.EmpleadoID;
+  cdsBitacoraServ.FieldByName('FECHA').AsDateTime:= cxDateEdit1.Date;
+  cdsBitacoraServ.FieldByName('NOTA').AsString:= '';
+  cdsBitacoraServ.FieldByName('ACTIVIDAD').AsString:= Memo1.Lines.Text;
+  cdsBitacoraServ.FieldByName('FRECUENCIA').AsString:= Memo2.Lines.Text;
+  cdsBitacoraServ.FieldByName('OBSERVACIONES').AsString:= Memo4.Lines.Text;
+  cdsBitacoraServ.FieldByName('ESTACIONID').AsInteger:= DM.Estacion;
+  cdsBitacoraServ.FieldByName('FECHAHORA').AsDateTime:= cxDateEdit2.Date;
+  cdsBitacoraServ.FieldByName('FOLIO').AsString:= formatdatetime('ddmmyyyy', cxDateEdit1.Date);
+  cdsBitacoraServ.FieldByName('FIRMA').LoadFromStream(S);
+
+  cdsBitacoraServ.Post;
+end;
+
+procedure TfrmBitacoraServicioEst.Button3Click(Sender: TObject);
+var
+  stream: TMemoryStream;
+  bitmap: TBitmap;
+begin
+  inherited;
+  //bitmap:= TBitmap.Create;
+  //stream:= TMemoryStream.Create;
+  //DBImage1.Picture.Graphic.SaveToStream(stream);
+  //bitmap.LoadFromStream(stream);
+
+  image1.Picture.Graphic:=DBImage1.Picture.Graphic;
+end;
+
+procedure TfrmBitacoraServicioEst.Button4Click(Sender: TObject);
+begin
+  inherited;
+  GuardaFirmaDefault:= True;
+  Button4.Caption:= 'OK';
+end;
+
+procedure TfrmBitacoraServicioEst.cdsBitacoraServAfterPost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsBitacoraServ.ApplyUpdates();
+
+  Memo1.Lines.Text:= '';
+  Memo2.Lines.Text:= '';
+  Memo4.Lines.Text:= '';
+  Image1.Picture.Assign(nil);
+  cxDateEdit2.Date:= now();
+  Panel3.Enabled:= False;
+
+  Button4.Caption:= 'Guardar Firma como Predeterminada ?';
+end;
+
+procedure TfrmBitacoraServicioEst.FormCreate(Sender: TObject);
+var
+  panelwidth:integer;
+begin
+  inherited;
+  GuardaFirmaDefault:= False;
+
+  Panel3.Enabled:= False;
+  cxDateEdit1.Date:= now();
+
+  panelwidth:= (ROUND((ufrmPrincipal.frmPrincipal.pnlPrincipal.Width - Panel3.Width) / 2));
+  Panel1.Width:= panelwidth;
+  Panel2.Width:= panelwidth;
+  //////////////////////////////////
+
+  cdsUsuario.Close;
+  cdsUsuario.Open;
+  if cdsUsuario.Locate('IDEMPLEADO', DM.EmpleadoID, []) then
+     Label2.Caption:= cdsUsuario.FieldByName('NOMBRE').AsString;
+
+  cdsEstacion.Close;
+  cdsEstacion.Open;
+  if cdsEstacion.Locate('IDESTACION', DM.Estacion, []) then
+  begin
+     lblNoEstacion.Caption:= cdsEstacion.FieldByName('IDESTACION').AsString;
+     lblNombre.Caption:= cdsEstacion.FieldByName('NOMBRE').AsString;
+     lblDomicilio.Caption:= cdsEstacion.FieldByName('CALLE').AsString + ' , '+ cdsEstacion.FieldByName('COLONIA').AsString;
+  end;
+
+  cdsBitacoraServ.Close;
+  cdsBitacoraServ.Open;
+
+end;
+
+procedure TfrmBitacoraServicioEst.Image1MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  Bandera:= True;
+  image1.Canvas.MoveTo(X,Y);
+end;
+
+procedure TfrmBitacoraServicioEst.Image1MouseMove(Sender: TObject;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  if Bandera then
+  begin
+     image1.Canvas.pen.width := 3;
+     image1.Canvas.LineTo(X,Y);
+  end;
+end;
+
+procedure TfrmBitacoraServicioEst.Image1MouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  inherited;
+  Bandera:= False;
+end;
+
+procedure TfrmBitacoraServicioEst.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('BitacoraServicios', TfrmBitacoraServicioEst);
+
+end.

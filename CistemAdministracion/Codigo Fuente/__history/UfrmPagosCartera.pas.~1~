@@ -1,0 +1,487 @@
+unit UfrmPagosCartera;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxGraphics, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, DB, cxDBData, cxTextEdit, cxGridLevel,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxClasses,
+  cxControls, cxGridCustomView, cxGrid, cxDropDownEdit, cxLookupEdit,
+  cxDBLookupEdit, cxDBLookupComboBox, cxDBEdit, cxMaskEdit, cxCalendar, cxLabel,
+  cxContainer, cxGroupBox, StdCtrls, uDADataTable, uDAScriptingProvider,
+  uDACDSDataTable, Grids;
+
+type
+     TEx=Class(Exception);
+
+    TfrmPagosCartera = class(TfrmCustomModule)
+    cxGrbEncabezado: TcxGroupBox;
+    cxLabel8: TcxLabel;
+    cxLabel14: TcxLabel;
+    dbTxtSerie: TcxDBTextEdit;
+    cxLabel5: TcxLabel;
+    dbTxtFolio: TcxDBTextEdit;
+    cxLabel15: TcxLabel;
+    dbCbxFormaPago: TcxDBLookupComboBox;
+    cxGroupBox2: TcxGroupBox;
+    cxGrid1: TcxGrid;
+    cxGridDBTableView3: TcxGridDBTableView;
+    cxGridLevel3: TcxGridLevel;
+    cxGroupBox3: TcxGroupBox;
+    cxLabel19: TcxLabel;
+    cxLabel17: TcxLabel;
+    cxLabel18: TcxLabel;
+    cxDBTextEdit12: TcxDBTextEdit;
+    cxDBTextEdit11: TcxDBTextEdit;
+    cxDBTextEdit10: TcxDBTextEdit;
+    cdsClientes: TDACDSDataTable;
+    dsClientes: TDADataSource;
+    cxLabel6: TcxLabel;
+    dbTxtCliente: TcxDBTextEdit;
+    cxLabel13: TcxLabel;
+    cxDBTextEdit3: TcxDBTextEdit;
+    cxdbFecha: TcxDBDateEdit;
+    cdsEstacion: TDACDSDataTable;
+    dsEstacion: TDADataSource;
+    cdsDenominacion: TDACDSDataTable;
+    dsDenominacion: TDADataSource;
+    cdsFormaPago: TDACDSDataTable;
+    dsFormaPago: TDADataSource;
+    cdsDetalleReciboPago: TDACDSDataTable;
+    dsDetalleReciboPago: TDADataSource;
+    cdsFactura: TDACDSDataTable;
+    dsFactura: TDADataSource;
+    cdsPagos: TDACDSDataTable;
+    dsPagos: TDADataSource;
+    cdsCartera: TDACDSDataTable;
+    dsCartera: TDADataSource;
+    cdsEstructuraPagoCartera: TDACDSDataTable;
+    dsEstructuraPagoCartera: TDADataSource;
+    cxGrid2: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    btnagregar1: TButton;
+    btnEiminar1: TButton;
+    cxGridDBTableView3Column1: TcxGridDBColumn;
+    cxGridDBTableView3Column2: TcxGridDBColumn;
+    cxGridDBTableView3Column3: TcxGridDBColumn;
+    cxGridDBTableView3Column4: TcxGridDBColumn;
+    cxGridDBTableView1Column1: TcxGridDBColumn;
+    cxGridDBTableView1Column2: TcxGridDBColumn;
+    cxGridDBTableView1Column3: TcxGridDBColumn;
+    cxGridDBTableView3Column5: TcxGridDBColumn;
+    //dbTxtSerie: TcxDBTextEdit;
+    procedure dbTxtClienteExit(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure cdsPagosNewRecord(DataTable: TDADataTable);
+    procedure dbTxtSerieExit(Sender: TObject);
+    procedure cdsDetalleReciboPagoAfterPost(DataTable: TDADataTable);
+    procedure cdsPagosAfterPost(DataTable: TDADataTable);
+    procedure cdsPagosBeforePost(DataTable: TDADataTable);
+    procedure EliminarNulos;
+    procedure dbCbxFormaPagoExit(Sender: TObject);
+//    procedure dbTxtClienteEndDrag(Sender, Target: TObject; X, Y: Integer);
+    procedure dbTxtClienteEnter(Sender: TObject);
+    function  ExisteFactura(FacturaID: Integer): Boolean;
+    function  ObtenerSecuencia: integer;
+    procedure dbCbxFormaPagoPropertiesChange(Sender: TObject);
+    procedure btnagregar1Click(Sender: TObject);
+    procedure cxGrid1Enter(Sender: TObject);
+    procedure btnEiminar1Click(Sender: TObject);
+    procedure cdsEstructuraPagoCarteraBeforePost(DataTable: TDADataTable);
+    procedure GrabarPagosCartera;
+    procedure cdsDetalleReciboPagoNewRecord(DataTable: TDADataTable);
+    procedure cdsDetalleReciboPagoBeforePost(DataTable: TDADataTable);
+
+
+
+  private
+    { Private declarations }
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure BuscarCliente;
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    procedure ActionBuscar(Action: TBasicAction);
+   //procedure PagosCartera.RegisterActions;
+ protected
+    procedure RegisterActions; override;
+
+  public
+    { Public declarations }
+    procedure UpdateActionsState; override;
+
+  end;
+
+var
+  frmPagosCartera: TfrmPagosCartera;
+  EstacionActual:integer;
+  ImpuestoPorcentaje:float;
+
+implementation
+   uses Modules, uDM, dmActions, uDAInterfaces, ufrmBuscarCliente,
+   UtileriasComun,LibraryAdministracion_Intf;
+
+{$R *.dfm}
+
+procedure TfrmPagosCartera.ActionNuevo(Action:TBasicAction);
+begin
+
+  cdsPagos.Append;
+  cxGrbEncabezado.SetFocus;
+  dbTxtSerie.SetFocus;
+end;
+
+procedure TfrmPagosCartera.btnagregar1Click(Sender: TObject);
+var
+  insertar : Boolean;
+begin
+  inherited;
+  insertar := True;
+  if (cdsEstructuraPagoCartera.Locate('Folio', cxGridDBTableView1Column2.DataBinding.Field.Value, [loCaseInsensitive])) then
+  begin
+
+      while not (cdsEstructuraPagoCartera.Eof) do
+      begin
+
+        if (cxGridDBTableView3Column1.DataBinding.Field.Value = cdsEstructuraPagoCartera.FieldByName('Serie').AsString) then
+        begin
+          insertar := false;
+          break;
+        end
+        else cdsEstructuraPagoCartera.Next;
+      end;
+  end;
+
+  if insertar then
+  begin
+    cdsEstructuraPagoCartera.Append;
+    cdsEstructuraPagoCartera.FieldByName('Serie').AsString := cxGridDBTableView3Column1.DataBinding.Field.Value;
+    cdsEstructuraPagoCartera.FieldByName('Folio').AsInteger := cxGridDBTableView3Column2.DataBinding.Field.Value;
+    cdsEstructuraPagoCartera.FieldByName('Importe').AsInteger := cxGridDBTableView3Column4.DataBinding.Field.Value;
+    //cdsEstructuraPagoCartera.FieldByName('Itemno').AsInteger :=cdsDetalleReciboPago.RecordCount+1;
+    cdsEstructuraPagoCartera.Post;
+  end;
+  insertar:=true;
+    cdsDetalleReciboPago.First;
+
+    cdsDetalleReciboPago.Append;
+    cdsDetalleReciboPago.FieldByName('DetalleReciboPagoID').AsInteger:=DM.Servidor.Folio('DetalleReciboPagoID','');
+    cdsDetalleReciboPago.FieldByName('Importe').AsFloat:=cdsDetalleReciboPago.FieldByName('Importe').AsFloat;
+    cdsDetalleReciboPago.FieldByName('FacturaID').AsInteger:=cdsDetalleReciboPago.FieldByName('FacturaID').AsInteger;
+    cdsDetalleReciboPago.FieldByName('ReciboPagoID').AsInteger:=cdsPagos.FieldByName('ReciboPagoID').AsInteger;
+    cdsDetalleReciboPago.FieldByName('ItemNo').AsInteger:=cdsDetalleReciboPago.RecordCount+1;
+    cdsDetalleReciboPago.Post;
+
+
+end;
+
+procedure TfrmPagosCartera.btnEiminar1Click(Sender: TObject);
+begin
+  inherited;
+  cdsEstructuraPagoCartera.Delete;
+end;
+
+procedure TFrmPagosCartera.ActionGuardar(Action: TBasicAction);
+begin
+   if cdsDetalleReciboPago.RecordCount > 0 then
+  begin
+    if (cdsDetalleReciboPago.State = dsEdit) or
+      (cdsDetalleReciboPago.State = dsInsert) then
+      cdsDetalleReciboPago.Cancel;
+    GrabarPagosCartera;
+    cdsPagos.CancelUpdates(true);
+    cdsPagos.CancelUpdates();
+    cdsDetalleReciboPago.CancelUpdates();
+    cdsClientes.Close;
+  end
+  else
+    Showmessage('Registre al menos un Producto');
+end;
+
+procedure TfrmPagosCartera.cdsDetalleReciboPagoAfterPost(
+  DataTable: TDADataTable);
+var
+  Total:real;
+begin
+  inherited;
+  Total:=0;
+  cdsDetalleReciboPago.First;
+  {While not cdsDetalleReciboPago.EOF do
+  begin
+     Total:=Total + cdsDetalleReciboPago.FieldByName('Total').AsFloat ;
+     //Total:= cdsPagos.FieldByName('Total');
+     cdsDetalleReciboPago.Next;
+  end;}
+  cdsPagos.FieldByName('Total').AsFloat:=Total;
+  cdsPagos.FieldByName('SubTotal').AsFloat:=Total/(1+(ImpuestoPorcentaje/100));
+  cdsPagos.FieldByName('Impuesto').AsFloat:=cdsPagos.FieldByName('Total').AsFloat -
+                                              cdsPagos.FieldByName('SubTotal').AsFloat;
+  //if (cdsPagos.FieldByName('Total').AsInteger>0) then
+  //begin
+    //  if (cdsPagos.FieldByName('TipoFacturaID').AsInteger=2) then
+      //  cxPagFacturacion.Pages[2].Enabled:=true
+      //else
+       // cxPagFacturacion.Pages[2].Enabled:=false
+  //end;
+
+end;
+
+procedure TfrmPagosCartera.cdsDetalleReciboPagoBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  {if (cdsDetalleReciboPago.FieldByName('Importe').AsInteger <= 0) then
+    begin
+      raise TEx.Create('Importe no válido');
+  end;}
+end;
+
+procedure TfrmPagosCartera.cdsDetalleReciboPagoNewRecord(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsDetalleReciboPago.FieldByName('DetalleReciboPagoID').AsInteger:=DM.Servidor.Folio('DetalleFacturaID','');
+  cdsDetalleReciboPago.FieldByName('ReciboPagoID').AsInteger:=cdsPagos.FieldByName('ReciboPagoID').AsInteger;
+  cdsDetalleReciboPago.FieldByName('ItemNo').AsInteger:=cdsDetalleReciboPago.RecordCount+1;
+  cdsDetalleReciboPago.FieldByName('Importe').AsFloat:=0;
+
+end;
+
+procedure TfrmPagosCartera.cdsEstructuraPagoCarteraBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+    if (cdsCartera.Locate('Folio', cxGridDBTableView1Column2.DataBinding.Field.Value, [loCaseInsensitive])) then
+    begin
+
+      while not (cdsCartera.Eof) do
+      begin
+
+        if (cxGridDBTableView1Column1.DataBinding.Field.Value = cdsCartera.FieldByName('Serie').AsString) then
+        begin
+
+           if (cxGridDBTableView1Column3.DataBinding.Field.Value > cdsCartera.FieldByName('SaldoFactura').AsInteger) then
+           begin
+              cxGridDBTableView1Column3.DataBinding.Field.Value:= cdsCartera.FieldByName('SaldoFactura').AsInteger;
+              showmessage('No se puede exceder de la cantidad $' + inttostr(cdsCartera.FieldByName('SaldoFactura').AsInteger));
+              break;
+           end
+           else cdsCartera.Next;
+
+        end
+        else cdsCartera.Next;
+
+      end;
+    end;
+end;
+
+procedure TfrmPagosCartera.cdsPagosAfterPost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsPagos.ApplyUpdates(true);
+  cdsDetalleReciboPago.ApplyUpdates(true);
+end;
+
+procedure TfrmPagosCartera.cdsPagosBeforePost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsPagos.FieldByName('Folio').AsInteger:=DM.Servidor.Folio('FolioReciboPago',cdsPagos.FieldByName('Serie').AsString);
+  EliminarNulos;
+end;
+
+procedure TfrmPagosCartera.cdsPagosNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsPagos.FieldByName('ReciboPagoID').AsInteger:=DM.Servidor.Folio('FacturaID','');
+  cdsPagos.FieldByName('Fecha').AsDateTime:=StrToDate(FormatDateTime('dd/mm/yyyy',DM.Servidor.Fecha));
+  cdsPagos.FieldByName('Ejercicio').AsInteger:=StrToInt(FormatDateTime('yyyy',DM.Servidor.Fecha));
+  cdsPagos.FieldByName('Periodo').AsInteger:=StrToInt(FormatDateTime('mm',DM.Servidor.Fecha));
+  cdsPagos.FieldByName('Dia').AsInteger:=StrToInt(FormatDateTime('dd',DM.Servidor.Fecha));
+  cdsPagos.FieldByName('Impuesto').AsFloat:=ImpuestoPorcentaje;
+  cdsPagos.FieldByName('EstacionID').AsInteger:=EstacionActual;
+  cdsPagos.FieldByName('Cancelado').AsInteger:=0;
+  cdsPagos.Close;
+end;
+procedure TfrmPagosCartera.cxGrid1Enter(Sender: TObject);
+begin
+  inherited;
+  cdsCartera.Close;
+  cdsCartera.ParamByName('Cliente').AsInteger := cdsPagos.FieldByName('ClienteID').AsInteger;
+  cdsCartera.Open;
+end;
+
+procedure TfrmPagosCartera.ActionBuscar(Action: TBasicAction);
+begin
+    BuscarCliente;
+end;
+
+procedure TfrmPagosCartera.BuscarCliente;
+begin
+  frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+  frmBuscarCliente.ShowModal;
+  if frmBuscarCliente.OK then
+  begin
+       cdsPagos.FieldByName('ClienteID').AsInteger:=frmBuscarCliente.Clave;
+       dbTxtClienteExit(dbTxtCliente);
+  end;
+
+end;
+
+procedure TFrmPagosCartera.ActionCancelar(Action: TBasicAction);
+begin
+  cdsPagos.Cancel;
+  cdsDetalleReciboPago.Cancel;
+end;
+
+procedure TfrmPagosCartera.dbCbxFormaPagoExit(Sender: TObject);
+begin
+  inherited;
+  if (cdsPagos.FieldByName('FormaPagoID').AsInteger=0) then
+  begin
+    Showmessage('Seleccione una Forma de Pago');
+    dbCbxFormaPago.SetFocus;
+  end;
+end;
+
+procedure TfrmPagosCartera.dbCbxFormaPagoPropertiesChange(Sender: TObject);
+begin
+  inherited;
+
+end;
+
+//procedure TfrmPagosCartera.dbTxtClienteEndDrag(Sender, Target: TObject; X,
+  //Y: Integer);
+//begin
+  //inherited;
+
+//end;
+
+procedure TfrmPagosCartera.dbTxtClienteEnter(Sender: TObject);
+begin
+  inherited;
+  BuscarCliente;
+
+end;
+
+function TFrmPagosCartera.ExisteFactura(FacturaID: Integer): Boolean;
+begin
+  Result:=cdsFactura.Locate('ProductoID',FacturaID, [loCaseInsensitive]);
+end;
+
+procedure TfrmPagosCartera.dbTxtClienteExit(Sender: TObject);
+begin
+  inherited;
+  cdsClientes.Close;
+  cdsClientes.ParamByName('ClienteID').AsInteger:=cdsPagos.FieldByName('ClienteID').AsInteger;
+  cdsClientes.Open;
+  if cdsClientes.RecordCount=0 then
+  begin
+    Showmessage('Cliente No Existe');
+    dbTxtCliente.SetFocus;
+  end;
+  cxGrid1.SetFocus;
+  cdsEstructuraPagoCartera.Close;
+  cdsEstructuraPagoCartera.Open;
+end;
+
+procedure TfrmPagosCartera.dbTxtSerieExit(Sender: TObject);
+var
+  Folio:integer;
+begin
+  inherited;
+  Folio:=DM.Servidor.FolioActual('ReciboPagoID',cdsPagos.FieldByName('Serie').AsString);
+  if Folio > 0 then
+  begin
+    if (cdsPagos.FieldByName('Folio').AsInteger=0) then
+      cdsPagos.FieldByName('Folio').AsInteger:=Folio;
+  end
+  else
+  begin
+    Showmessage('Serie No Existe !!!         ');
+    dbTxtSerie.SetFocus;
+  end;
+
+end;
+function TFrmPagosCartera.ObtenerSecuencia: integer;
+begin
+  Result:=1;
+end;
+
+
+procedure TfrmPagosCartera.FormCreate(Sender: TObject);
+begin
+
+  inherited;
+  EstacionActual:=StrToInt(UtileriasComun.LeerRegistro('Estacion','4120'));
+  cdsEstacion.Close;
+  cdsEstacion.ParamByName('EstacionID').asInteger:=EstacionActual;
+  cdsEstacion.Open;
+  cdsFormaPago.Open;
+  cdsDenominacion.Open;
+  cdsClientes.Open;
+  cdsDetalleReciboPago.Open;
+  cdsPagos.open;
+  ImpuestoPorcentaje:=cdsEstacion.FieldByName('Impuesto').AsFloat;
+end;
+
+procedure TFrmPagosCartera.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actCancelar, ActionCancelar);
+  RegisterAction(AppActions.actBuscar, ActionBuscar);
+end;
+procedure TFrmPagosCartera.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actNuevo.Enabled:=cdsPagos.State = dsBrowse;
+  dmAppActions.actGuardar.Enabled:=(cdsPagos.State in dsEditModes);
+  dmAppActions.actCancelar.Enabled:=cdsPagos.State in dsEditModes;
+  dmAppActions.actEliminar.Enabled:=(cdsPagos.State = dsBrowse) and (cdsPagos.RecordCount > 0);
+  dmAppActions.actBuscar.Enabled:=((cdsPagos.State=dsEdit) or (cdsPagos.State=dsInsert));// and (cxPagFacturacion.ActivePageIndex=0);
+end;
+procedure TFrmPagosCartera.GrabarPagosCartera;
+var
+  Detalle:TDetalleReciboPago;
+begin
+
+  DM.DatosReciboPago:=TDatosReciboPago.Create;
+  DM.DatosReciboPago.Recibo:=TRecibo.Create;
+  DM.DatosReciboPago.Recibo.ReciboPagoID:=DM.Servidor.Folio('ReciboPagoID','A');
+  DM.DatosReciboPago.Recibo.Serie:=cdsPagos.FieldByName('Serie').AsString;
+  DM.DatosReciboPago.Recibo.Fecha:=cdsPagos.FieldByName('Fecha').AsDateTime;
+  DM.DatosReciboPago.Recibo.Subtotal:=cdsPagos.FieldByName('Subtotal').AsFloat;
+  DM.DatosReciboPago.Recibo.Impuesto:=cdsPagos.FieldByName('Impuesto').AsFloat;
+  DM.DatosReciboPago.Recibo.Total:=cdsPagos.FieldByName('Total').AsFloat;
+  DM.DatosReciboPago.Recibo.EstacionID:=EstacionActual;
+  DM.DatosReciboPago.Recibo.ClienteID:=cdsPagos.FieldByName('ClienteID').AsInteger;
+  DM.DatosReciboPago.Recibo.FormaPagoID:=cdsPagos.FieldByName('FormaPagoID').AsInteger;
+  DM.DatosReciboPago.Detalles:=ATDetalleRecibo.Create;
+  cdsDetalleReciboPago.First;
+  while not cdsDetalleReciboPago.EOF do
+  begin
+    Detalle:=TDetalleReciboPago.Create;
+    Detalle.Total :=cdsDetalleReciboPago.FieldByName('Importe').AsFloat;
+    Detalle.FacturaID:=cdsDetalleReciboPago.FieldByName('FacturaID').AsInteger;
+    DM.DatosReciboPago.Detalles.Add(Detalle);
+    cdsDetalleReciboPago.Next;
+  end; 
+  DM.Servidor.GuardarDatosReciboPago(DM.DatosReciboPago);
+end;
+procedure TFrmPagosCartera.EliminarNulos;
+begin
+  cdsDetalleReciboPago.First;
+  while not cdsDetalleReciboPago.EOF  do
+  begin
+    if (cdsDetalleReciboPago.FieldByName('FacturaID').AsInteger=0) then
+      cdsDetalleReciboPago.Delete;
+    cdsDetalleReciboPago.Next;
+  end;
+end;
+
+
+initialization
+  ModuleInfoManager.RegisterModule('Pagos', TFrmPagosCartera);
+end.

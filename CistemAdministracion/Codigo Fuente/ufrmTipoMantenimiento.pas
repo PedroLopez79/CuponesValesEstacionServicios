@@ -1,0 +1,52 @@
+unit ufrmTipoMantenimiento;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, ufrmCatalogo, dxSkinsCore,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, dxSkinscxPCPainter,
+  cxPCdxBarPopupMenu, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, cxNavigator, Data.DB, cxDBData, dxmdaset, uDAFields,
+  uDADataTable, uROComponent, uDAScriptingProvider, uDAMemDataTable,
+  cxGridLevel, cxClasses, cxGridCustomView, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, cxGrid, cxPC, cxContainer, cxTextEdit,
+  cxDBEdit, cxLabel, cxGroupBox;
+
+type
+  TfrmTipoMantenimiento = class(TfrmCatalogo)
+    GrpBoxDatos: TcxGroupBox;
+    LblID: TcxLabel;
+    LblCalle: TcxLabel;
+    txtId: TcxDBTextEdit;
+    edtConcepto: TcxDBTextEdit;
+    dbgCatalogoDBTableView1RecID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1IDTIPOMANTENIMIENTO: TcxGridDBColumn;
+    dbgCatalogoDBTableView1CONCEPTO: TcxGridDBColumn;
+    procedure cdsCatalogoNewRecord(DataTable: TDADataTable);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTipoMantenimiento: TfrmTipoMantenimiento;
+
+implementation
+uses Modules, uDM, UtileriasComun;
+
+{$R *.dfm}
+
+procedure TfrmTipoMantenimiento.cdsCatalogoNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsCatalogo.FieldByName('IDTIPOMANTENIMIENTO').AsInteger:=DM.Servidor.Folio('IDTIPOMANTENIMIENTO','');
+end;
+
+initialization
+ModuleInfoManager.RegisterModule('TipoMantenimiento', TfrmTipoMantenimiento);
+
+end.

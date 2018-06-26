@@ -1,0 +1,104 @@
+unit fServerDataModule;
+
+interface
+
+uses
+  SysUtils, Classes, Windows,
+  uROClient, uROPoweredByRemObjectsButton, uROClientIntf, uROServer,
+  uROBinMessage, uROIndyHTTPServer,
+  uDAEngine, uDADriverManager, uDAClasses, uROSessions,
+  uDAADODriver, uROIndyTCPServer, Registry, uDASDACDriver,
+  uROSOAPMessage, Forms, uROBaseHTTPServer, uDADataDictionary,
+  uDAStreamableComponent, uDAConnectionManager, uROMessage, uROComponent,
+  uROBaseConnection, uROCustomHTTPServer, uROJSONMessage, uROBaseSuperTCPServer,
+  uROSuperTCPServer, PuertoSerial, LibraryValesCupones_Intf, uCreditosValesCupones,
+  uROTransportChannel, uROBaseHTTPClient, uROWinInetHttpChannel,
+  uROBaseActiveEventChannel, uROBaseSuperChannel, uROBaseSuperTCPChannel,
+  uROSuperTCPChannel;
+
+type
+  TServerDataModule = class(TDataModule)
+    Server: TROIndyHTTPServer;
+    Message: TROBinMessage;
+    ConnectionManager: TDAConnectionManager;
+    DriverManager: TDADriverManager;
+    SessionManager: TROInMemorySessionManager;
+    DataDictionary: TDADataDictionary;
+    SuperServer: TROSuperTCPServer;
+    MiMessage: TROBinMessage;
+    MiSuperChannel: TROSuperTCPChannel;
+    MiChannel: TROWinInetHTTPChannel;
+    
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Servidor: IServiceValesCupones;
+    AplicaSobrantes: Boolean;
+    GasolineroID: Integer;
+    EstacionID: Integer;
+    Nodos: aNodos;
+    FDefaultHost: String;
+    ProteccionesDefault: Boolean;
+    BombasOffLine: Boolean;
+
+    procedure Reinicia;
+  end;
+
+var
+  ServerDataModule: TServerDataModule;
+  Global: TGlobal;
+  Puerto: TPuertoSerial;
+  Estacion: Integer;
+  Flotillas: TCreditosValesCupones;
+  Nodos: aNodos;
+
+implementation
+
+uses UtileriasComun, fServerForm;
+
+{$R *.dfm}
+
+procedure TServerDataModule.DataModuleCreate(Sender: TObject);
+var
+  Intf: IInterface;
+const
+  Cadena = 'SDAC?Server=%s;Database=%s;UserID=%s;Password=%s;Schemas=1;Integrated Security=SSPI;';
+begin
+  try
+
+
+    RutaRegistro:='Server Empresas';
+    ConnectionManager.Connections[0].ConnectionString:=Format(Cadena, [LeerRegistro('Servidor','127.0.0.1'),
+                                                                      LeerRegistro('Database','Empresas'),
+                                                                      LeerRegistro('User','sa'),
+                                                                      LeerRegistro('Password','')]);
+    GetClassFactory('ServiceValesCupones').CreateInstance(EmptyGUID, Intf);
+    Servidor:=Intf as IServiceValesCupones;
+    CargarCaracteres(ExtractFilePath(ParamStr(0)) + 'Cupones.DAT', CaracteresCupones);
+    GasolineroID:= strtoint(LeerRegistro('IDGRUPOGASOLINERO', '2005'));
+    EstacionID:= strtoint(LeerRegistro('EstacionID', '2148'));
+    AplicaSobrantes:=LeerRegistro('AplicaSobrantes', '0') = '1';
+    SuperServer.Port := StrToInt(LeerRegistro('Puerto', '9003'));
+    ProteccionesDefault:=LeerRegistro('Default','0') <> 'OK';
+    BombasOffLine:= LeerRegistro('BombasOffLine', '1') <> '1';
+    Flotillas:=TCreditosValesCupones.Create(LeerRegistro('ServidorValesCupones','127.0.0.1'));
+
+    Nodos:=aNodos.Create;
+    Global:=TGlobal.Create;
+    //Global.TurnosActuales:=StrToInt(LeerRegistro('HorasEntreCortes','0'));
+
+    Nodos:=aNodos.Create;
+  finally
+    SuperServer.Active := true;
+  end;
+end;
+
+procedure TServerDataModule.Reinicia;
+begin
+  ServerForm.RemueveIcono;
+  AppRestart;
+end;
+
+end.

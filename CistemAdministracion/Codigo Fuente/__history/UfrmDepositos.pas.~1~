@@ -1,0 +1,328 @@
+unit UfrmDepositos;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, dxSkinsCore, dxSkinsDefaultPainters,
+  dxSkinscxPCPainter, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
+  cxDataStorage, cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls,
+  cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxGrid, cxContainer, cxGroupBox, cxPC, Menus, cxLookAndFeelPainters, StdCtrls,
+  cxButtons, cxTextEdit, cxLabel,uDADataTable, uDAScriptingProvider,
+  uDACDSDataTable, cxCurrencyEdit, uDAInterfaces, cxCheckListBox, dxmdaset,
+  cxMaskEdit, cxDropDownEdit, cxCalendar, uDAMemDataTable, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary,
+  dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
+  dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinSilver, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
+  dxSkinXmas2008Blue;
+
+type
+  TfrmDepositos = class(TfrmCustomModule)
+    pgcDepositos: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    cxTabSheet2: TcxTabSheet;
+    tblSecuencias: TdxMemData;
+    tblSecuenciasSecuencia: TIntegerField;
+    tblSecuenciasTotal: TFloatField;
+    tblSecuenciasEfectivo: TFloatField;
+    tblSecuenciasCredito: TFloatField;
+    tblSecuenciasMainbe: TFloatField;
+    dbgDepositos: TcxGrid;
+    dbgDepositosDBTableView1: TcxGridDBTableView;
+    dbgDepositosLevel1: TcxGridLevel;
+    dsSecuencias: TDataSource;
+    tblSecuenciasFecha: TDateField;
+    tblSecuenciasEstacion: TIntegerField;
+    dbgDepositosDBTableView1Estacion: TcxGridDBColumn;
+    dbgDepositosDBTableView1Secuencia: TcxGridDBColumn;
+    dbgDepositosDBTableView1Fecha: TcxGridDBColumn;
+    dbgDepositosDBTableView1Efectivo: TcxGridDBColumn;
+    dbgDepositosDBTableView1Credito: TcxGridDBColumn;
+    dbgDepositosDBTableView1Mainbe: TcxGridDBColumn;
+    dbgDepositosDBTableView1Total: TcxGridDBColumn;
+    cxGroupBox1: TcxGroupBox;
+    cxLabel1: TcxLabel;
+    gbDepositos: TcxGroupBox;
+    edtBilletes: TcxCurrencyEdit;
+    lblBilletes: TcxLabel;
+    lblMonedas: TcxLabel;
+    edtMonedas: TcxCurrencyEdit;
+    lblDolares: TcxLabel;
+    edtDolares: TcxCurrencyEdit;
+    lblCreditos: TcxLabel;
+    edtRetiros: TcxCurrencyEdit;
+    lblRetiros: TcxLabel;
+    edtCreditos: TcxCurrencyEdit;
+    lblCheques: TcxLabel;
+    edtCheques: TcxCurrencyEdit;
+    cxGroupBox3: TcxGroupBox;
+    lblTotal: TcxLabel;
+    lblDepositos: TcxLabel;
+    edtDepositos: TcxCurrencyEdit;
+    lblDiferencia: TcxLabel;
+    edtDiferencia: TcxCurrencyEdit;
+    lblDocumentos: TcxLabel;
+    edtDocumentos: TcxCurrencyEdit;
+    edtTotal: TcxCurrencyEdit;
+    dtpFecha: TcxDateEdit;
+    cdsTurnosFecha: TDAMemDataTable;
+    cdsDepositos: TDAMemDataTable;
+    edtBilletes2: TcxCurrencyEdit;
+    cxLabel2: TcxLabel;
+    cxLabel3: TcxLabel;
+    edtCalibraciones: TcxCurrencyEdit;
+    cxLabel4: TcxLabel;
+    edtConsumoInterno: TcxCurrencyEdit;
+    cxLabel5: TcxLabel;
+    edtFaltantes: TcxCurrencyEdit;
+    cxLabel6: TcxLabel;
+    edtSobrantes: TcxCurrencyEdit;
+    dbgDepositosDBTableView1Column1: TcxGridDBColumn;
+    dbgDepositosDBTableView1Column2: TcxGridDBColumn;
+    dbgDepositosDBTableView1Column3: TcxGridDBColumn;
+    dbgDepositosDBTableView1Column4: TcxGridDBColumn;
+    tblSecuenciasCalibraciones: TFloatField;
+    tblSecuenciasConsumoInterno: TFloatField;
+    tblSecuenciasFaltantes: TFloatField;
+    tblSecuenciasSobrantes: TFloatField;
+    procedure FormCreate(Sender: TObject);
+    procedure edtBilletesPropertiesEditValueChanged(Sender: TObject);
+    procedure dtpFechaExit(Sender: TObject);
+  private
+    { Private declarations }
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    procedure ActionEliminar(Action: TBasicAction);
+    procedure CalculaTotales;
+  public
+    { Public declarations }
+    Editando: Boolean;
+    Calcular: Boolean;
+    procedure UpdateActionsState; override;
+    procedure RegisterActions; override;
+  end;
+
+var
+  frmDepositos: TfrmDepositos;
+
+implementation
+
+uses Modules, uDM, dmImagenes, UtileriasComun, dmActions,
+  LibraryAdministracion_Intf;
+
+{$R *.dfm}
+
+{ TfrmDepositos }
+
+procedure TfrmDepositos.ActionNuevo(Action: TBasicAction);
+begin
+  tblSecuencias.Close;
+  tblSecuencias.Open;
+  dtpFecha.Enabled:=True;
+  pgcDepositos.ActivePageIndex:=0;
+  dtpFecha.SetFocus;
+end;
+
+procedure TfrmDepositos.CalculaTotales;
+begin
+  edtCalibraciones.EditValue:=dbgDepositosDBTableView1.DataController.Summary.FooterSummaryValues[4];
+  edtConsumoInterno.EditValue:=dbgDepositosDBTableView1.DataController.Summary.FooterSummaryValues[5];
+  edtFaltantes.EditValue:=dbgDepositosDBTableView1.DataController.Summary.FooterSummaryValues[6];
+  edtSobrantes.EditValue:=dbgDepositosDBTableView1.DataController.Summary.FooterSummaryValues[7];
+  edtCreditos.EditValue:=dbgDepositosDBTableView1.DataController.Summary.FooterSummaryValues[2];
+  edtDocumentos.EditValue:=dbgDepositosDBTableView1.DataController.Summary.FooterSummaryValues[1];
+  edtTotal.EditValue:=dbgDepositosDBTableView1.DataController.Summary.FooterSummaryValues[0];
+  edtDepositos.EditValue:=edtBilletes.EditValue + edtBilletes2.EditValue + edtMonedas.EditValue + edtDolares.EditValue +
+                          edtRetiros.EditValue + edtCheques.EditValue + edtCreditos.EditValue +
+                          edtDocumentos.EditValue + edtConsumoInterno.EditValue + edtCalibraciones.EditValue +
+                          edtFaltantes.EditValue;
+  if DM.SumaFaltantes then
+    edtDepositos.EditValue:=edtDepositos.EditValue - edtSobrantes.EditValue;
+  edtDiferencia.EditValue:=edtTotal.EditValue - edtDepositos.EditValue;
+end;
+
+procedure TfrmDepositos.dtpFechaExit(Sender: TObject);
+var
+  MiTurno: Integer;
+  Aux: TValoresTurno;
+  Abierta: Boolean;
+begin
+  inherited;
+  MiTurno:=0;
+  try
+    Editando:=True;
+    dtpFecha.Enabled:=False;
+    Screen.Cursor:=crHourGlass;
+    cdsDepositos.Close;
+    cdsDepositos.ParamByName('EstacionID').AsInteger:=DM.Estacion;
+    cdsDepositos.ParamByName('Fecha').AsDateTime:=dtpFecha.Date;
+    cdsDepositos.Open;
+    tblSecuencias.Close;
+    Calcular:=True;
+    if cdsDepositos.RecordCount > 0 then
+    begin
+      pgcDepositos.ActivePageIndex:=1;
+      edtTotal.EditValue:=cdsDepositos.FieldByName('Total').AsFloat;
+      edtBilletes.EditValue:=cdsDepositos.FieldByName('Billetes').AsFloat;
+      edtBilletes2.EditValue:=cdsDepositos.FieldByName('Billetes2').AsFloat;
+      edtMonedas.EditValue:=cdsDepositos.FieldByName('Monedas').AsFloat;
+      edtDolares.EditValue:=cdsDepositos.FieldByName('Dolares').AsFloat;
+      edtRetiros.EditValue:=cdsDepositos.FieldByName('Retiros').AsFloat;
+      edtCheques.EditValue:=cdsDepositos.FieldByName('Cheques').AsFloat;
+      edtCreditos.EditValue:=cdsDepositos.FieldByName('Creditos').AsFloat;
+      edtDocumentos.EditValue:=cdsDepositos.FieldByName('Documentos').AsFloat;
+      edtCalibraciones.EditValue:=cdsDepositos.FieldByName('Calibraciones').AsFloat;
+      edtConsumoInterno.EditValue:=cdsDepositos.FieldByName('ConsumoInterno').AsFloat;
+      edtFaltantes.EditValue:=cdsDepositos.FieldByName('Faltantes').AsFloat;
+      edtSobrantes.EditValue:=cdsDepositos.FieldByName('Sobrantes').AsFloat;
+      Calcular:=False;
+    end;
+    tblSecuencias.Open;
+    cdsTurnosFecha.Close;
+    cdsTurnosFecha.ParamByName('EstacionID').AsInteger:=DM.Estacion;
+    cdsTurnosFecha.ParamByName('Fecha').AsDateTime:=dtpFecha.Date;
+    cdsTurnosFecha.Open;
+    Abierta:=False;
+    if cdsTurnosFecha.RecordCount > 0 then
+    begin
+      while not cdsTurnosFecha.EOF do
+      begin
+        MiTurno:=cdsTurnosFecha.FieldByName('TurnoID').AsInteger;
+        Abierta:=not DM.Servidor.LiquidacionCerrada(DM.Estacion, MiTurno);
+        Aux:=DM.Servidor.ValoresTurno(DM.Estacion, MiTurno);
+        tblSecuencias.Append;
+        tblSecuenciasFecha.AsDateTime:=Aux.Fecha;
+        tblSecuenciasSecuencia.AsInteger:=MiTurno;
+        tblSecuenciasEstacion.AsInteger:=DM.Estacion;
+
+        tblSecuenciasTotal.AsFloat:=Aux.Venta;
+        tblSecuenciasCalibraciones.AsFloat:=Aux.Calibraciones;
+        tblSecuenciasConsumoInterno.AsFloat:=Aux.ConsumoInterno;
+        tblSecuenciasFaltantes.AsFloat:=Aux.Faltantes;
+        tblSecuenciasSobrantes.AsFloat:=Aux.Sobrantes;
+        tblSecuenciasCredito.AsFloat:=cdsTurnosFecha.FieldByName('Creditos').AsFloat;
+        tblSecuenciasMainbe.AsFloat:=DM.ServidorEstacion(DM.Estacion).MermaTurno(MiTurno);
+        tblSecuenciasEfectivo.AsFloat:=Aux.Efectivo - tblSecuenciasMainbe.AsFloat;
+
+        tblSecuencias.Post;
+        cdsTurnosFecha.Next;
+      end;
+    end;
+    CalculaTotales;
+    if Abierta then
+    begin
+      MessageDlg(Format('La liquidación [%d] no esta cerrada.', [MiTurno]), mtError, [mbOK], 0);
+      Editando:=False;
+    end;
+  finally
+    Screen.Cursor:=crDefault;
+    UpdateActionsState;
+  end;
+end;
+
+procedure TfrmDepositos.edtBilletesPropertiesEditValueChanged(Sender: TObject);
+begin
+  inherited;
+  CalculaTotales;
+end;
+
+procedure TfrmDepositos.FormCreate(Sender: TObject);
+begin
+  inherited;
+  Editando:=False;
+  pgcDepositos.ActivePageIndex:=0;
+  dtpFecha.Date:=Trunc(Now);
+end;
+
+procedure TfrmDepositos.ActionEliminar(Action: TBasicAction);
+begin
+
+end;
+
+procedure TfrmDepositos.ActionGuardar(Action: TBasicAction);
+var
+  Aux: LibraryAdministracion_Intf.TReporte;
+begin
+  if cdsDepositos.RecordCount = 0 then
+  begin
+    cdsDepositos.Append;
+    cdsDepositos.FieldByName('DepositoID').AsInteger:=DM.Servidor.Folio('DepositoID', '');
+    cdsDepositos.FieldByName('Fecha').AsDateTime:=dtpFecha.Date;
+    cdsDepositos.FieldByName('Ejercicio').AsString:=FormatDateTime('yyyy', dtpFecha.Date);
+    cdsDepositos.FieldByName('Periodo').AsString:=FormatDateTime('m', dtpFecha.Date);
+    cdsDepositos.FieldByName('Dia').AsString:=FormatDateTime('d', dtpFecha.Date);
+    cdsDepositos.FieldByName('UsuarioID').AsInteger:=DM.Seguridad.idEmpleado;
+    cdsDepositos.FieldByName('EstacionID').AsInteger:=DM.Estacion;
+  end
+  else
+    cdsDepositos.Edit;
+  cdsDepositos.FieldByName('Total').AsFloat:=edtTotal.EditValue;
+  cdsDepositos.FieldByName('Billetes').AsFloat:=edtBilletes.EditValue;
+  cdsDepositos.FieldByName('Billetes2').AsFloat:=edtBilletes2.EditValue;
+  cdsDepositos.FieldByName('Monedas').AsFloat:=edtMonedas.EditValue;
+  cdsDepositos.FieldByName('Dolares').AsFloat:=edtDolares.EditValue;
+  cdsDepositos.FieldByName('Retiros').AsFloat:=edtRetiros.EditValue;
+  cdsDepositos.FieldByName('Cheques').AsFloat:=edtCheques.EditValue;
+  cdsDepositos.FieldByName('Creditos').AsFloat:=edtCreditos.EditValue;
+  cdsDepositos.FieldByName('Documentos').AsFloat:=edtDocumentos.EditValue;
+  cdsDepositos.FieldByName('Calibraciones').AsFloat:=edtCalibraciones.EditValue;
+  cdsDepositos.FieldByName('ConsumoInterno').AsFloat:=edtConsumoInterno.EditValue;
+  cdsDepositos.FieldByName('Faltantes').AsFloat:=edtFaltantes.EditValue;
+  cdsDepositos.FieldByName('Sobrantes').AsFloat:=edtSobrantes.EditValue;
+  cdsDepositos.Post;
+  cdsDepositos.ApplyUpdates();
+
+  Aux:=DM.Servidor.BuscaReporte('RESUMEN DE DEPOSITO', 1);
+  try
+    DM.Parametros.Factura:= cdsDepositos.FieldByName('DepositoID').AsInteger;
+    DM.Imprimir(Aux.SQL1, Aux.SQL2, Aux.Template, 'IMPRIMIENDO...', Aux.CampoJoin);
+  finally
+    Aux.Free;
+  end;
+  ActionCancelar(nil);
+end;
+
+procedure TfrmDepositos.ActionCancelar(Action: TBasicAction);
+begin
+  tblSecuencias.Close;
+  dtpFecha.Enabled:=False;
+  edtBilletes.EditValue:=0;
+  edtBilletes2.EditValue:=0;
+  edtMonedas.EditValue:=0;
+  edtDolares.EditValue:=0;
+  edtRetiros.EditValue:=0;
+  edtCheques.EditValue:=0;
+  edtCreditos.EditValue:=0;
+  edtDocumentos.EditValue:=0;
+  edtTotal.EditValue:=0;
+  edtDepositos.EditValue:=0;
+  edtDiferencia.EditValue:=0;
+  Editando:=False;
+end;
+
+procedure TfrmDepositos.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(dmAppActions.actNuevo, ActionNuevo);
+  RegisterAction(dmAppActions.actGuardar, ActionGuardar);
+  RegisterAction(dmAppActions.actCancelar, ActionCancelar);
+  RegisterAction(dmAppActions.actCancelar, ActionCancelar);
+end;
+
+procedure TfrmDepositos.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actNuevo.Enabled:=(not Editando);
+  dmAppActions.actGuardar.Enabled:=not dmAppActions.actNuevo.Enabled;
+  dmAppActions.actCancelar.Enabled:=not dmAppActions.actNuevo.Enabled;
+  gbDepositos.Enabled:=dmAppActions.actGuardar.Enabled;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Depósitos', TfrmDepositos);
+
+end.

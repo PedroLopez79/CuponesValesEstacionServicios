@@ -1,0 +1,28 @@
+inherited frmReportesExportar: TfrmReportesExportar
+  Caption = 'frmReportesExportar'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited lvReportes: TcxListView
+    Style.IsFontAssigned = True
+  end
+  object PSScript1: TPSScript
+    CompilerOptions = []
+    OnCompile = PSScript1Compile
+    OnExecute = PSScript1Execute
+    OnCompImport = PSScript1CompImport
+    OnExecImport = PSScript1ExecImport
+    Plugins = <>
+    UsePreProcessor = False
+    Left = 88
+    Top = 192
+  end
+  object sdArchivo: TSaveDialog
+    DefaultExt = '.txt'
+    Filter = 
+      'Archivo Texto (*.txt)|*.txt|Arhivo separado por comas (*.csv)|*.' +
+      'csv|Archivo de datos (*.dat)|*.dat'
+    Title = 'Exportar datos'
+    Left = 88
+    Top = 160
+  end
+end

@@ -1,0 +1,135 @@
+unit ufrmEstaciones;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ufrmCatalogo, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
+  cxDataStorage, cxEdit, DB, cxDBData, cxLabel, cxTextEdit, cxDBEdit,
+  cxContainer, cxGroupBox, dxmdaset, uDADataTable, uDAScriptingProvider,
+  uDACDSDataTable, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxPC,
+  dxSkinsCore, dxSkinsDefaultPainters, dxSkinscxPCPainter, uDAInterfaces,
+  uDAMemDataTable, cxLookAndFeels, cxLookAndFeelPainters, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinFoggy, dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinValentine, dxSkinXmas2008Blue, cxCheckBox, dxSkinMetropolis,
+  dxSkinMetropolisDark, dxSkinOffice2013DarkGray, dxSkinOffice2013LightGray,
+  dxSkinOffice2013White, cxPCdxBarPopupMenu, cxNavigator, uDAFields,
+  uROComponent;
+
+type
+  TFrmEstaciones = class(TfrmCatalogo)
+    GrpBoxDatos: TcxGroupBox;
+    TxtNoEstacion: TcxDBTextEdit;
+    LblNoEstacion: TcxLabel;
+    LblDireccion: TcxLabel;
+    LblRFC: TcxLabel;
+    LblClavePemex: TcxLabel;
+    LblHost: TcxLabel;
+    LblNombre: TcxLabel;
+    TxtNombre: TcxDBTextEdit;
+    TxtDireccion: TcxDBTextEdit;
+    TxtRFC: TcxDBTextEdit;
+    TxtClavePemex: TcxDBTextEdit;
+    TxtHost: TcxDBTextEdit;
+    LblNodeBombas: TcxLabel;
+    TxtNoBombas: TcxDBTextEdit;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxLabel1: TcxLabel;
+    LblCuentaContable: TcxLabel;
+    TxtCuentaContable: TcxDBTextEdit;
+    TxtIva: TcxDBTextEdit;
+    LblImpuento: TcxLabel;
+    cxLabel2: TcxLabel;
+    cxDBTextEdit2: TcxDBTextEdit;
+    dbgCatalogoDBTableView1RecID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1EmpresaID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1Nombre: TcxGridDBColumn;
+    dbgCatalogoDBTableView1RazonSocial: TcxGridDBColumn;
+    dbgCatalogoDBTableView1RFC: TcxGridDBColumn;
+    dbgCatalogoDBTableView1Colonia: TcxGridDBColumn;
+    dbgCatalogoDBTableView1Ciudad: TcxGridDBColumn;
+    dbgCatalogoDBTableView1CodigoPostal: TcxGridDBColumn;
+    dbgCatalogoDBTableView1Host: TcxGridDBColumn;
+    dbgCatalogoDBTableView1CuentaContable: TcxGridDBColumn;
+    dbgCatalogoDBTableView1Impuesto: TcxGridDBColumn;
+    cxDBTextEdit3: TcxDBTextEdit;
+    cxLabel3: TcxLabel;
+    cxDBCheckBox1: TcxDBCheckBox;
+    procedure cdsCatalogoNewRecord(DataTable: TDADataTable);
+    procedure TxtIvaExit(Sender: TObject);
+    procedure TxtClavePemexExit(Sender: TObject);
+    procedure TxtNoBombasExit(Sender: TObject);
+    procedure TxtRFCExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmEstaciones: TFrmEstaciones;
+
+implementation
+
+uses Modules, uDM, UtileriasComun;
+
+{$R *.dfm}
+
+procedure TFrmEstaciones.cdsCatalogoNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  TxtNoEstacion.SetFocus;
+end;
+
+procedure TFrmEstaciones.TxtClavePemexExit(Sender: TObject);
+begin
+  inherited;
+  if not isNumeric(txtClavePemex.Text) then
+  begin
+    showMessage('No Es Un Numero');
+    //txtClavePemex.Clear;
+    txtClavePemex.SetFocus;
+  end;
+end;
+
+procedure TFrmEstaciones.TxtIvaExit(Sender: TObject);
+begin
+  inherited;
+  if not isNumeric(txtIVA.Text) then
+  begin
+    showMessage('No Es Un Numero');
+    txtIVa.Clear;
+    txtIva.SetFocus;
+  end;
+end;
+
+procedure TFrmEstaciones.TxtNoBombasExit(Sender: TObject);
+begin
+  inherited;
+  if not isNumeric(txtNoBombas.Text) then
+  begin
+    showMessage('No Es Un Numero');
+    //txtFolio.Clear;
+    txtNoBombas.SetFocus;
+  end;
+end;
+
+procedure TFrmEstaciones.TxtRFCExit(Sender: TObject);
+begin
+  inherited;
+  if not DM.ValidaRFC(TxtRFC.Text) then
+  begin
+    ShowMessage('El RFC no debe de llevar Espacios ni Guiones(-)');
+    txtRFC.SetFocus;
+  end;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Estaciones', TFrmEstaciones);
+end.

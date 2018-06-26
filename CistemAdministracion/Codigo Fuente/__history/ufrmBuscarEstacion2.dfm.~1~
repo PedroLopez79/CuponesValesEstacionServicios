@@ -1,0 +1,128 @@
+inherited frmBuscaEstaciones: TfrmBuscaEstaciones
+  Caption = 'Buscar Estaciones'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pgcBuscar: TcxPageControl
+    inherited tsBuscar: TcxTabSheet
+      inherited dbgBuscar: TcxGrid
+        inherited dbgBuscarDBTableView2: TcxGridDBTableView
+          object dbgBuscarDBTableView2EstacionID: TcxGridDBColumn
+            DataBinding.FieldName = 'EstacionID'
+          end
+          object dbgBuscarDBTableView2Nombre: TcxGridDBColumn
+            DataBinding.FieldName = 'Nombre'
+          end
+          object dbgBuscarDBTableView2RazonSocial: TcxGridDBColumn
+            DataBinding.FieldName = 'RazonSocial'
+          end
+          object dbgBuscarDBTableView2RFC: TcxGridDBColumn
+            DataBinding.FieldName = 'RFC'
+          end
+          object dbgBuscarDBTableView2ClavePemex: TcxGridDBColumn
+            DataBinding.FieldName = 'ClavePemex'
+          end
+          object dbgBuscarDBTableView2NoBombas: TcxGridDBColumn
+            DataBinding.FieldName = 'NoBombas'
+          end
+          object dbgBuscarDBTableView2Colonia: TcxGridDBColumn
+            DataBinding.FieldName = 'Colonia'
+          end
+          object dbgBuscarDBTableView2Ciudad: TcxGridDBColumn
+            DataBinding.FieldName = 'Ciudad'
+          end
+          object dbgBuscarDBTableView2CodigoPostal: TcxGridDBColumn
+            DataBinding.FieldName = 'CodigoPostal'
+          end
+          object dbgBuscarDBTableView2Host: TcxGridDBColumn
+            DataBinding.FieldName = 'Host'
+          end
+          object dbgBuscarDBTableView2CuentaContable: TcxGridDBColumn
+            DataBinding.FieldName = 'CuentaContable'
+          end
+          object dbgBuscarDBTableView2Impuesto: TcxGridDBColumn
+            DataBinding.FieldName = 'Impuesto'
+          end
+        end
+      end
+    end
+    inherited tsAgregar: TcxTabSheet
+      TabVisible = False
+      ExplicitLeft = 3
+      ExplicitTop = 3
+      ExplicitWidth = 610
+      ExplicitHeight = 359
+    end
+  end
+  inherited cdsBuscar: TDACDSDataTable
+    Fields = <
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 70
+        Required = True
+      end
+      item
+        Name = 'RazonSocial'
+        DataType = datString
+        Size = 70
+      end
+      item
+        Name = 'RFC'
+        DataType = datString
+        Size = 30
+        Required = True
+      end
+      item
+        Name = 'ClavePemex'
+        DataType = datString
+        Size = 10
+        Required = True
+      end
+      item
+        Name = 'NoBombas'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'Colonia'
+        DataType = datString
+        Size = 80
+      end
+      item
+        Name = 'Ciudad'
+        DataType = datString
+        Size = 30
+      end
+      item
+        Name = 'CodigoPostal'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Host'
+        DataType = datString
+        Size = 30
+      end
+      item
+        Name = 'CuentaContable'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'Impuesto'
+        DataType = datFloat
+        Required = True
+      end>
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo Estacion'
+  end
+  inherited dsBuscar: TDADataSource
+    DataSet = cdsBuscar.Dataset
+  end
+end

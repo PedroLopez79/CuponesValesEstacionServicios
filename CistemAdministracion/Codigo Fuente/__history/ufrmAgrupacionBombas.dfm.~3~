@@ -1,0 +1,678 @@
+inherited frmAgrupacionBombas: TfrmAgrupacionBombas
+  ExplicitTop = -9
+  ExplicitWidth = 625
+  ExplicitHeight = 449
+  PixelsPerInch = 96
+  TextHeight = 13
+  object pgcAgrupacion: TcxPageControl
+    Left = 0
+    Top = 0
+    Width = 625
+    Height = 449
+    ActivePage = cxTabSheet2
+    Align = alClient
+    Images = dmImages.Imagenes
+    LookAndFeel.NativeStyle = False
+    TabOrder = 0
+    TabPosition = tpBottom
+    ClientRectBottom = 419
+    ClientRectLeft = 3
+    ClientRectRight = 619
+    ClientRectTop = 3
+    object cxTabSheet1: TcxTabSheet
+      Caption = 'B'#250'squeda'
+      ImageIndex = 0
+      object dbgAgrupacion: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 616
+        Height = 416
+        Align = alClient
+        TabOrder = 0
+        LookAndFeel.Kind = lfUltraFlat
+        LookAndFeel.NativeStyle = True
+        object cxGridDBTableView1: TcxGridDBTableView
+          OnDblClick = cxGridDBTableView1DblClick
+          NavigatorButtons.ConfirmDelete = False
+          DataController.DataSource = dsAgrupacionPorEstacion
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          FilterRow.InfoText = 'Haga click aqu'#237' para filtrar los datos'
+          FilterRow.Visible = True
+          FilterRow.ApplyChanges = fracImmediately
+          OptionsBehavior.IncSearch = True
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsSelection.MultiSelect = True
+          OptionsView.Indicator = True
+          object cxGridDBTableView1AgrupacionID: TcxGridDBColumn
+            DataBinding.FieldName = 'AgrupacionID'
+            Width = 88
+          end
+          object cxGridDBTableView1Nombre: TcxGridDBColumn
+            DataBinding.FieldName = 'Nombre'
+          end
+          object cxGridDBTableView1EstacionID: TcxGridDBColumn
+            DataBinding.FieldName = 'EstacionID'
+            Width = 79
+          end
+          object cxGridDBTableView1AlmacenID: TcxGridDBColumn
+            DataBinding.FieldName = 'AlmacenID'
+          end
+        end
+        object cxGridLevel1: TcxGridLevel
+          GridView = cxGridDBTableView1
+        end
+      end
+    end
+    object cxTabSheet2: TcxTabSheet
+      Caption = 'Agrupaciones  '
+      ImageIndex = 18
+      object dbgCatalogo: TcxGrid
+        Left = 0
+        Top = 113
+        Width = 616
+        Height = 303
+        Align = alClient
+        TabOrder = 0
+        LookAndFeel.Kind = lfUltraFlat
+        LookAndFeel.NativeStyle = True
+        object dbgCatalogoDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          DataController.DataSource = dsObtenerBombasDeAgrupacion
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          FilterRow.InfoText = 'Haga click aqu'#237' para filtrar los datos'
+          FilterRow.Visible = True
+          FilterRow.ApplyChanges = fracImmediately
+          OptionsBehavior.IncSearch = True
+          OptionsData.Deleting = False
+          OptionsData.DeletingConfirmation = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsSelection.MultiSelect = True
+          OptionsView.Indicator = True
+          object dbgCatalogoDBTableView1BombaID: TcxGridDBColumn
+            DataBinding.FieldName = 'BombaID'
+            Width = 89
+          end
+          object dbgCatalogoDBTableView1NoBomba: TcxGridDBColumn
+            DataBinding.FieldName = 'NoBomba'
+            Width = 113
+          end
+          object dbgCatalogoDBTableView1PosicionCarga: TcxGridDBColumn
+            Caption = 'Posicion'
+            DataBinding.FieldName = 'PosicionCarga'
+            Width = 164
+          end
+          object dbgCatalogoDBTableView1Nombre: TcxGridDBColumn
+            DataBinding.FieldName = 'Nombre'
+            Width = 187
+          end
+        end
+        object dbgCatalogoLevel1: TcxGridLevel
+          GridView = dbgCatalogoDBTableView1
+        end
+      end
+      object cxGroupBox1: TcxGroupBox
+        Left = 0
+        Top = 0
+        Align = alTop
+        Caption = ' Agrupaci'#243'n y Bomba'
+        Style.BorderStyle = ebsUltraFlat
+        TabOrder = 1
+        Height = 113
+        Width = 616
+        object cxLabel3: TcxLabel
+          Left = 16
+          Top = 24
+          Caption = 'Agrupaci'#243'n'
+          Style.BorderStyle = ebsNone
+        end
+        object cxLabel5: TcxLabel
+          Left = 16
+          Top = 64
+          Caption = 'Bomba'
+          Style.BorderStyle = ebsNone
+        end
+        object dbBomba: TcxDBLookupComboBox
+          Left = 16
+          Top = 80
+          DataBinding.DataField = 'BombaID'
+          DataBinding.DataSource = dsAgrupacionBomba
+          Enabled = False
+          Properties.CharCase = ecUpperCase
+          Properties.KeyFieldNames = 'BombaID'
+          Properties.ListColumns = <
+            item
+              FieldName = 'BombaID'
+            end
+            item
+              FieldName = 'NoBomba'
+            end
+            item
+              FieldName = 'PosicionCarga'
+            end
+            item
+              FieldName = 'Producto'
+            end>
+          Properties.ListSource = dsBombasDisponibles
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 2
+          Width = 257
+        end
+        object dbAgrupacion: TcxDBLookupComboBox
+          Left = 16
+          Top = 41
+          DataBinding.DataField = 'AgrupacionID'
+          DataBinding.DataSource = dsAgrupacionBomba
+          Enabled = False
+          Properties.KeyFieldNames = 'AgrupacionID'
+          Properties.ListColumns = <
+            item
+              FieldName = 'Nombre'
+            end>
+          Properties.ListSource = dsAgrupacionPorEstacion
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 3
+          OnExit = dbAgrupacionExit
+          Width = 257
+        end
+      end
+    end
+  end
+  object dsAgrupacion: TDADataSource
+    DataSet = cdsAgrupacion.Dataset
+    DataTable = cdsAgrupacion
+    Left = 592
+    Top = 288
+  end
+  object tblCatalogo: TdxMemData
+    Indexes = <>
+    SortOptions = []
+    Left = 536
+    Top = 336
+  end
+  object cdsAgrupacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'AgrupacionID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 30
+        Required = True
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'AlmacenID'
+        DataType = datInteger
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo Agrupacion'
+    IndexDefs = <>
+    Left = 560
+    Top = 288
+  end
+  object dsBombas: TDADataSource
+    DataSet = cdsBombas.Dataset
+    DataTable = cdsBombas
+    Left = 592
+    Top = 144
+  end
+  object cdsBombas: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'NoBomba'
+        DataType = datInteger
+      end
+      item
+        Name = 'PosicionCarga'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'Producto'
+        DataType = datString
+        Size = 30
+        LogChanges = False
+        Lookup = True
+        LookupSource = dsProductos
+        LookupKeyFields = 'ProductoID'
+        LookupResultField = 'Nombre'
+        KeyFields = 'ProductoID'
+        LookupCache = True
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo Bomba'
+    IndexDefs = <>
+    Left = 560
+    Top = 144
+  end
+  object cdsAgrupacionBomba: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'AgrupacionID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'NoBomba'
+        DataType = datInteger
+        LogChanges = False
+        Lookup = True
+        LookupSource = dsBombas
+        LookupKeyFields = 'BombaID'
+        LookupResultField = 'NoBomba'
+        KeyFields = 'BombaID'
+        LookupCache = True
+      end
+      item
+        Name = 'Posicion'
+        DataType = datInteger
+        LogChanges = False
+        DisplayLabel = 'Posici'#243'n'
+        Lookup = True
+        LookupSource = dsBombas
+        LookupKeyFields = 'BombaID'
+        LookupResultField = 'PosicionCarga'
+        KeyFields = 'BombaId'
+        LookupCache = True
+      end
+      item
+        Name = 'Producto'
+        DataType = datString
+        LogChanges = False
+        Lookup = True
+        LookupSource = dsBombas
+        LookupKeyFields = 'BombaID'
+        LookupResultField = 'Producto'
+        KeyFields = 'BombaID'
+        LookupCache = True
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    BeforePost = cdsAgrupacionBombaBeforePost
+    AfterPost = cdsAgrupacionBombaAfterPost
+    AfterDelete = cdsAgrupacionBombaAfterDelete
+    LogicalName = 'dbo AgrupacionBomba'
+    IndexDefs = <>
+    Left = 509
+    Top = 336
+  end
+  object dsAgrupacionBomba: TDADataSource
+    DataSet = cdsAgrupacionBomba.Dataset
+    DataTable = cdsAgrupacionBomba
+    Left = 510
+    Top = 364
+  end
+  object cdsProductos: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Codigo'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 150
+      end
+      item
+        Name = 'PrecioVenta'
+        DataType = datFloat
+      end
+      item
+        Name = 'ClavePemex'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Costo'
+        DataType = datFloat
+      end
+      item
+        Name = 'Status'
+        DataType = datBoolean
+      end
+      item
+        Name = 'Barras'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'CuentaContableCompra'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'CuentaContableVenta'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'Inventariable'
+        DataType = datBoolean
+      end
+      item
+        Name = 'CategoriaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Puntos'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'Tipo'
+        Value = '1'
+        ParamType = daptInput
+      end
+      item
+        Name = 'EstacionID'
+        Value = '4120'
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'ObtenerProductoPorTipo'
+    IndexDefs = <>
+    Left = 176
+    Top = 312
+  end
+  object dsProductos: TDADataSource
+    DataSet = cdsProductos.Dataset
+    DataTable = cdsProductos
+    Left = 168
+    Top = 344
+  end
+  object cdsBombasDisponibles: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'NoBomba'
+        DataType = datInteger
+      end
+      item
+        Name = 'PosicionCarga'
+        DataType = datInteger
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Producto'
+        DataType = datString
+        Size = 30
+        LogChanges = False
+        Lookup = True
+        LookupSource = dsProductos
+        LookupKeyFields = 'ProductoID'
+        LookupResultField = 'Nombre'
+        KeyFields = 'ProductoID'
+        LookupCache = True
+      end>
+    Params = <
+      item
+        Name = 'Estacion'
+        Value = ''
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'BombaDisponible'
+    IndexDefs = <>
+    Left = 432
+    Top = 328
+  end
+  object dsBombasDisponibles: TDADataSource
+    DataSet = cdsBombasDisponibles.Dataset
+    DataTable = cdsBombasDisponibles
+    Left = 432
+    Top = 360
+  end
+  object cdsAgrupacionPorEstacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'AgrupacionID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 30
+        Required = True
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'AlmacenID'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = ''
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo AgrupacionPorEstacion'
+    IndexDefs = <>
+    Left = 480
+    Top = 336
+  end
+  object dsAgrupacionPorEstacion: TDADataSource
+    DataSet = cdsAgrupacionPorEstacion.Dataset
+    DataTable = cdsAgrupacionPorEstacion
+    Left = 481
+    Top = 364
+  end
+  object cdsEstacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 70
+        Required = True
+      end
+      item
+        Name = 'RazonSocial'
+        DataType = datString
+        Size = 70
+      end
+      item
+        Name = 'RFC'
+        DataType = datString
+        Size = 30
+        Required = True
+      end
+      item
+        Name = 'ClavePemex'
+        DataType = datString
+        Size = 10
+        Required = True
+      end
+      item
+        Name = 'NoBombas'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'Colonia'
+        DataType = datString
+        Size = 80
+      end
+      item
+        Name = 'Ciudad'
+        DataType = datString
+        Size = 30
+      end
+      item
+        Name = 'CodigoPostal'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Host'
+        DataType = datString
+        Size = 30
+      end
+      item
+        Name = 'CuentaContable'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'Impuesto'
+        DataType = datFloat
+        Required = True
+      end
+      item
+        Name = 'Producto'
+        DataType = datString
+        Size = 30
+        LogChanges = False
+        Lookup = True
+        LookupSource = dsProductos
+        LookupKeyFields = 'ProductoID'
+        LookupResultField = 'Nombre'
+        KeyFields = 'ProductoID'
+        LookupCache = True
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo Estacion'
+    IndexDefs = <>
+    Left = 128
+    Top = 304
+  end
+  object dsEstacion: TDADataSource
+    DataSet = cdsEstacion.Dataset
+    DataTable = cdsEstacion
+    Left = 136
+    Top = 336
+  end
+  object cdsObtenerBombasDeAgrupacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'AgrupacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'NoBomba'
+        DataType = datInteger
+      end
+      item
+        Name = 'PosicionCarga'
+        DataType = datInteger
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 30
+      end>
+    Params = <
+      item
+        Name = 'Agrupacion'
+        Value = ''
+        ParamType = daptInput
+      end>
+    MasterParamsMappings.Strings = (
+      'Agrupacion=AgrupacionID')
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    MasterFields = 'AgrupacionID'
+    DetailFields = 'AgrupacionID'
+    LogicalName = 'ObtenerAgrupacionBomba'
+    IndexDefs = <>
+    Left = 16
+    Top = 216
+  end
+  object dsObtenerBombasDeAgrupacion: TDADataSource
+    DataSet = cdsObtenerBombasDeAgrupacion.Dataset
+    DataTable = cdsObtenerBombasDeAgrupacion
+    Left = 16
+    Top = 248
+  end
+end

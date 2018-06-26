@@ -1,0 +1,603 @@
+unit ufrmParametros;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, dxSkinsCore, dxSkinsDefaultPainters, cxGraphics, Menus,
+  cxLookAndFeelPainters, cxTextEdit, cxDBEdit, cxCurrencyEdit, StdCtrls,
+  cxButtons, cxDropDownEdit, cxLookupEdit, cxDBLookupEdit, cxDBLookupComboBox,
+  cxMaskEdit, cxCalendar, cxLabel, cxControls, cxContainer, cxEdit, cxGroupBox,
+  LibraryValesCupones_Intf, cxClasses, dxRibbon, DB, uDAInterfaces,
+  uDADataTable, uDAScriptingProvider, uDACDSDataTable, cxImageComboBox,
+  cxSpinEdit, dxSkinsdxRibbonPainter, dxRibbonForm, ExtCtrls, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary,
+  dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
+  dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinSilver, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
+  dxSkinXmas2008Blue, cxLookAndFeels, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinFoggy, dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSpringTime,
+  dxSkinMetropolis, dxSkinMetropolisDark, dxSkinOffice2013DarkGray,
+  dxSkinOffice2013LightGray, dxSkinOffice2013White, Vcl.ComCtrls, dxCore,
+  cxDateUtils, dxRibbonSkins, uDAFields, uROComponent;
+
+type
+  TfrmParametros = class(TdxCustomRibbonForm)
+    cdsEstacion: TDACDSDataTable;
+    dsCliente: TDADataSource;
+    cdsCliente: TDACDSDataTable;
+    dsAgrupacion: TDADataSource;
+    cdsAgrupacion: TDACDSDataTable;
+    dsSecuenciaFin: TDADataSource;
+    cdsSecuenciaFin: TDACDSDataTable;
+    cdsSecuenciaIni: TDACDSDataTable;
+    dsSecuenciaini: TDADataSource;
+    cdsSecuenciaLiquidacionInicial: TDACDSDataTable;
+    cdsSecuenciaLiquidacionFinal: TDACDSDataTable;
+    dsSEcuenciaLiquidacionFinal: TDADataSource;
+    dsSecuenciaLiquidacionInicial: TDADataSource;
+    dsAlmacen: TDADataSource;
+    cdsAlmacen: TDACDSDataTable;
+    dsObtenerReferenciaTransaccion: TDADataSource;
+    cdsObtenerReferenciaTransaccion: TDACDSDataTable;
+    dsSecuenciadelCorte: TDADataSource;
+    cdsSecuenciadelCorte: TDACDSDataTable;
+    dsSecuenciaEstacion: TDADataSource;
+    cdsSecuenciaEstacion: TDACDSDataTable;
+
+    dsFolioFactura: TDADataSource;
+    cdsFolioFactura: TDACDSDataTable;
+    cdsEstaciones: TDACDSDataTable;
+    dsEstaciones: TDADataSource;
+    cdsEmpleados: TDACDSDataTable;
+    dsEmpleados: TDADataSource;
+    cxFacturaID: TcxGroupBox;
+    cxLabel17: TcxLabel;
+    edtFacturaID: TcxTextEdit;
+    cxTurno: TcxGroupBox;
+    cxLabel15: TcxLabel;
+    cxTxtTurno: TcxTextEdit;
+    cxClientes: TcxGroupBox;
+    cxBtnClienteIni: TcxButton;
+    cxTextClienteIni: TcxDBTextEdit;
+    cxClienteIni: TcxCurrencyEdit;
+    cxLabel13: TcxLabel;
+    cxLabel14: TcxLabel;
+    cxClienteFin: TcxCurrencyEdit;
+    cxTextClienteFin: TcxDBTextEdit;
+    cxBtnClienteFin: TcxButton;
+    cxCliente: TcxGroupBox;
+    cxLabel2: TcxLabel;
+    edtBuscaClienteIni: TcxButton;
+    txtNoCliente: TcxCurrencyEdit;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxAgrupacion: TcxGroupBox;
+    CmbAgrupacion: TcxLookupComboBox;
+    cxRangoPeriodos: TcxGroupBox;
+    Label11: TLabel;
+    Label13: TLabel;
+    Label20: TLabel;
+    edtEjercicio: TcxSpinEdit;
+    cbPeriodoIni: TcxImageComboBox;
+    cbPeriodoFin: TcxImageComboBox;
+    cxFactura: TcxGroupBox;
+    Label12: TLabel;
+    Label10: TLabel;
+    edtFactura: TcxCurrencyEdit;
+    edtSerie: TcxImageComboBox;
+    cxRangoEstacion: TcxGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    dbcEstacionIni: TcxLookupComboBox;
+    dbcEstacionFin: TcxLookupComboBox;
+    cxRangoEmpleados: TcxGroupBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    dbcEmpleadoIni: TcxLookupComboBox;
+    dbcEmpledoFin: TcxLookupComboBox;
+    cxSecuenciaEstacion: TcxGroupBox;
+    cxLabel12: TcxLabel;
+    SecuenciaEstacion: TcxLookupComboBox;
+    cxMontoFacturado: TcxGroupBox;
+    txtMontoFacturado: TcxTextEdit;
+    cxLabel8: TcxLabel;
+    cxFacturasCompras: TcxGroupBox;
+    cxCompras: TcxLookupComboBox;
+    cxSecuenciaCorteIni: TcxGroupBox;
+    cxLabel11: TcxLabel;
+    SecuenciaCorte: TcxTextEdit;
+    cxGroupBox1: TcxGroupBox;
+    cxLookupComboBox1: TcxLookupComboBox;
+    cxSecuenciaLiquidacion: TcxGroupBox;
+    cxLabel5: TcxLabel;
+    cxLabel6: TcxLabel;
+    TxtSecuenciaIniLiquidacion: TcxTextEdit;
+    TxtSecuenciaFinLiquidacion: TcxTextEdit;
+    cxStatus: TcxGroupBox;
+    cxTipoMantenimiento: TcxGroupBox;
+    cxLabel9: TcxLabel;
+    CmbTipoMantenimiento: TcxLookupComboBox;
+    cxSerie: TcxGroupBox;
+    cxLabel4: TcxLabel;
+    txtSerie: TcxTextEdit;
+    cxFolioFactura: TcxGroupBox;
+    cxLabel7: TcxLabel;
+    txtFolioFactura: TcxTextEdit;
+    cxLabel16: TcxLabel;
+    TxtSerieFactura: TcxTextEdit;
+    btnAceptar: TcxButton;
+    btnCancelar: TcxButton;
+    cxPeriodo: TcxGroupBox;
+    lblFechaInicial: TcxLabel;
+    cxLabel1: TcxLabel;
+    edtFechaInicial: TcxDateEdit;
+    edtFechaFinal: TcxDateEdit;
+    cxEstacion: TcxGroupBox;
+    lblEstacion: TcxLabel;
+    cxEstaciones: TcxLookupComboBox;
+    dxRibbon1: TdxRibbon;
+    cdsClientes: TDACDSDataTable;
+    dsClientes: TDADataSource;
+    dsEmpresa: TDADataSource;
+    rgStatus: TRadioGroup;
+    cdsTipoMantenimiento: TDACDSDataTable;
+    dsTipoMantenimiento: TDADataSource;
+    procedure cxBtnClienteFinClick(Sender: TObject);
+    procedure cxBtnClienteIniClick(Sender: TObject);
+    procedure dbcEmpledoFinEnter(Sender: TObject);
+    procedure dbcEmpleadoIniEnter(Sender: TObject);
+    procedure btnAceptarClick(Sender: TObject);
+    procedure SecuenciaEstacionEnter(Sender: TObject);
+    procedure SecuenciaCorteEnter(Sender: TObject);
+    procedure cxLookupComboBox1Enter(Sender: TObject);
+    procedure CmbSecuenciaIniKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure CmbSecuenciaIniEnter(Sender: TObject);
+    procedure btnCancelarClick(Sender: TObject);
+    procedure txtNoClienteExit(Sender: TObject);
+    procedure edtBuscaClienteIniClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    Procedure CargarSecuenciaIniFin;
+    Procedure LimpiaParametros;
+    procedure cxClienteFinExit(Sender: TObject);
+    procedure cxClienteIniExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Parametros: TParametros;
+    procedure PrenderParametros(Cad : String);
+
+  end;
+function ObtenParametros(Parametros, Titulo: String): TParametros;
+
+var
+  frmParametros: TfrmParametros;
+
+implementation
+uses  Modules,uDM,ufrmBuscarCliente, UtileriasComun, ufrmBuscarEstacion2;
+{$R *.dfm}
+
+{ TfrmParametros }
+
+function ObtenParametros(Parametros, Titulo: String): TParametros;
+var
+  Aux: TfrmParametros;
+begin
+  Result:=nil;
+  Aux:=TfrmParametros.Create(nil);
+  Aux.Caption:=Titulo;
+  //Aux.dxRibbon1.ColorSchemeName:=RibbonSchema[ColorRibbonSchema];
+  Aux.PrenderParametros(Parametros);
+  if Aux.ShowModal = mrOK then
+    Result:=Aux.Parametros;
+  Aux.Free;
+end;
+
+procedure TfrmParametros.btnAceptarClick(Sender: TObject);
+begin
+  inherited;
+    Parametros:=TParametros.Create;
+    LimpiaParametros;
+    If cxEstacion.Visible then       //Estacion
+       //Parametros.Estacion:=cdsEstacion.FieldByName('EstacionID').AsInteger;
+        Parametros.Estacion:=cxEstaciones.EditValue;//strtoint(txtEstacion.Text);
+    if cxStatus.Visible=true then    //Status
+       Parametros.Status:=  rgStatus.Items[rgStatus.ItemIndex];
+
+    If cxPeriodo.Visible=true then   //Periodo
+    begin
+      Parametros.Ejercicio:=strtoint(FormatDateTime('yyyy',edtFechaInicial.EditValue));
+      Parametros.Periodo:=strtoint(FormatDateTime('mm',edtFechaInicial.EditValue));
+      Parametros.Dia:= strtoint(FormatDateTime('dd',edtFechaInicial.EditValue));
+
+      Parametros.FechaIni:=edtFEchaInicial.EditValue;
+      Parametros.FechaFin:=edtFechaFinal.EditValue;
+
+    end;
+    If cxSerie.Visible=true then     //Serie de Factura
+      Parametros.Serie:=txtSerie.Text;
+    If cxClientes.Visible=true then   //Cliente
+    begin
+        Parametros.ClienteIni:=strtoint(cxClienteIni.EditValue);
+        Parametros.ClienteFin:=strtoint(cxClienteFin.EditValue);
+    end;
+    if cxTurno.Visible=True then
+       Parametros.Turno:=StrToInt(cxTxtTurno.Text);
+
+    If cxTipoMantenimiento.Visible=true then
+    begin
+       Parametros.TipoMantenimiento:= cmbTipoMantenimiento.EditingValue;
+    end;
+
+    If cxAgrupacion.Visible=True then
+      Parametros.Agrupacion:=cmbAgrupacion.EditValue;
+    If cxGroupBox1.Visible=True then
+      Parametros.Almacen:=cxLookupComboBox1.EditValue;
+    If cxSecuenciaLiquidacion.Visible=True then
+    Begin
+      Parametros.SecuenciaIniLiquidacion:=StrToInt(TxtSecuenciaIniLiquidacion.text);
+      Parametros.SecuenciaFinLiquidacion:=StrToInt(TxtSecuenciaFinLiquidacion.text);
+    End;
+    If cxFacturasCompras.Visible=True then
+      IF cxCompras.EditValue>0 then
+        Parametros.FacturasdeCompras:=cxCompras.EditValue;
+    IF cxFolioFactura.Visible=True then
+    Begin
+//      cdsFolioFactura.Close;
+//      cdsFolioFactura.ParamByName('Serie').asstring:=TxtSerieFactura.Text;
+//      cdsFolioFactura.ParamByName('Folio').asInteger:=strToInt(txtFolioFactura.Text);
+//      cdsFolioFactura.Open;
+//      Parametros.Factura:=cdsFolioFactura.FieldByName('FacturaID').asinteger;
+      Parametros.Serie:=txtSerieFactura.Text;//strToInt(txtFolioFactura.Text);
+      Parametros.FolioFactura:=StrToInt(txtFolioFactura.Text);//strToInt(txtFolioFactura.Text);
+    End;
+    If cxMontoFacturado.Visible=True then
+       Parametros.MontoFacturado:=strtofloat(txtMontoFacturado.Text);
+    //If cxSecuenciaCorteIni.Visible=True then
+    //   Parametros.SecuenciaIni:=StrToInt(SecuenciaCorte.Text);
+    //if cxSecuenciaEstacion.Visible=True then
+    //begin
+    //   Parametros.SecuenciaIniLiquidacion:=SecuenciaEstacion.EditValue;
+    //   Parametros.SecuenciaFinLiquidacion:=SecuenciaEstacion.EditValue;
+    //end;
+    if cxFacturaID.Visible then
+       Parametros.Factura:=edtFacturaID.EditValue;
+    if cxRangoEstacion.Visible then
+    begin
+       Parametros.EstacionIni:= dbcEstacionIni.EditValue;
+       Parametros.EstacionFin:= dbcEstacionFin.EditValue;
+    end;
+    if cxRangoEmpleados.Visible then
+    begin
+       Parametros.EmpleadoIni:= dbcEmpleadoIni.EditValue;
+       Parametros.EmpleadoFin:= dbcEmpledoFin.EditValue;
+    end;
+
+  Parametros.Usuario:= DM.EmpleadoID;
+ //end;
+  ModalResult:=mrOK;
+
+end;
+
+procedure TfrmParametros.btnCancelarClick(Sender: TObject);
+begin
+  inherited;
+  ModalResult:=mrCancel;
+end;
+
+procedure TfrmParametros.CargarSecuenciaIniFin;
+var
+fecha:DateTime;
+begin
+  inherited;
+  If (CmbAgrupacion.EditValue>0) then
+  Begin
+    Fecha:=edtFechaInicial.EditValue;
+    cdsSecuenciaIni.Close;
+    cdsSecuenciaIni.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+    cdsSecuenciaIni.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+    cdsSecuenciaIni.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+    cdsSecuenciaIni.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+    cdsSecuenciaIni.ParamByName('AgrupacionID').AsInteger:=CmbAgrupacion.EditValue;
+    cdsSecuenciaIni.Open;
+
+    cdsSecuenciaLiquidacionInicial.Close;
+    cdsSecuenciaLiquidacionInicial.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+    cdsSecuenciaLiquidacionInicial.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+    cdsSecuenciaLiquidacionInicial.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+    cdsSecuenciaLiquidacionInicial.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+    cdsSecuenciaLiquidacionInicial.ParamByName('AgrupacionID').AsInteger:=CmbAgrupacion.EditValue;
+    cdsSecuenciaLiquidacionInicial.Open;
+
+    Fecha:=edtFechaFinal.EditValue;
+    cdsSecuenciaFin.Close;
+    cdsSecuenciaFin.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+    cdsSecuenciaFin.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+    cdsSecuenciaFin.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+    cdsSecuenciaFin.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+    cdsSecuenciaFin.ParamByName('AgrupacionID').AsInteger:=CmbAgrupacion.EditValue;
+    cdsSecuenciaFin.Open;
+
+    cdsSecuenciaLiquidacionFinal.Close;
+    cdsSecuenciaLiquidacionFinal.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+    cdsSecuenciaLiquidacionFinal.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+    cdsSecuenciaLiquidacionFinal.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+    cdsSecuenciaLiquidacionFinal.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+    cdsSecuenciaLiquidacionFinal.ParamByName('AgrupacionID').AsInteger:=CmbAgrupacion.EditValue;
+    cdsSecuenciaLiquidacionFinal.Open;
+  End
+  else
+  Begin
+    //Showmessage('Falta Capturar Agrupación');
+    CmbAgrupacion.SetFocus;
+  End;
+end;
+
+procedure TfrmParametros.CmbSecuenciaIniEnter(Sender: TObject);
+begin
+  inherited;
+  CargarSecuenciaIniFin;
+
+end;
+
+procedure TfrmParametros.CmbSecuenciaIniKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var
+ fecha:DateTime;
+begin
+  inherited;
+  Fecha:=edtFechaInicial.EditValue;
+    cdsSecuenciaIni.Close;
+    cdsSecuenciaIni.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+    cdsSecuenciaIni.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+    cdsSecuenciaIni.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+    cdsSecuenciaIni.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+    cdsSecuenciaIni.ParamByName('AgrupacionID').AsInteger:=CmbAgrupacion.EditValue;
+    cdsSecuenciaIni.Open;
+end;
+
+procedure TfrmParametros.cxBtnClienteFinClick(Sender: TObject);
+begin
+  frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+  frmBuscarCliente.ShowModal;
+  if frmBuscarCliente.OK then
+  begin
+      cxClienteFin.Text:=inttostr(frmBuscarCliente.Clave);
+      cdsClientes.Close;
+      cdsClientes.ParamByName('ClienteID').AsInteger:=frmBuscarCliente.Clave;
+      cdsClientes.Open;
+      cxTextClienteFin.Text:=cdsClientes.FieldByName('Nombre').AsString;
+  end;
+end;
+
+procedure TfrmParametros.cxBtnClienteIniClick(Sender: TObject);
+begin
+  frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+  frmBuscarCliente.ShowModal;
+  if frmBuscarCliente.OK then
+  begin
+      cxClienteIni.Text:=inttostr(frmBuscarCliente.Clave);
+      cdsClientes.Close;
+      cdsClientes.ParamByName('ClienteID').AsInteger:=frmBuscarCliente.Clave;
+      cdsClientes.Open;
+      cxTextClienteIni.Text:=cdsClientes.FieldByName('Nombre').AsString;
+  end;
+end;
+
+procedure TfrmParametros.cxClienteFinExit(Sender: TObject);
+begin
+  cdsClientes.Close;
+  cdsClientes.ParamByName('ClienteID').AsInteger:=cxClienteFin.EditValue;
+  cdsClientes.Open;
+end;
+
+procedure TfrmParametros.cxClienteIniExit(Sender: TObject);
+begin
+  cdsCliente.Close;
+  cdsCliente.ParamByName('ClienteID').AsInteger:=cxClienteIni.EditValue;
+  cdsCliente.Open;
+end;
+
+procedure TfrmParametros.cxLookupComboBox1Enter(Sender: TObject);
+begin
+  inherited;
+  if cxEstaciones.EditValue > 0 then
+  begin
+    cdsAlmacen.Close;
+    cdsAlmacen.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+    cdsAlmacen.Open;
+  end
+  else
+  begin
+    Showmessage('Falta Capturar La Estación');
+    cxEstaciones.SetFocus;
+  end;
+end;
+
+procedure TfrmParametros.dbcEmpleadoIniEnter(Sender: TObject);
+begin
+  //cdsEmpleados.Close;
+  //cdsEmpleados.ParamByName('EstacionID').AsInteger:= strtoint(cxEstaciones.Text);
+  //cdsEmpleados.Open;
+end;
+
+procedure TfrmParametros.dbcEmpledoFinEnter(Sender: TObject);
+begin
+  //cdsEmpleados.Close;
+  //cdsEmpleados.ParamByName('EstacionID').AsInteger:= strtoint(cxEstaciones.Text);
+  //cdsEmpleados.Open;
+end;
+
+procedure TfrmParametros.edtBuscaClienteIniClick(Sender: TObject);
+begin
+  inherited;
+  frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+  frmBuscarCliente.ShowModal;
+  if frmBuscarCliente.OK then
+  begin
+    txtNoCliente.Text:=inttostr(frmBuscarCliente.Clave);
+  end;
+end;
+
+procedure TfrmParametros.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dxRibbon1.ColorSchemeName:=RibbonSchema[ColorRibbonSchema];
+  cxEstaciones.EditValue:=DM.Estacion;
+
+  edtFechaInicial.EditValue:=Trunc(Now);
+  edtFechaFinal.EditValue:=Trunc(Now);
+end;
+
+procedure TfrmParametros.FormShow(Sender: TObject);
+begin
+  inherited;
+  Width:=630;
+  Height:=530;
+
+  cdsEstaciones.Close;
+  cdsEstaciones.Open;
+  cdsEmpleados.Close;
+  //cdsEmpleados.ParamByName('EstacionID').AsInteger:= DM.Estacion;
+  cdsEmpleados.Open;
+
+  edtFechaInicial.Date:=Trunc(Now);
+  edtFechaFinal.Date:=Trunc(Now);
+  cxEstaciones.EditValue:=DM.Estacion;
+
+  //cdsTipoMantenimiento.Close;
+  //cdsTipoMantenimiento.Open;
+
+  //cdsAgrupacion.Close;
+  //cdsAgrupacion.ParamByName('EstacionID').AsInteger:=DM.Estacion;
+  //cdsAgrupacion.Open;
+  dbcEstacionIni.EditValue:= 1;
+  dbcEstacionFin.EditValue:= 9999;
+end;
+
+procedure TfrmParametros.LimpiaParametros;
+begin
+  Parametros.FechaIni:= Trunc(now);
+  Parametros.FechaFin:= Trunc(now);
+  Parametros.ClienteIni:= 0;
+  Parametros.ClienteFin:= 999999;
+  Parametros.Estacion:=   DM.Estacion;
+  Parametros.TipoMantenimiento:= 0;
+  Parametros.Factura := 0;
+  Parametros.FolioFactura := 0;
+  Parametros.Serie := '';
+  Parametros.Ejercicio := 0;
+  Parametros.PeriodoFin := 0;
+  Parametros.Periodo := 0;
+  Parametros.Dia := 0;
+  Parametros.EjercicioFin := 0;
+  Parametros.PeriodoFin := 0;
+  Parametros.DiaFin := 0;
+  Parametros.Secuencia := '';
+  Parametros.Status := '';
+  Parametros.Agrupacion := 0;
+  Parametros.Almacen := 0;
+  Parametros.SecuenciaIniLiquidacion := 0;
+  Parametros.SecuenciaFinLiquidacion := 0;
+  Parametros.FacturasdeCompras := 0;
+  Parametros.MontoFacturado := 0;
+  Parametros.Turno := 0;
+  Parametros.EmpleadoIni := 0;
+  Parametros.EmpleadoFin := 9999;
+  Parametros.EstacionIni := 0;
+  Parametros.EstacionFin := 9999;
+end;
+
+procedure TfrmParametros.PrenderParametros(Cad: String);
+var
+  i, j : Integer;
+ // ParametrosActivos:Boolean;
+procedure PrenderControl(AControl: TCustomControl; AVisible: Boolean);
+begin
+  AControl.Visible:=AVisible;
+  if (AVisible) and (AControl.Tag <> 888) then
+  begin
+    AControl.Left := 8;
+    AControl.Top := j;
+    AControl.TabOrder := i;
+    j:=j + 8 + AControl.Height;
+    Inc(i);
+    //ParametrosActivos:=True;
+  end;
+end;
+
+begin
+  //ParametrosActivos:=False;
+  i:=0;
+  J:=48;
+
+  PrenderControl(cxPeriodo, Pos('A', Cad) > 0);
+  PrenderControl(cxClientes, Pos('B', Cad) > 0);
+  PrenderControl(cxFolioFactura, Pos('F', Cad) > 0);
+  PrenderControl(cxTurno, Pos('R', Cad) > 0);
+  PrenderControl(cxEstacion, Pos('C', Cad) > 0);
+  PrenderControl(cxAgrupacion, Pos('K',Cad)> 0);
+  PrenderControl(cxTipoMantenimiento, Pos('D', Cad)>0);
+  PrenderControl(cxSerie, Pos('G', Cad) > 0);
+  PrenderControl(cxFacturaID, Pos('E', Cad) > 0);
+  PrenderControl(cxStatus, Pos('J', Cad)> 0);
+
+  PrenderControl(cxGroupBox1, Pos('L',Cad)> 0);
+  PrenderControl(cxSecuenciaLiquidacion, Pos('M', Cad)>0);
+  PrenderControl(cxFacturasCompras, Pos('N', Cad)>0);
+  PrenderControl(cxMontoFacturado, Pos('O',Cad)>0);
+  PrenderControl(cxSecuenciaCorteIni, Pos('P',Cad)>0);
+  PrenderControl(cxSecuenciaEstacion, Pos('Q',Cad)>0);
+  PrenderControl(cxRangoEstacion, Pos('S',Cad)>0);
+  PrenderControl(cxRangoEmpleados, Pos('T',Cad)>0);
+end;
+
+procedure TfrmParametros.SecuenciaCorteEnter(Sender: TObject);
+var
+ fecha:DateTime;
+  begin
+  inherited;
+  Fecha:=edtFechaInicial.EditValue;
+   { cdsSecuenciaIni.Close;
+    cdsSecuenciaIni.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+    cdsSecuenciaIni.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+    cdsSecuenciaIni.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+    //cdsSecuenciaIni.ParamByName('EstacionID').AsInteger:=txtEstacion.EditingValue;
+    cdsSecuenciaIni.ParamByName('AgrupacionID').AsInteger:=CmbAgrupacion.EditValue;
+    cdsSecuenciaIni.Open; }
+    cdsSecuenciadelCorte.Close;
+    cdsSecuenciadelCorte.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+    cdsSecuenciadelCorte.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+    cdsSecuenciadelCorte.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+    cdsSecuenciadelCorte.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+    cdsSecuenciadelcorte.Open;
+end;
+
+procedure TfrmParametros.SecuenciaEstacionEnter(Sender: TObject);
+var
+   Fecha:DateTime;
+begin
+  inherited;
+  Fecha:=edtFechaInicial.EditValue;
+  cdsSecuenciaEstacion.Close;
+  cdsSecuenciaEstacion.ParamByName('EstacionID').AsInteger:=cxEstaciones.EditValue;
+  cdsSecuenciaEstacion.ParamByName('Ejercicio').AsInteger:=strtoint(FormatDateTime('yyyy',Fecha));
+  cdsSecuenciaEstacion.ParamByName('Periodo').AsInteger:=strtoint(FormatDateTime('mm',Fecha));
+  cdsSecuenciaEstacion.ParamByName('Dia').AsInteger:=strtoint(FormatDateTime('dd',Fecha));
+  cdsSecuenciaEstacion.Open;
+end;
+
+procedure TfrmParametros.txtNoClienteExit(Sender: TObject);
+begin
+  inherited;
+  cdsCliente.Close;
+  cdsCliente.ParamByName('ClienteID').AsInteger:=txtNocliente.EditValue;
+  cdsCliente.Open;
+
+  cxTextClienteIni.Text:= cdsCliente.ParamByName('Nombre').AsString;
+end;
+
+end.

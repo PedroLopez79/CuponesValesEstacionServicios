@@ -1,0 +1,38 @@
+inherited frmTipoMantenimiento: TfrmTipoMantenimiento
+  Caption = 'frmTipoMantenimiento'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited pgcCatalogo: TcxPageControl
+    inherited cxTabSheet1: TcxTabSheet
+      ExplicitLeft = 3
+      ExplicitTop = 3
+      ExplicitWidth = 616
+      ExplicitHeight = 416
+    end
+    inherited cxTabSheet2: TcxTabSheet
+      ExplicitLeft = 3
+      ExplicitTop = 3
+      ExplicitWidth = 616
+      ExplicitHeight = 416
+    end
+  end
+  inherited cdsCatalogo: TDAMemDataTable
+    Fields = <
+      item
+        Name = 'IDTIPOMANTENIMIENTO'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'CONCEPTO'
+        DataType = datString
+        Size = 100
+      end>
+    LogicalName = 'dbo.TIPOMANTENIMIENTO'
+    RemoteDataAdapter = DM.RemoteDataAdapter
+  end
+  inherited dsCatalogo: TDADataSource
+    DataSet = cdsCatalogo.Dataset
+  end
+end

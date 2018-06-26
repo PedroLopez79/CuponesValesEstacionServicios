@@ -1,0 +1,941 @@
+unit ufrmLIQ;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinDarkSide, dxSkinGlassOceans,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinPumpkin, dxSkinSilver, dxSkinStardust, dxSkinSummer2008,
+  dxSkinsDefaultPainters, dxSkinValentine, dxSkinXmas2008Blue, Menus,
+  uDAScriptingProvider, uDADataTable, uDACDSDataTable, StdCtrls, cxButtons,
+  cxLabel, cxTextEdit, cxControls, cxContainer, cxEdit, cxGroupBox,
+  LibraryCistemGas_Intf, cxStyles, dxSkinscxPCPainter, cxCustomData, cxGraphics,
+  cxFilter, cxData, cxDataStorage, DB, cxDBData, cxGridCustomTableView,
+  cxGridTableView, cxGridDBTableView, uDAInterfaces, cxGridLevel, cxClasses,
+  cxGridCustomView, cxGrid, dxSkinSpringTime, cxMaskEdit, cxDropDownEdit,
+  cxCalendar, cxLookAndFeels, dxSkinDarkRoom, dxSkinFoggy, dxSkinSeven,
+  dxSkinSharp;
+
+const
+   MaximoValores: Integer = 10;
+
+type
+  TGrupoValor = record
+    Nombre: String;
+    Valor: Real;
+  end;
+
+  TValores = array[1..10] of TGrupoValor;
+
+type
+  TfrmLIQ = class(TfrmCustomModule)
+    cxGroupBox1: TcxGroupBox;
+    edtSecuencia: TcxTextEdit;
+    cxLabel1: TcxLabel;
+    cxButton1: TcxButton;
+    cdsLiquidacion: TDACDSDataTable;
+    cdsDespachadorLiquidacion: TDACDSDataTable;
+    cdsAgrupacionBomba: TDACDSDataTable;
+    cdsAgrupacion: TDACDSDataTable;
+    cdsLiquidacionDetalle: TDACDSDataTable;
+    cdsTipoValor: TDACDSDataTable;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1: TcxGrid;
+    DADataSource1: TDADataSource;
+    cxGrid1DBTableView1DetalleLiquidacionID: TcxGridDBColumn;
+    cxGrid1DBTableView1Cantidad: TcxGridDBColumn;
+    cxGrid1DBTableView1Importe: TcxGridDBColumn;
+    cxGrid1DBTableView1Referencia: TcxGridDBColumn;
+    cxGrid1DBTableView1Ticket: TcxGridDBColumn;
+    cxGrid1DBTableView1CuponID: TcxGridDBColumn;
+    cxGrid1DBTableView1SalidaID: TcxGridDBColumn;
+    cxGrid1DBTableView1ClienteID: TcxGridDBColumn;
+    cxGrid1DBTableView1BancoID: TcxGridDBColumn;
+    cxGrid1DBTableView1AuxiliarID: TcxGridDBColumn;
+    cxGrid1DBTableView1DespachadorLiquidacionID: TcxGridDBColumn;
+    cxGrid1DBTableView1TipoValorID: TcxGridDBColumn;
+    cxGrid1DBTableView1Grupo: TcxGridDBColumn;
+    cxGrid1DBTableView1Operador: TcxGridDBColumn;
+    cxGrid1DBTableView1Factor: TcxGridDBColumn;
+    cxGrid1DBTableView1ProductoID: TcxGridDBColumn;
+    cxGrid2DBTableView1: TcxGridDBTableView;
+    cxGrid2Level1: TcxGridLevel;
+    cxGrid2: TcxGrid;
+    DADataSource2: TDADataSource;
+    cxGrid2DBTableView1DespachadorLiquidacionID: TcxGridDBColumn;
+    cxGrid2DBTableView1DespachadorID: TcxGridDBColumn;
+    cxGrid2DBTableView1Importe: TcxGridDBColumn;
+    cxGrid2DBTableView1Entregado: TcxGridDBColumn;
+    cxGrid2DBTableView1Diferencia: TcxGridDBColumn;
+    cxGrid2DBTableView1LiquidacionID: TcxGridDBColumn;
+    cxGrid2DBTableView1AgrupacionID: TcxGridDBColumn;
+    cxGrid2DBTableView1PagareID: TcxGridDBColumn;
+    cxGrid3: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    cxGridLevel1: TcxGridLevel;
+    DADataSource3: TDADataSource;
+    cxGridDBTableView1LiquidacionID: TcxGridDBColumn;
+    cxGridDBTableView1VentasTotales: TcxGridDBColumn;
+    cxGridDBTableView1Entregado: TcxGridDBColumn;
+    cxGridDBTableView1Diferencia: TcxGridDBColumn;
+    cdsLiquidacionDepositos: TDACDSDataTable;
+    cdsLiquidacionDiferencia: TDACDSDataTable;
+    cdsLiquidacionDatos: TDACDSDataTable;
+    cxGroupBox2: TcxGroupBox;
+    cxLabel2: TcxLabel;
+    cxButton2: TcxButton;
+    dpeFecha: TcxDateEdit;
+    cxGrid4DBTableView1: TcxGridDBTableView;
+    cxGrid4Level1: TcxGridLevel;
+    cxGrid4: TcxGrid;
+    cdsLIQTurnos: TDACDSDataTable;
+    DADataSource4: TDADataSource;
+    cxGrid4DBTableView1RecID: TcxGridDBColumn;
+    cxGrid4DBTableView1TurnoID: TcxGridDBColumn;
+    cxGrid4DBTableView1Estatus: TcxGridDBColumn;
+    cxGrid4DBTableView1LIQEstatus: TcxGridDBColumn;
+    cxGrid4DBTableView1LIQFecha: TcxGridDBColumn;
+    cxGrid4DBTableView1Nombre: TcxGridDBColumn;
+    cxButton3: TcxButton;
+    procedure cxButton1Click(Sender: TObject);
+    procedure cdsLiquidacionDetalleNewRecord(DataTable: TDADataTable);
+    procedure FormCreate(Sender: TObject);
+    procedure cxButton2Click(Sender: TObject);
+    procedure cdsLiquidacionDatosNewRecord(DataTable: TDADataTable);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure cxGrid4DBTableView1FocusedRecordChanged(
+      Sender: TcxCustomGridTableView; APrevFocusedRecord,
+      AFocusedRecord: TcxCustomGridRecord;
+      ANewItemRecordFocusingChanged: Boolean);
+    procedure cxButton3Click(Sender: TObject);
+  private
+    { Private declarations }
+    ValorAux: Double;
+    TipoCambio: Double;
+    Lista: Array [1..10, 1..9] of Float;
+    Boton: Boolean;
+    procedure ProcesaValoresCorte(Aux: TValoresCorte);
+    procedure AgregaCombustible(Combustible: Integer; Cantidad, Importe: Double);
+    procedure AgregaTarjetaCupon(Consumo: TConsumoGas);
+    procedure AgregaValor(Nombre: String; Valor: Real; var Valores: TValores);
+    function CualValor(Nombre: String; Valores: TValores): Real;
+    procedure AjustaEfectivo;
+    procedure LimpiarDatos;
+
+    procedure ActionProcesar(Action: TBasicAction);
+  public
+    { Public declarations }
+    function CalculaImportes(Opcion: Integer; Aplicar: Boolean): Float;
+    procedure UpdateActionsState; override;
+  protected
+    procedure RegisterActions; override;
+  end;
+
+var
+  frmLIQ: TfrmLIQ;
+
+implementation
+
+uses
+  Modules, uDM, UtileriasComun, dmActions;
+
+{$R *.dfm}
+
+procedure TfrmLIQ.ActionProcesar(Action: TBasicAction);
+begin
+  cdsLiquidacion.ParamByName('EstacionID').AsInteger := DM.Estacion;
+  cdsLiquidacion.ParamByName('TurnoID').AsInteger := cdsLIQTurnos.FieldByName('TurnoID').AsInteger;
+  cdsLiquidacion.Open;
+
+  if cdsLiquidacion.RecordCount > 0 then
+  begin
+    cdsLiquidacion.Edit;
+    cdsLiquidacion.FieldByName('Estatus').AsInteger := 1;
+    cdsLiquidacion.FieldByName('UsuarioID').AsInteger := DM.Seguridad.NumeroEmpleado;
+    cdsLiquidacion.Post;
+
+    cdsLiquidacion.ApplyUpdates();
+
+    Boton := False;
+    UpdateActionsState;
+
+    MessageDlg('Liquidación Procesada.', mtInformation, [mbOK], 0);
+  end;
+end;
+
+procedure TfrmLIQ.AgregaCombustible(Combustible: Integer; Cantidad,
+  Importe: Double);
+begin
+  cdsTipoValor.Filtered := False;
+  cdsTipoValor.Locate('TipoValorID', Combustible, []);
+  cdsLiquidacionDetalle.Append;
+  cdsLiquidacionDetalle.FieldByName('Cantidad').AsFloat := Cantidad;
+  cdsLiquidacionDetalle.FieldByName('Importe').AsFloat := Importe;
+  cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger := Combustible;
+  cdsLiquidacionDetalle.FieldByName('Factor').AsInteger:=1;
+  cdsLiquidacionDetalle.FieldByName('ProductoID').AsInteger := Combustible;
+  cdsLiquidacionDetalle.FieldByName('Referencia').AsString := cdsTipoValor.FieldByName('Nombre').AsString;
+  cdsLiquidacionDetalle.FieldByName('Grupo').AsString := cdsTipoValor.FieldByName('Grupo').AsString;
+  cdsLiquidacionDetalle.Post;
+end;
+
+procedure TfrmLIQ.AgregaTarjetaCupon(Consumo: TConsumoGas);
+begin
+  if Consumo.Importe <= 0 then
+    Exit;
+  cdsLiquidacionDetalle.Append;
+  cdsLiquidacionDetalle.FieldByName('Cantidad').AsFloat:=Consumo.Volumen;
+  cdsLiquidacionDetalle.FieldByName('Importe').AsFloat:=Consumo.Importe;
+  case Consumo.Tipo of
+    2, 6: cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger:=10;
+    5: cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger:=11;
+  end;
+
+  cdsLiquidacionDetalle.FieldByName('Factor').AsInteger:=1;
+  cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger:=Consumo.Ticket;
+  cdsLiquidacionDetalle.FieldByName('Referencia').AsString:=Consumo.Referencia;
+  if Consumo.ClienteID <> 0 then
+    cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=Consumo.ClienteID
+  else
+    cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=DM.ClienteDefault;
+  cdsLiquidacionDetalle.FieldByName('ProductoID').AsInteger:=Consumo.ProductoID;
+  cdsLiquidacionDetalle.FieldByName('AuxiliarID').AsInteger:=-1978;
+  cdsLiquidacionDetalle.FieldByName('Grupo').AsString:='TARJETAS Y CUPONES';
+
+  cdsLiquidacionDetalle.FieldByName('VehiculoID').AsInteger := Consumo.VehiculoID;
+  cdsLiquidacionDetalle.FieldByName('GasolineroID').AsInteger := Consumo.GasolineroID;
+
+  cdsLiquidacionDetalle.Post;
+end;
+
+procedure TfrmLIQ.AgregaValor(Nombre: String; Valor: Real;
+  var Valores: TValores);
+var
+  j: Integer;
+  Ok: Boolean;
+begin
+  Ok:=False;
+  for j := 1 to MaximoValores do
+  begin
+    if Uppercase(Valores[j].Nombre) = Uppercase(Nombre) then
+    begin
+      Valores[j].Valor:=Valores[j].Valor + Valor;
+      Ok:=True;
+      Break;
+    end;
+  end;
+  if not Ok then
+  begin
+    for j := 1 to MaximoValores do
+    begin
+      if Valores[j].Nombre = '' then
+      begin
+        Valores[j].Nombre:=Nombre;
+        Valores[j].Valor:=Valor;
+        Break;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmLIQ.AjustaEfectivo();
+var
+  X: Integer;
+  DOCPesos,DOCDolares,DocCantidad: Float;
+  EntregadoAux: Double;
+  EntregadoEfectivo,Dif: Double;
+  Cadena: String;
+  VolDif: Double;
+  GlobalEntregado,GlobalDepositos,Documento: Double;
+begin
+  //Cargar el total de los depositos
+  cdsLiquidacionDepositos.ParamByName('LiquidacionID').AsInteger := cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+  cdsLiquidacionDepositos.Open;
+
+  DOCPesos := 0;
+  DOCDolares := 0;
+  ValorAux := 0;
+  DocCantidad := 0;
+  EntregadoEfectivo := 0;
+  Dif := 0;
+  VolDif := 0;
+  GlobalEntregado := 0;
+  GlobalDepositos := 0;
+  Documento := 0;
+
+  cdsLiquidacionDepositos.First;
+  while not cdsLiquidacionDepositos.EOF do
+  begin
+    if cdsLiquidacionDepositos.FieldByName('TipoValorDepositoID').AsInteger > 1 then
+    begin
+      case cdsLiquidacionDepositos.FieldByName('TipoValorID').AsInteger of
+        6 : begin
+              DocPesos := DocPesos + cdsLiquidacionDepositos.FieldByName('Importe').AsFloat;
+        end;
+        7 : begin
+              DocCantidad := DocCantidad + cdsLiquidacionDepositos.FieldByName('Cantidad').AsFloat;
+              DocDolares := DocDolares + cdsLiquidacionDepositos.FieldByName('Importe').AsFloat;
+        end;
+      end;
+      GlobalDepositos := GlobalDepositos + cdsLiquidacionDepositos.FieldByName('Importe').AsFloat;
+    end
+    else
+    begin
+      Documento := Documento + cdsLiquidacionDepositos.FieldByName('Importe').AsFloat;
+    end;
+    cdsLiquidacionDepositos.Next;
+  end;
+
+  EntregadoEfectivo := DocPesos;
+
+  //Calcular TipoCambio
+  if DocDolares > 0 then
+    TipoCambio := (DocDolares / DocCantidad);
+
+  for X := 1 to 10 do
+  begin
+    if (Lista[X, 1] > 0) AND (Lista[X, 6] > 0) then
+    begin
+      EntregadoAux := Lista[X, 6];
+      GlobalEntregado := GlobalEntregado + Lista[X, 9];
+
+      Dif := Dif + Lista[X, 4];
+      VolDif := VolDif + (Lista[X, 2] - Lista[X, 5]);
+
+      //Asignar todos los dolares posibles
+      if DocDolares > 0 then
+      begin
+        if (DocDolares - EntregadoAux) > 0 then
+        begin
+          DocDolares := DocDolares - EntregadoAux;
+          Lista[X, 8] := EntregadoAux;
+        end
+        else
+        begin
+          Lista[X, 8] := DocDolares;
+          DocDolares := 0;
+        end;
+
+        EntregadoAux := EntregadoAux - Lista[X, 8];
+      end;
+
+      //Asignar pesos
+      if EntregadoAux > 0 then
+      begin
+        if (DocPesos - EntregadoAux) > 0 then
+        begin
+          DocPesos := DocPesos - EntregadoAux;
+          EntregadoEfectivo := DocPesos;
+          Lista[X, 7] := EntregadoAux;
+        end
+        else
+        begin
+          //if (EntregadoAux - DocPesos) then
+
+          Lista[X, 7] := EntregadoAux;
+          //Lista[X, 7] := DocPesos;
+          EntregadoEfectivo := DocPesos - EntregadoAux;
+          DocPesos := 0;
+        end;
+      end;
+    end;
+  end;
+
+  //
+  if EntregadoEfectivo <> 0 then
+  begin
+    EntregadoEfectivo := EntregadoEfectivo + Dif;
+
+    cdsLiquidacionDiferencia.Open;
+
+    cdsLiquidacionDiferencia.Append;
+    cdsLiquidacionDiferencia.FieldByName('LiquidacionDiferenciaID').AsInteger  := DM.Servidor.Folio('LiquidacionDiferenciaID', '');
+    cdsLiquidacionDiferencia.FieldByName('LiquidacionID').AsInteger := cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+    cdsLiquidacionDiferencia.FieldByName('Importe').AsFloat := EntregadoEfectivo;
+    cdsLiquidacionDiferencia.FieldByName('FaltanteLIQ').AsFloat := Dif;
+    cdsLiquidacionDiferencia.FieldByName('DifVol').AsFloat := VolDif;
+    cdsLiquidacionDiferencia.FieldByName('DifDeposito').AsFloat := (GlobalDepositos + Documento) - GlobalEntregado;
+    cdsLiquidacionDiferencia.Post;
+  end;
+
+
+  Cadena := FloatToStr(EntregadoEfectivo);
+{
+  if DocPesos < 0 then
+  begin
+    //Agregar el Faltante
+    cdsLiquidacionDetalle.Append;
+    cdsLiquidacionDetalle.FieldByName('Cantidad').AsFloat := 1;
+    cdsLiquidacionDetalle.FieldByName('Importe').AsFloat := DocPesos *  -1;
+    cdsLiquidacionDetalle.FieldByName('Referencia').AsString := 'SOBRANTE EN LIQUIDACION []';
+    cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger := 16;
+    cdsLiquidacionDetalle.FieldByName('DespachadorLiquidacionID').AsInteger := 99999;
+    cdsLiquidacionDetalle.FieldByName('Grupo').AsString := 'SOBRANTES';
+    cdsLiquidacionDetalle.Post;
+    DocPesos := 0;
+  end;
+}
+end;
+
+function TfrmLIQ.CalculaImportes(Opcion: Integer; Aplicar: Boolean): Float;
+var
+  I: Integer;
+  s: String;
+  Valores, Totales: TValores;
+  ValorAnt: Float;
+begin
+  Result := 0;
+  for I := 1 to MaximoValores do
+  begin
+    Valores[I].Nombre:='';
+    Valores[I].Valor:=0;
+    Totales[I].Nombre:='';
+    Totales[I].Valor:=0;
+  end;
+  cdsLiquidacionDetalle.Filtered:=False;
+  I:=cdsDespachadorLiquidacion.FieldByName('DespachadorLiquidacionID').AsInteger;
+  cdsLiquidacionDetalle.First;
+  while not cdsLiquidacionDetalle.EOF do
+  begin
+    AgregaValor(cdsLiquidacionDetalle.FieldByName('Grupo').AsString, cdsLiquidacionDetalle.FieldByName('Importe').AsFloat, Totales);
+    if cdsLiquidacionDetalle.FieldByName('DespachadorLiquidacionID').AsInteger = I then
+      AgregaValor(cdsLiquidacionDetalle.FieldByName('Grupo').AsString, cdsLiquidacionDetalle.FieldByName('Importe').AsFloat, Valores);
+    cdsLiquidacionDetalle.Next;
+  end;
+
+  ///  1 = Ventas (Combustible, Otros Productos)
+  ///  2 = Despachador Entregado
+  ///
+
+  if Opcion = 1 then
+  begin
+    ValorAux := CualValor('COMBUSTIBLES', Valores) + CualValor('PRODUCTOS', Valores) + CualValor('SOBRANTES', Valores);
+    ValorAnt := Decimales(ValorAux, 2);
+  end;
+  if Opcion = 2 then
+  begin
+    ValorAux := CualValor('EFECTIVO', Valores) + CualValor('CLIENTES', Valores) + CualValor('CHEQUES', Valores) + CualValor('TARJETAS Y CUPONES', Valores) + CualValor('OTROS', Valores) + CualValor('FALTANTES', Valores);
+    ValorAnt := Decimales(ValorAux, 2);
+  end;
+  if Opcion = 3 then
+  begin
+    ValorAux := CualValor('EFECTIVO', Valores);
+    ValorAnt := ValorAux;
+  end;
+
+  if Aplicar then
+  begin
+    if opcion = 3 then
+    begin
+      cdsLiquidacion.Edit;
+      Valoraux := CualValor('COMBUSTIBLES', Totales) + CualValor('PRODUCTOS', Totales) + CualValor('SOBRANTES', Totales);;
+      cdsLiquidacion.FieldByName('VentasTotales').AsFloat:=Decimales(ValorAux, 2);
+      ValorAux:=CualValor('EFECTIVO', Totales) + CualValor('CLIENTES', Totales) + CualValor('CHEQUES', Totales) + CualValor('TARJETAS Y CUPONES', Totales) + CualValor('OTROS', Totales) + CualValor('FALTANTES', Totales);
+      cdsLiquidacion.FieldByName('Entregado').AsFloat:= Decimales(ValorAux, 2);
+      ValorAux:=cdsLiquidacion.FieldByName('Entregado').AsFloat - cdsLiquidacion.FieldByName('VentasTotales').AsFloat;
+      cdsLiquidacion.FieldByName('Diferencia').AsFloat:=Decimales(ValorAux, 2);
+      cdsLiquidacion.Post;
+    end;
+    if Opcion = 4 then
+    begin
+      cdsDespachadorLiquidacion.Edit;
+
+      ValorAux := CualValor('COMBUSTIBLES', Valores) + CualValor('PRODUCTOS', Valores) + CualValor('SOBRANTES', Valores);
+      cdsDespachadorLiquidacion.FieldByName('Importe').AsFloat := Decimales(ValorAux, 2);
+
+      ValorAux := CualValor('EFECTIVO', Valores) + CualValor('CLIENTES', Valores) + CualValor('CHEQUES', Valores) + CualValor('TARJETAS Y CUPONES', Valores) + CualValor('OTROS', Valores) + CualValor('FALTANTES', Valores);
+      cdsDespachadorLiquidacion.FieldByName('Entregado').AsFloat := Decimales(ValorAux, 2);
+
+      cdsDespachadorLiquidacion.FieldByName('Diferencia').AsFloat := cdsDespachadorLiquidacion.FieldByName('Entregado').AsFloat - cdsDespachadorLiquidacion.FieldByName('Importe').AsFloat;
+      cdsDespachadorLiquidacion.Post;
+    end;
+  end;
+
+  Result := ValorAnt;
+end;
+
+procedure TfrmLIQ.cdsLiquidacionDatosNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsLiquidacionDatos.FieldByName('LiquidacionDatosID').AsInteger := DM.Servidor.Folio('LiquidacionDatosID', '');
+  cdsLiquidacionDatos.FieldByName('LiquidacionID').AsInteger := cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+  cdsLiquidacionDatos.FieldByName('Fecha').AsDateTime := Now;
+end;
+
+procedure TfrmLIQ.cdsLiquidacionDetalleNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  //cdsLiquidacionDetalle.FieldByName('DetalleLiquidacionID').AsInteger := LiquidacionDetalleID;
+  cdsLiquidacionDetalle.FieldByName('DetalleLiquidacionID').AsInteger := DM.Servidor.Folio('LiquidacionDetalleID', '');
+  cdsLiquidacionDetalle.FieldByName('DespachadorLiquidacionID').AsInteger := cdsDespachadorLiquidacion.FieldByName('DespachadorLiquidacionID').AsInteger;
+  cdsLiquidacionDetalle.FieldByName('Importe').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('Cantidad').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('CuponID').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('SalidaID').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('BancoID').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('AuxiliarID').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('ProductoID').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('Facturado').AsBoolean := False;
+  cdsLiquidacionDetalle.FieldByName('VehiculoID').AsInteger := 0;
+  cdsLiquidacionDetalle.FieldByName('GasolineroID').AsInteger := 0;
+end;
+
+function TfrmLIQ.CualValor(Nombre: String; Valores: TValores): Real;
+var
+  I: Integer;
+begin
+  Result := 0;
+  for I := 1 to MaximoValores do
+  begin
+    if Uppercase(Valores[I].Nombre) = Uppercase(Nombre) then
+    begin
+      Result:=Valores[I].Valor;
+      Break;
+    end;
+  end;
+end;
+
+procedure TfrmLIQ.cxButton1Click(Sender: TObject);
+var
+  TurnoID: Integer;
+  Aux: TvaloresCorte;
+  X,Y: Byte;
+  Valor: Float;
+  AgrupacionID, DespachadorLIQID: Integer;
+  Sumatoria, Diferencia: Double;
+
+begin
+  inherited;
+  ///  1 = AgrupacionID         (Administrativo)
+  ///  2 = Importe              (Administrativo)
+  ///  3 = Entregado            (Administrativo)
+  ///  4 = Diferencia           (Administrativo)
+  ///  5 = Importe CistemGas
+  ///  6 = Nvo. Entregado Pesos (Administrativo - CistemGas)
+  ///
+  ///  7 = Ajute en Pesos
+  ///  8 = Ajuste en Dolares
+  ///  9 = Entregado Efectivo   (Administrativo)
+
+  LimpiarDatos;
+  for X := 1 to 10 do
+    for Y := 1 to 9 do
+      Lista[X, Y] := 0;
+
+  TurnoID := edtSecuencia.EditValue;
+
+  cdsLiquidacion.ParamByName('EstacionID').AsInteger := DM.Estacion;
+  cdsLiquidacion.ParamByName('TurnoID').AsInteger := TurnoID;
+  cdsLiquidacion.Open;
+
+  if cdsLiquidacion.RecordCount > 0 then
+  begin
+    if cdsLiquidacion.FieldByName('Estatus').AsInteger <> 1 then
+    begin
+      MessageDlg('Error: Liquidación no a sido completada.', mtError, [mbOK], 0);
+      Abort;
+    end;
+
+    cdsLiquidacionDatos.ParamByName('LiquidacionID').AsInteger := cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+    cdsLiquidacionDatos.Open;
+
+    if cdsLiquidacionDatos.RecordCount > 0 then
+    begin
+      MessageDlg('Error: Liquidación ya a sido ajustada.', mtError, [mbOK], 0);
+      Abort;
+    end;
+
+    
+
+    ///
+    if DM.ServidorEstacion(DM.Estacion).EliminaMermaTurno(TurnoID) = False then
+    begin
+      MessageDlg('Se encontro un error al procesar la peticición', mtConfirmation, [mbOK], 0);
+      Exit;
+    end;
+
+
+    cdsLiquidacionDetalle.ParamByName('LiquidacionID').AsInteger := cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+    cdsLiquidacionDetalle.Open;
+    cdsAgrupacion.ParamByName('EstacionID').AsInteger := DM.Estacion;
+    cdsAgrupacion.Open;
+    cdsAgrupacionBomba.ParamByName('EstacionID').AsInteger := DM.Estacion;
+    cdsAgrupacionBomba.Open;
+    cdsDespachadorLiquidacion.ParamByName('LiquidacionID').AsInteger := cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+    cdsDespachadorLiquidacion.Open;
+
+    //Obtenemos los valores de la liquidacion, antes de ajustar.
+    X := 1;
+    cdsDespachadorLiquidacion.First;
+    while not cdsDespachadorLiquidacion.EOF do
+    begin
+      Lista[X, 1] := cdsDespachadorLiquidacion.FieldByName('AgrupacionID').AsInteger;
+      Lista[X, 2] := cdsDespachadorLiquidacion.FieldByName('Importe').AsFloat;
+      Lista[X, 3] := cdsDespachadorLiquidacion.FieldByName('Entregado').AsFloat;
+      Lista[X, 4] := cdsDespachadorLiquidacion.FieldByName('Diferencia').AsFloat;
+
+      Inc(X);
+      cdsDespachadorLiquidacion.Next;
+    end;
+
+
+    //Ajustamos la liquidacion, en base a las nuevas ventas
+    if cdsLiquidacionDetalle.Locate('Grupo', 'COMBUSTIBLES', []) then
+    begin
+      cdsLiquidacionDetalle.Filtered := False;
+      cdsLiquidacionDetalle.Filter := 'AuxiliarID = -1978';
+      cdsLiquidacionDetalle.Filtered := True;
+      cdsLiquidacionDetalle.First;
+      while not cdsLiquidacionDetalle.EOF do
+      begin
+        cdsLiquidacionDetalle.Delete;
+      end;
+
+      cdsLiquidacionDetalle.Filtered := False;
+      cdsLiquidacionDetalle.Filter := 'TipoValorID <= 5';
+      cdsLiquidacionDetalle.Filtered := True;
+      cdsLiquidacionDetalle.First;
+      while not cdsLiquidacionDetalle.EOF do
+        cdsLiquidacionDetalle.Delete;
+
+      Aux := DM.ServidorEstacion(DM.Estacion).TotalesBomba(TurnoID);
+      try
+        if Aux.Corte[0].BombaID > 0 then
+        begin
+          ProcesaValoresCorte(Aux);
+          cdsDespachadorLiquidacion.First;
+          while not cdsDespachadorLiquidacion.EOF do
+          begin
+            AgrupacionID := cdsDespachadorLiquidacion.FieldByName('AgrupacionID').AsInteger;
+            Valor := CalculaImportes(1, False);
+
+            for X := 1 to 10 do
+              if Lista[X, 1 ] = AgrupacionID then
+              begin
+                Lista[X, 5] := Valor;
+                Lista[X, 9] := CalculaImportes(3, False);
+                Break;
+              end;
+
+            cdsDespachadorLiquidacion.Next;
+          end;
+        end;
+      except
+        MessageDlg('No se pudo establecer conexion con el servidor.', mtError, [mbOK], 0);
+      end;
+    end;
+
+
+    //Ajustamos lo entregado
+    cdsLiquidacionDetalle.Filtered := False;
+    cdsLiquidacionDetalle.Filter := 'TipoValorID = 6 OR TipoValorID = 7';
+    cdsLiquidacionDetalle.Filtered := True;
+
+    for X := 1 to 10 do
+    begin
+      if (Lista[X, 1] > 0) AND (Lista[X, 2] > 0) then
+      begin
+        Sumatoria := 0;
+        DespachadorLIQID := 0;
+
+        cdsDespachadorLiquidacion.Filtered := False;
+        cdsDespachadorLiquidacion.Filter := 'AgrupacionID = ' + FloatToStr(Lista[X,1]);
+        cdsDespachadorLiquidacion.Filtered := True;
+
+        cdsDespachadorLiquidacion.First;
+        if cdsDespachadorLiquidacion.RecordCount > 0 then
+          DespachadorLIQID := cdsDespachadorLiquidacion.FieldByName('DespachadorLiquidacionID').AsInteger;
+
+        if DespachadorLIQID > 0 then
+        begin
+          cdsLiquidacionDetalle.First;
+          while not cdsLiquidacionDetalle.EOF do
+          begin
+            if DespachadorLIQID = cdsLiquidacionDetalle.FieldByName('DespachadorLiquidacionID').AsInteger then
+            begin
+              SumaToria := SumaToria + cdsLiquidacionDetalle.FieldByName('Importe').AsFloat;
+            end;
+
+            cdsLiquidacionDetalle.Next;
+          end;
+
+          Diferencia := Lista[X, 2] - Lista[X, 5];
+          Lista[X, 6] := Sumatoria - Diferencia;
+        end;
+      end;
+    end;
+
+    //Borramos todos los depositos
+    cdsLiquidacionDetalle.First;
+    while not cdsLiquidacionDetalle.EOF do
+      cdsLiquidacionDetalle.Delete;
+
+
+    //Ajustar la entrega en efectivo en base a lo depositado.
+    //El ajuste se hace X Isla
+    AjustaEfectivo;
+
+    //Proceso de Ajuste
+    for X := 1 to 10 do
+    begin
+      if (Lista[X, 1] > 0) AND (Lista[X, 2] > 0) then
+      begin
+        DespachadorLIQID := 0;
+
+        cdsDespachadorLiquidacion.Filtered := False;
+        cdsDespachadorLiquidacion.Filter := 'AgrupacionID = ' + FloatToStr(Lista[X,1]);
+        cdsDespachadorLiquidacion.Filtered := True;
+
+        if cdsDespachadorLiquidacion.RecordCount > 0 then
+          DespachadorLIQID := cdsDespachadorLiquidacion.FieldByName('DespachadorLiquidacionID').AsInteger;
+
+        if DespachadorLIQID > 0 then
+        begin
+          //Agregamos el deposito
+
+          if Lista[X, 7] > 0 then
+          begin
+            cdsLiquidacionDetalle.Append;
+            cdsLiquidacionDetalle.FieldByName('Cantidad').AsFloat := Lista[X, 7];
+            cdsLiquidacionDetalle.FieldByName('Importe').AsFloat := Lista[X, 7];
+            cdsLiquidacionDetalle.FieldByName('Referencia').AsString := 'PESOS';
+            cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger := 6;
+            cdsLiquidacionDetalle.FieldByName('DespachadorLiquidacionID').AsInteger := DespachadorLIQID;
+            cdsLiquidacionDetalle.FieldByName('Grupo').AsString := 'EFECTIVO';
+            cdsLiquidacionDetalle.Post;
+          end;
+
+          if Lista[X, 8] > 0 then
+          begin
+            cdsLiquidacionDetalle.Append;
+            cdsLiquidacionDetalle.FieldByName('Cantidad').AsFloat := Lista[X, 8] / TipoCambio;
+            cdsLiquidacionDetalle.FieldByName('Importe').AsFloat := Lista[X, 8];
+            cdsLiquidacionDetalle.FieldByName('Referencia').AsString := 'DOLARES';
+            cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger := 7;
+            cdsLiquidacionDetalle.FieldByName('DespachadorLiquidacionID').AsInteger := DespachadorLIQID;
+            cdsLiquidacionDetalle.FieldByName('Grupo').AsString := 'EFECTIVO';
+            cdsLiquidacionDetalle.Post;
+          end;
+        end;
+      end;
+    end;
+
+    //Actualizamos la tabla de LiquidacionDespachador
+    for X := 1 to 10 do
+    begin
+      if (Lista[X, 1] > 0) AND (Lista[X, 2] > 0) then
+      begin
+        DespachadorLIQID := 0;
+
+        cdsDespachadorLiquidacion.Filtered := False;
+        cdsDespachadorLiquidacion.Filter := 'AgrupacionID = ' + FloatToStr(Lista[X,1]);
+        cdsDespachadorLiquidacion.Filtered := True;
+
+        if cdsDespachadorLiquidacion.RecordCount > 0 then
+          DespachadorLIQID := cdsDespachadorLiquidacion.FieldByName('DespachadorLiquidacionID').AsInteger;
+
+        if DespachadorLIQID > 0 then
+          CalculaImportes(4, True);
+      end;
+    end;
+
+    //Actualizar el total de la Liquidacion
+    CalculaImportes(3, True);
+
+    //
+    cdsLiquidacionDetalle.Filtered := False;
+    cdsDespachadorLiquidacion.Filtered := False;
+
+    cdsLiquidacionDatos.Insert;
+    cdsLiquidacionDatos.FieldByName('Estatus').AsInteger := 1;
+    cdsLiquidacionDatos.FieldByName('UsuarioID').AsInteger := DM.Seguridad.NumeroEmpleado;
+    cdsLiquidacionDatos.Post;
+
+    //
+
+    cdsLiquidacion.ApplyUpdates();
+    cdsLiquidacionDetalle.ApplyUpdates();
+    cdsDespachadorLiquidacion.ApplyUpdates();
+    cdsLiquidacionDiferencia.ApplyUpdates();
+    cdsLiquidacionDatos.ApplyUpdates();
+
+    MessageDlg('Ajute Completado.', mtInformation, [mbOK], 0);
+  end;
+end;
+
+procedure TfrmLIQ.cxButton2Click(Sender: TObject);
+begin
+  inherited;
+  cdsLIQTurnos.Close;
+  cdsLIQTurnos.ParamByName('Fecha').AsDateTime := dpeFecha.Date;
+  cdsLIQTurnos.ParamByName('EstacionID').AsInteger := DM.Estacion;
+  cdsLIQTurnos.Open;
+end;
+
+procedure TfrmLIQ.cxButton3Click(Sender: TObject);
+var
+  TurnoID: Integer;
+  Aux: TvaloresCorte;
+  X,Y: Byte;
+  Valor: Float;
+  AgrupacionID, DespachadorLIQID: Integer;
+  Sumatoria, Diferencia: Double;
+
+begin
+  inherited;
+
+  LimpiarDatos;
+  for X := 1 to 10 do
+    for Y := 1 to 9 do
+      Lista[X, Y] := 0;
+
+  TurnoID := edtSecuencia.EditValue;
+
+  cdsLiquidacion.ParamByName('EstacionID').AsInteger := DM.Estacion;
+  cdsLiquidacion.ParamByName('TurnoID').AsInteger := TurnoID;
+  cdsLiquidacion.Open;
+
+  cdsLiquidacionDatos.close;
+  cdsLiquidacionDatos.ParamByName('LiquidacionID').AsInteger:= cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+  cdsLiquidacionDatos.open;
+
+  cdsLiquidacionDiferencia.close;
+  cdsLiquidacionDiferencia.ParamByName('LiquidacionID').AsInteger:= cdsLiquidacion.FieldByName('LiquidacionID').AsInteger;
+  cdsLiquidacionDiferencia.open;
+
+  cdsLiquidacionDiferencia.First;
+  while not cdsLiquidacionDiferencia.EOF do
+  begin
+    cdsLiquidacionDiferencia.Delete;
+  end;
+
+  cdsLiquidacionDatos.First;
+  while not cdsLiquidacionDatos.EOF do
+  begin
+    cdsLiquidacionDatos.Delete;
+  end;
+
+  cdsLiquidacionDiferencia.ApplyUpdates();
+  cdsLiquidacionDatos.ApplyUpdates();
+
+end;
+
+procedure TfrmLIQ.cxGrid4DBTableView1FocusedRecordChanged(
+  Sender: TcxCustomGridTableView; APrevFocusedRecord,
+  AFocusedRecord: TcxCustomGridRecord; ANewItemRecordFocusingChanged: Boolean);
+begin
+  inherited;
+  if cdsLIQTurnos.FieldByName('Estatus').AsInteger = 0 then
+    Boton := True
+  else
+    Boton := False;
+
+  UpdateActionsState;
+end;
+
+procedure TfrmLIQ.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  LimpiarDatos;
+  cdsTipoValor.Close;
+end;
+
+procedure TfrmLIQ.FormCreate(Sender: TObject);
+begin
+  inherited;
+  cdsTipoValor.Open;
+  dpeFecha.Date := Trunc(Now);
+
+  cxButton3.Enabled := DM.Seguridad.SeguridadPorNombre('Reajuste Liquidación') <> nil;
+end;
+
+procedure TfrmLIQ.LimpiarDatos;
+begin
+  Boton := False;
+  cdsLiquidacion.Close;
+  cdsLiquidacionDetalle.Close;
+  cdsAgrupacion.Close;
+  cdsAgrupacionBomba.Close;
+  cdsDespachadorLiquidacion.Close;
+  cdsLiquidacionDepositos.Close;
+  cdsLiquidacionDatos.Close;
+end;
+
+procedure TfrmLIQ.ProcesaValoresCorte(Aux: TValoresCorte);
+var
+  I, AgrupacionID, BombaID: Integer;
+  Magna, Premium, Diesel, VolM, VolP, VolD: Double;
+begin
+  cdsAgrupacion.First;
+  while not cdsAgrupacion.EOF do
+  begin
+    Magna:=0;
+    Premium:=0;
+    Diesel:=0;
+    VolM:=0;
+    VolP:=0;
+    VolD:=0;
+    AgrupacionID:=cdsAgrupacion.FieldByName('AgrupacionID').AsInteger;
+    if cdsDespachadorLiquidacion.Locate('AgrupacionID', AgrupacionID, []) then
+      cdsDespachadorLiquidacion.Edit;
+
+    cdsAgrupacionBomba.Filtered:=False;
+    cdsAgrupacionBomba.Filter:='AgrupacionID = ' + IntToStr(AgrupacionID);
+    cdsAgrupacionBomba.Filtered:=True;
+    cdsAgrupacionBomba.First;
+    while not cdsAgrupacionBomba.EOF do
+    begin
+      BombaID:=cdsAgrupacionBomba.FieldByName('BombaID').AsInteger;
+      for I := 0 to Aux.Corte.Count - 1 do
+      begin
+        if Aux.Corte[I].BombaID = BombaID then
+        begin
+          Magna:=Magna + Aux.Corte[I].Magna;
+          Premium:=Premium + Aux.Corte[I].Premium;
+          Diesel:=Diesel + Aux.Corte[I].Diesel;
+          VolM:=VolM + Aux.Corte[I].VolumenMagna;
+          VolP:=VolP + Aux.Corte[I].VolumenPremium;
+          VolD:=VolD + Aux.Corte[I].VolumenDiesel;
+          break;
+        end;
+      end;
+      for I := 0 to Aux.Consumos.Count - 1 do
+      begin
+        if Aux.Consumos[i].BombaID = BombaID then
+          AgregaTarjetaCupon(Aux.Consumos[I]);
+      end;
+      cdsAgrupacionBomba.Next;
+    end;
+    if Magna > 0 then
+      AgregaCombustible(1, VolM, Magna);
+    if Premium > 0 then
+      AgregaCombustible(2, VolP, Premium);
+    if Diesel > 0 then
+      AgregaCombustible(3, VolD, Diesel);
+    cdsAgrupacion.Next;
+  end;
+end;
+
+procedure TfrmLIQ.RegisterActions;
+begin
+  inherited;
+  RegisterAction(AppActions.actProcesar, ActionProcesar);
+end;
+
+procedure TfrmLIQ.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actProcesar.Enabled := Boton;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Cierre Diario', TFrmLIQ);
+
+end.

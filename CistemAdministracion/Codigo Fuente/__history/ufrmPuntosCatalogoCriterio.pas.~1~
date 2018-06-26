@@ -1,0 +1,245 @@
+unit ufrmPuntosCatalogoCriterio;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ufrmCatalogo, cxGraphics, cxControls, cxLookAndFeels,
+  cxLookAndFeelPainters, dxSkinsCore, dxSkinBlack, dxSkinBlue, dxSkinCaramel,
+  dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide, dxSkinFoggy, dxSkinGlassOceans,
+  dxSkiniMaginary, dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky,
+  dxSkinMcSkin, dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinPumpkin, dxSkinSeven, dxSkinSharp, dxSkinSilver, dxSkinSpringTime,
+  dxSkinStardust, dxSkinSummer2008, dxSkinsDefaultPainters, dxSkinValentine,
+  dxSkinXmas2008Blue, dxSkinscxPCPainter, cxStyles, cxCustomData, cxFilter,
+  cxData, cxDataStorage, cxEdit, DB, cxDBData, cxContainer, cxLabel, cxTextEdit,
+  cxDBEdit, cxGroupBox, dxmdaset, uDAInterfaces, uDADataTable,
+  uDAScriptingProvider, uDAMemDataTable, cxGridLevel, cxClasses,
+  cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxGrid, cxPC, cxMaskEdit, cxDropDownEdit, cxCalendar, cxDBLookupComboBox;
+
+type
+  TfrmPuntosCatalogoCriterio = class(TfrmCatalogo)
+    cxGroupBox1: TcxGroupBox;
+    cxDBTextEdit1: TcxDBTextEdit;
+    cxLabel3: TcxLabel;
+    edtNombre: TcxDBTextEdit;
+    cxLabel1: TcxLabel;
+    cxGroupBox2: TcxGroupBox;
+    cxPeriodo: TcxGroupBox;
+    lblFechaInicial: TcxLabel;
+    cxLabel2: TcxLabel;
+    edtFechaInicial: TcxDateEdit;
+    edtFechaFinal: TcxDateEdit;
+    cxCriterio: TcxGroupBox;
+    cxLabel4: TcxLabel;
+    edtCriterio: TcxTextEdit;
+    cxClub: TcxGroupBox;
+    cdsPuntosClub: TDAMemDataTable;
+    dsPuntosClub: TDADataSource;
+    cxGrid1DBTableView1: TcxGridDBTableView;
+    cxGrid1Level1: TcxGridLevel;
+    cxGrid1: TcxGrid;
+    dbgCatalogoDBTableView1RecID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1PuntosCriterioID: TcxGridDBColumn;
+    dbgCatalogoDBTableView1Nombre: TcxGridDBColumn;
+    cdsMemClub: TdxMemData;
+    cdsMemClubPuntosClubID: TIntegerField;
+    cdsMemClubPuntos: TFloatField;
+    dsMemClub: TDataSource;
+    cdsMemClubNombre: TStringField;
+    cdsPuntosListaClub: TDAMemDataTable;
+    dsPuntosListaClub: TDADataSource;
+    cxGrid1DBTableView1RecID: TcxGridDBColumn;
+    cxGrid1DBTableView1PuntosClubID: TcxGridDBColumn;
+    cxGrid1DBTableView1Puntos: TcxGridDBColumn;
+    procedure cdsCatalogoAfterScroll(DataTable: TDADataTable);
+    procedure FormCreate(Sender: TObject);
+    procedure edtFechaInicialPropertiesChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+    Abriendo: Boolean;
+    procedure PrenderParametros(Cad : String);
+    procedure LimpiaDatos;
+    procedure ActionGuardar(Action: TBasicAction); override;
+    procedure ActivaGuardar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPuntosCatalogoCriterio: TfrmPuntosCatalogoCriterio;
+
+implementation
+
+uses uDM, Modules, LibraryAdministracion_Intf, uROStreamSerializer, dmActions;
+
+{$R *.dfm}
+
+procedure TfrmPuntosCatalogoCriterio.ActionGuardar(Action: TBasicAction);
+var
+  Aux: TStringStream;
+  Datos: TPerfilPuntos;
+begin
+  Abriendo := True;
+  Aux := TStringStream.Create('');
+  Datos := TPerfilPuntos.Create;
+
+  if cxPeriodo.Visible then
+  begin
+    Datos.FechaIni := edtFechaInicial.Date;
+    Datos.FechaFin := edtFechaFinal.Date;
+  end;
+  if cxCriterio.Visible then
+    Datos.Criterio := StrToInt(edtCriterio.Text);
+
+  ObjectToStream(Datos, Aux);
+  Aux.Position := 0;
+
+  //DM.Servidor.PuntosGuardaCriterios(cdsCatalogo.FieldByName('PuntosCriterioID').AsInteger, Aux.DataString);
+
+  cdsCatalogo.FieldByName('Datos').AsString := Aux.DataString;
+  //cdsCatalogo.Post;
+  inherited;
+  cdsPuntosListaClub.ApplyUpdates();
+  Abriendo := False;
+  //cdsPuntosListaClub.Post;
+end;
+
+procedure TfrmPuntosCatalogoCriterio.ActivaGuardar;
+begin
+  if not Abriendo then
+    cdsCatalogo.Edit;
+end;
+
+procedure TfrmPuntosCatalogoCriterio.cdsCatalogoAfterScroll(
+  DataTable: TDADataTable);
+var
+  Datos: TPerfilPuntos;
+  Aux: TStringStream;
+  Cadena: String;
+begin
+  inherited;
+  Cadena := DataTable.FieldByName('Datos').AsString;
+  if (not Abriendo) then
+  begin
+    Abriendo := True;
+    LimpiaDatos;
+    Abriendo := False;
+
+    try
+      Datos := TPerfilPuntos.Create;
+      PrenderParametros(DataTable.FieldByName('Parametros').AsString);
+
+      if cxClub.Visible then
+      begin
+        //Verificamos que existan registros
+        cdsPuntosListaClub.Close;
+        cdsPuntosListaClub.ParamByName('PuntosCriterioID').AsInteger := cdsCatalogo.FieldByName('PuntosCriterioID').AsInteger;
+        cdsPuntosListaClub.Open;
+
+        if cdsPuntosListaClub.RecordCount = 0 then
+        begin
+          cdsPuntosClub.First;
+          while not cdsPuntosClub.EOF do
+          begin
+            cdsPuntosListaClub.Append;
+            cdsPuntosListaClub.FieldByName('PuntosClubID').AsInteger := cdsPuntosClub.FieldByName('PuntosClubID').AsInteger;
+            cdsPuntosListaClub.FieldByName('PuntosCriterioID').AsInteger := cdsCatalogo.FieldByName('PuntosCriterioID').AsInteger;
+            cdsPuntosListaClub.FieldByName('Puntos').AsFloat := 0;
+
+            cdsPuntosClub.Next;
+          end;
+        end;
+      end;
+
+      if (Cadena <> '') then
+      begin
+        Aux := TStringStream.Create(Cadena);
+        Datos.Assign(TPerfilPuntos(StreamToObject(Aux)));
+
+        Abriendo := True;
+        if cxPeriodo.Visible then
+        begin
+          edtFechaInicial.Date := Datos.FechaIni;
+          edtFechaFinal.Date := Datos.FechaFin;
+        end;
+        if cxCriterio.Visible then
+          edtCriterio.EditValue := Datos.Criterio;
+
+        Abriendo := False;
+      end;
+    finally
+      Aux.Free;
+      Datos.Free;
+    end;
+  end;
+end;
+
+procedure TfrmPuntosCatalogoCriterio.edtFechaInicialPropertiesChange(
+  Sender: TObject);
+begin
+  inherited;
+  ActivaGuardar;
+end;
+
+procedure TfrmPuntosCatalogoCriterio.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  cdsPuntosClub.Close;
+  cdsPuntosListaClub.Close;
+end;
+
+procedure TfrmPuntosCatalogoCriterio.FormCreate(Sender: TObject);
+begin
+  AppActions.actImprimir.Enabled := False;
+  Abriendo := True;
+  cdsCatalogo.Open;
+  //inherited;
+  Abriendo := False;
+
+  cdsPuntosClub.Open;
+  cdsCatalogoAfterScroll(cdsCatalogo);
+end;
+
+procedure TfrmPuntosCatalogoCriterio.LimpiaDatos;
+begin
+  edtFechaInicial.Date := 0;
+  edtFechaFinal.Date := 0;
+  edtCriterio.Text := '0';
+end;
+
+procedure TfrmPuntosCatalogoCriterio.PrenderParametros(Cad: String);
+var
+  i, j : Integer;
+
+procedure PrenderControl(AControl: TCustomControl; AVisible: Boolean);
+begin
+  AControl.Visible := AVisible;
+  if (AVisible) and (AControl.Tag <> 888) then
+  begin
+    AControl.Left := 8;
+    AControl.Top := j;
+    AControl.TabOrder := i;
+    j := j + 14 + AControl.Height;
+    Inc(i);
+  end;
+end;
+
+begin
+  //ParametrosActivos:=False;
+  i := 0;
+  J := 30;
+
+  PrenderControl(cxPeriodo, Pos('A', Cad) > 0);
+  PrenderControl(cxCriterio, Pos('B', Cad) > 0);
+  PrenderControl(cxClub, Pos('C', Cad) > 0);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Catálogo Criterio', TfrmPuntosCatalogoCriterio);
+
+end.

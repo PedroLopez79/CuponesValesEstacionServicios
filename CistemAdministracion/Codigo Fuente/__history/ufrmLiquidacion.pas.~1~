@@ -1,0 +1,2823 @@
+unit UfrmLiquidacion;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, CustomModule, cxGraphics, cxStyles, cxCustomData, cxFilter, cxData,
+  cxDataStorage, cxEdit, DB, cxDBData, cxGridLevel, cxClasses, cxControls,
+  cxGridCustomView, cxGridCustomTableView, cxGridTableView, cxGridDBTableView,
+  cxGrid, cxPC, cxTextEdit, cxDropDownEdit, cxCalendar, cxMaskEdit, cxLabel,
+  cxContainer, cxGroupBox, cxDBEdit, cxLookupEdit, cxDBLookupEdit,
+  cxDBLookupComboBox, uDADataTable, uDAScriptingProvider, uDACDSDataTable,
+  uDAADODataTable, StdCtrls, dxSkinsCore, dxSkinsDefaultPainters,
+  dxSkinscxPCPainter, uDAInterfaces, dxSkinsdxRibbonPainter, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinGlassOceans, dxSkiniMaginary,
+  dxSkinLilian, dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin,
+  dxSkinMoneyTwins, dxSkinOffice2007Black, dxSkinOffice2007Blue,
+  dxSkinOffice2007Green, dxSkinOffice2007Pink, dxSkinOffice2007Silver,
+  dxSkinSilver, dxSkinStardust, dxSkinSummer2008, dxSkinValentine,
+  dxSkinXmas2008Blue, cxLookAndFeelPainters;
+
+type
+  TEx=Class(Exception);
+
+  TFrmLiquidacion = class(TfrmCustomModule)
+    cdsLiquidacion: TDACDSDataTable;
+    dsLiquidacion: TDADataSource;
+    cdsDespachador: TDACDSDataTable;
+    dsDespachador: TDADataSource;
+    cdsAgrupacion: TDACDSDataTable;
+    dsAgrupacion: TDADataSource;
+    cxPageControl1: TcxPageControl;
+    cxTabSheet1: TcxTabSheet;
+    grdCorte: TcxGrid;
+    grdCorteDBTableView1: TcxGridDBTableView;
+    grdCorteLevel1: TcxGridLevel;
+    cxTabSheet2: TcxTabSheet;
+    cxTabSheet3: TcxTabSheet;
+    cxTabSheet6: TcxTabSheet;
+    cxGrid5: TcxGrid;
+    cxGrid5DBTableView1: TcxGridDBTableView;
+    cxGrid5Level1: TcxGridLevel;
+    cdsCortePorAgrupacion: TDACDSDataTable;
+    dsCortePorAgrupacion: TDADataSource;
+    grdCorteDBTableView1Precio: TcxGridDBColumn;
+    grdCorteDBTableView1Importe: TcxGridDBColumn;
+    grdCorteDBTableView1LecturaInicial: TcxGridDBColumn;
+    grdCorteDBTableView1LecturaFinal: TcxGridDBColumn;
+    grdCorteDBTableView1VolumenVendido: TcxGridDBColumn;
+    cdsCortePorSecuencia: TDACDSDataTable;
+    dsCortePorSecuencia: TDADataSource;
+    grdCorteDBTableView1Column1: TcxGridDBColumn;
+    dsLiquidacionDetalle: TDADataSource;
+    dsTipoValor: TDADataSource;
+    cdsTipoValor: TDACDSDataTable;
+    dbgAnticipos: TcxGrid;
+    dbgAnticiposDBTableView1: TcxGridDBTableView;
+    dbgAnticiposLevel1: TcxGridLevel;
+    cdsTipoValorSeleccionado: TDACDSDataTable;
+    dsTipoValorSeleccionado: TDADataSource;
+    cdsLiquidacionProducto: TDACDSDataTable;
+    cxGrid3: TcxGrid;
+    cxGrid3DBTableView1: TcxGridDBTableView;
+    cxGrid3DBTableView1ProductoID: TcxGridDBColumn;
+    cxGrid3DBTableView1Producto: TcxGridDBColumn;
+    cxGrid3DBTableView1PrecioVenta: TcxGridDBColumn;
+    cxGrid3DBTableView1InventarioInicial: TcxGridDBColumn;
+    cxGrid3DBTableView1Traspasos: TcxGridDBColumn;
+    cxGrid3DBTableView1Cantidad: TcxGridDBColumn;
+    cxGrid3DBTableView1InventarioFinal: TcxGridDBColumn;
+    cxGrid3DBTableView1Importe: TcxGridDBColumn;
+    cxGrid3Level1: TcxGridLevel;
+    cdsObtenerProductosLiquidacion: TDACDSDataTable;
+    cdsBanco: TDACDSDataTable;
+    dsBanco: TDADataSource;
+    cdsSalida: TDACDSDataTable;
+    dsSalida: TDADataSource;
+    dsLiquidacionProducto: TDADataSource;
+    cdsLiquidacionCombustible: TDACDSDataTable;
+    dsLiquidacionCombustible: TDADataSource;
+    dbgAnticiposDBTableView1Importe: TcxGridDBColumn;
+    dbgAnticiposDBTableView1Referencia: TcxGridDBColumn;
+    dbgAnticiposDBTableView1Ticket: TcxGridDBColumn;
+    dbgAnticiposDBTableView1Cupon: TcxGridDBColumn;
+    dbgAnticiposDBTableView1TipoValorID: TcxGridDBColumn;
+    dbgAnticiposDBTableView1BancoID: TcxGridDBColumn;
+    dbgAnticiposDBTableView1SalidaID: TcxGridDBColumn;
+    dbgAnticiposDBTableView1ClienteID: TcxGridDBColumn;
+    cdsLiquidacionDetalle: TDACDSDataTable;
+    cxGrid5DBTableView1Importe: TcxGridDBColumn;
+    cxGrid5DBTableView1TipoValorID: TcxGridDBColumn;
+    cdsLiquidacionValor: TDACDSDataTable;
+    dsLiquidacionValor: TDADataSource;
+    cbxListaCupon: TcxComboBox;
+    dsProducto: TDADataSource;
+    cdsProducto: TDACDSDataTable;
+    cdsTransaccion: TDACDSDataTable;
+    dsTransaccion: TDADataSource;
+    cdsMovimientoAlmacen: TDACDSDataTable;
+    dsMovimientoAlmacen: TDADataSource;
+    dsDetalleMovimiento: TDADataSource;
+    cdsDetalleMovimiento: TDACDSDataTable;
+    cdsDetalleTransaccion: TDACDSDataTable;
+    dsDetalleTransaccion: TDADataSource;
+    cbxListaTicket: TcxComboBox;
+    cdsValeCredito: TDACDSDataTable;
+    cdsCupon: TDACDSDataTable;
+    cdsAnticipoDetalle: TDACDSDataTable;
+    cdsBomba: TDACDSDataTable;
+    dsBomba: TDADataSource;
+    grdCorteDBTableView1Bomba: TcxGridDBColumn;
+    grdCorteDBTableView1Posicion: TcxGridDBColumn;
+    grpLiquidacion: TcxGroupBox;
+    lblAgrupacion: TcxLabel;
+    lblDespachador: TcxLabel;
+    lblTurno: TcxLabel;
+    dbAgrupacion: TcxDBLookupComboBox;
+    dbTurno: TcxDBLookupComboBox;
+    dbDespachador: TcxDBLookupComboBox;
+    cxGroupBox1: TcxGroupBox;
+    LblDiferencia: TcxLabel;
+    LblAnticipo: TcxLabel;
+    LblVentas: TcxLabel;
+    dbVenta: TcxDBTextEdit;
+    dbAnticipo: TcxDBTextEdit;
+    dbDiferencia: TcxDBTextEdit;
+    Clientes: TcxTabSheet;
+    Cupones: TcxTabSheet;
+    Otros: TcxTabSheet;
+    cxGrid1: TcxGrid;
+    cxGridDBTableView1: TcxGridDBTableView;
+    OtrosTipoValorId: TcxGridDBColumn;
+    OtrosTicket: TcxGridDBColumn;
+    OtrosSalidaID: TcxGridDBColumn;
+    OtrosRefenrecia: TcxGridDBColumn;
+    OtrosImporte: TcxGridDBColumn;
+    cxGridLevel1: TcxGridLevel;
+    cdsLiquidacionDetalleOtros: TDACDSDataTable;
+    dsLiquidacionDetalleOtros: TDADataSource;
+    cdsTipoValorOtros: TDACDSDataTable;
+    dsTipoValorOtros: TDADataSource;
+    cdsLiquidacionDetalleCupones: TDACDSDataTable;
+    dsLiquidacionDetalleCupones: TDADataSource;
+    cxGrid2: TcxGrid;
+    cxGridDBTableView2: TcxGridDBTableView;
+    CuponesTipoValor: TcxGridDBColumn;
+    CuponesClienteID: TcxGridDBColumn;
+    CuponesTicket: TcxGridDBColumn;
+    CuponesCupon: TcxGridDBColumn;
+    CuponesImporte: TcxGridDBColumn;
+    cxGridLevel2: TcxGridLevel;
+    CuponesReferencia: TcxGridDBColumn;
+    cdsTipoValorCupon: TDACDSDataTable;
+    dsTipoValorCupon: TDADataSource;
+    cxGrid4: TcxGrid;
+    cxGridDBTableView3: TcxGridDBTableView;
+    ClientesTipoValor: TcxGridDBColumn;
+    ClientesClienteID: TcxGridDBColumn;
+    ClientesTicket: TcxGridDBColumn;
+    ClientesReferencia: TcxGridDBColumn;
+    ClientesImporte: TcxGridDBColumn;
+    cxGridLevel3: TcxGridLevel;
+    cdsLiquidacionDetalleClientes: TDACDSDataTable;
+    dsLiquidacionDetalleClientes: TDADataSource;
+    cdsTipoValorClientes: TDACDSDataTable;
+    dsTipoValorClientes: TDADataSource;
+    cxGrid6: TcxGrid;
+    cxGridDBTableView4: TcxGridDBTableView;
+    MonedaTipoValorId: TcxGridDBColumn;
+    MonedaClienteID: TcxGridDBColumn;
+    MonedaTicket: TcxGridDBColumn;
+    MonedaBancoId: TcxGridDBColumn;
+    MonedaReferencia: TcxGridDBColumn;
+    MonedaImporte: TcxGridDBColumn;
+    cxGridLevel4: TcxGridLevel;
+    cdsLiquidacionDetalleMoneda: TDACDSDataTable;
+    dsLiquidacionDetalleMoneda: TDADataSource;
+    dsTipoValorMoneda: TDADataSource;
+    cdsTipoValorMoneda: TDACDSDataTable;
+    cdsAnticipoDetalleMoneda: TDACDSDataTable;
+    cdsAnticipoDetalleClientes: TDACDSDataTable;
+    cdsAnticipoDetalleCupones: TDACDSDataTable;
+    cdsAnticipoDetalleOtros: TDACDSDataTable;
+    cdsClientes: TDACDSDataTable;
+    dsClientes: TDADataSource;
+    MonedaNombreCliente: TcxGridDBColumn;
+    ClientesNombreCliente: TcxGridDBColumn;
+    CuponesNombreCliente: TcxGridDBColumn;
+    cdsFaltantes: TDACDSDataTable;
+    dsFaltantes: TDADataSource;
+    cdsTipoCambio: TDACDSDataTable;
+    cxTipoCambio: TcxLabel;
+    cxLabel1: TcxLabel;
+    dsTipoCambio: TDADataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure cdsLiquidacionAfterPost(DataTable: TDADataTable);
+    procedure cdsLiquidacionBeforePost(DataTable: TDADataTable);
+
+    procedure dbTurnoExit(Sender: TObject);
+    procedure dbgAnticiposDBTableView1TipoValorIDPropertiesEditValueChanged(
+      Sender: TObject);
+    procedure cdsLiquidacionDetalleBeforePost(DataTable: TDADataTable);
+    procedure dbDespachadorExit(Sender: TObject);
+    procedure dbAgrupacionExit(Sender: TObject);
+    procedure cdsLiquidacionProductoBeforePost(DataTable: TDADataTable);
+    procedure cdsLiquidacionProductoNewRecord(DataTable: TDADataTable);
+    procedure cdsLiquidacionDetalleNewRecord(DataTable: TDADataTable);
+    procedure cdsLiquidacionValorBeforePost(DataTable: TDADataTable);
+    procedure cxGrid5DBTableView1ImportePropertiesEditValueChanged(
+      Sender: TObject);
+    procedure dbgAnticiposDBTableView1CuponPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure dbgAnticiposDBTableView1TicketPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cdsTransaccionNewRecord(DataTable: TDADataTable);
+    procedure cdsDetalleTransaccionNewRecord(DataTable: TDADataTable);
+    procedure cdsTransaccionAfterPost(DataTable: TDADataTable);
+    procedure cdsLiquidacionDetalleAfterPost(DataTable: TDADataTable);
+    procedure cdsLiquidacionDetalleBeforeDelete(DataTable: TDADataTable);
+    procedure cdsLiquidacionProductoAfterPost(DataTable: TDADataTable);
+    procedure cdsLiquidacionValorAfterPost(DataTable: TDADataTable);
+    procedure dbgAnticiposDBTableView1KeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure dbgAnticiposDBTableView1EditKeyDown(
+      Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+      AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
+    procedure dbgAnticiposDBTableView1ImportePropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure dbgAnticiposEnter(Sender: TObject);
+    procedure dbgAnticiposExit(Sender: TObject);
+    procedure cdsLiquidacionDetalleAfterDelete(DataTable: TDADataTable);
+    procedure OtrosTipoValorIdPropertiesEditValueChanged(Sender: TObject);
+    procedure OtrosTicketPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cdsLiquidacionDetalleOtrosBeforePost(DataTable: TDADataTable);
+    procedure cdsLiquidacionDetalleOtrosAfterPost(DataTable: TDADataTable);
+    procedure CuponesTipoValorPropertiesEditValueChanged(Sender: TObject);
+    procedure CuponesCuponPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure CuponesTicketPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cdsLiquidacionDetalleCuponesBeforePost(DataTable: TDADataTable);
+    procedure cdsLiquidacionDetalleCuponesAfterPost(DataTable: TDADataTable);
+    procedure ClientesTipoValorPropertiesEditValueChanged(Sender: TObject);
+    procedure ClientesTicketPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cdsLiquidacionDetalleClientesAfterPost(DataTable: TDADataTable);
+    procedure cdsLiquidacionDetalleClientesBeforePost(DataTable: TDADataTable);
+    procedure MonedaTipoValorIdPropertiesEditValueChanged(Sender: TObject);
+    procedure MonedaTicketPropertiesValidate(Sender: TObject;
+      var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+    procedure cdsLiquidacionDetalleMonedaBeforePost(DataTable: TDADataTable);
+    procedure cdsLiquidacionDetalleMonedaAfterPost(DataTable: TDADataTable);
+    procedure cxGridDBTableView3EditKeyDown(Sender: TcxCustomGridTableView;
+      AItem: TcxCustomGridTableItem; AEdit: TcxCustomEdit; var Key: Word;
+      Shift: TShiftState);
+    procedure cxGridDBTableView2EditKeyDown(Sender: TcxCustomGridTableView;
+      AItem: TcxCustomGridTableItem; AEdit: TcxCustomEdit; var Key: Word;
+      Shift: TShiftState);
+    procedure cxGridDBTableView4EditKeyDown(Sender: TcxCustomGridTableView;
+      AItem: TcxCustomGridTableItem; AEdit: TcxCustomEdit; var Key: Word;
+      Shift: TShiftState);
+    procedure cdsFaltantesAfterPost(DataTable: TDADataTable);
+
+  private
+    { Private declarations }
+    procedure ActionNuevo(Action: TBasicAction);
+    procedure ActionGuardar(Action: TBasicAction);
+    procedure ActionCancelar(Action: TBasicAction);
+    function StatusTicket(Valor:String;var Mensaje:String):boolean;
+    function StatusCupon(Valor:string;var Mensaje:String):boolean;
+    function ExisteTicketEnLista(Valor: String): boolean;
+    function ExisteCuponEnLista(Valor: String):Boolean;
+    procedure AfectarInventario;
+    function ObtenerAlmacenAgrupacion:integer;
+    function RequiereTicket:boolean;
+    function RequiereTicket1(Valor:Integer):boolean;
+    function RequiereCupon:boolean;
+    Function RequiereCupon1(Valor:Integer):Boolean;
+    function RequiereReferencia:boolean;
+    Function RequiereReferencia1(Valor:Integer):Boolean;
+    function RequiereBanco:Boolean;
+    Function RequiereBanco1(Valor:Integer):Boolean;
+    function RequiereCliente:Boolean;
+    Function RequiereCliente1(Valor:Integer):Boolean;
+    function RequiereSalida:Boolean;
+    function RequiereSalida1(Valor:Integer):Boolean;
+    procedure ConsumirCupon;
+    procedure CalcularDiferencia;
+    procedure RegistrarValeCredito;
+    function EsCredito:Boolean;
+    procedure InicializarFocus;
+    procedure CargarAnticipos;
+    function ObtenerSecuencia:Integer;
+    procedure BuscarCliente;
+    Procedure BuscarCliente1;
+    Procedure ImprimirReporte(Estacion:Integer;SecuenciaIni:Integer;SecuenciaFin:Integer;Agrupacion:Integer);
+    Procedure GuardarFaltantes(Empleado:Integer;Faltante:Float;Liquidacion:Integer);
+   // procedure GuardarLiquidacion;
+  protected
+    procedure RegisterActions; override;
+  public
+    { Public declarations }
+     procedure UpdateActionsState; override;
+  end;
+
+var
+  FrmLiquidacion: TFrmLiquidacion;
+  Estacion: Integer;
+  Secuencia: Integer;
+  Liquidacion:Integer;
+  AgrupacionID:Integer;
+  //Direfencia de Dinero por Entregar
+  Diferencia: Float;
+  //La entrega de Dinero
+  Anticipos: Float;
+  //VentasTotales
+  VentasTotales: Float;
+  AnticipoInicial:Float;
+  VentaCombustible:Float;
+  Agrupar:Boolean;
+  TipoValorID_Grupo:integer;
+  ClienteID_Grupo:Integer;
+  Ticket_Grupo:integer;
+  Importe_Grupo:Real;
+  Suma_Grupo:Real;
+  ImprimirReporteLiquidacion:String;
+  ConvierteADolar:Boolean;
+  TipoCambioID:Integer;
+
+  TipoValor:record
+    TipoValorID:Integer;
+    ClienteID:Integer;
+    Ticket:Integer;
+    CuponID:Integer;
+    BancoID:Integer;
+    SalidaID:Integer;
+    Referencia:String;
+    Importe:Float;
+    AceptaClienteID:Boolean;
+    AceptaTicket:Boolean;
+    AceptaCuponID:Boolean;
+    AceptaBancoID:Boolean;
+    AceptaSalidaID:Boolean;
+    AceptaReferencia:Boolean;
+  end;
+  AgregarRegistro:Boolean;
+  CargaAnticipo:Boolean;
+
+implementation
+     uses Modules, uDM, dmActions, ufrmBuscar, ufrmBuscarCliente,
+  UtileriasComun, LibraryCistemGas_Intf, dmImagenes,
+  LibraryAdministracion_Intf;
+
+{$R *.dfm}
+
+procedure TfrmLiquidacion.ActionNuevo(Action: TBasicAction);
+begin
+  cdsLiquidacion.Append;
+  Liquidacion:=DM.Servidor.Folio('LiquidacionID', '');
+  cdsLiquidacionDetalleMoneda.Close;
+  cdsLiquidacionDetalleMoneda.ParamByName('LiquidacionID').AsInteger:=Liquidacion;
+  cdsLiquidacionDetalleMoneda.Open;
+
+  cdsLiquidacionDetalleClientes.Close;
+  cdsLiquidacionDetalleClientes.ParamByName('LiquidacionID').AsInteger:=Liquidacion;
+  cdsLiquidacionDetalleClientes.Open;
+
+  cdsLiquidacionDetalleCupones.Close;
+  cdsLiquidacionDetalleCupones.ParamByName('LiquidacionID').AsInteger:=Liquidacion;
+  cdsLiquidacionDetalleCupones.Open;
+
+  cdsLiquidacionDetalleOtros.Close;
+  cdsLiquidacionDetalleOtros.ParamByName('LiquidacionID').AsInteger:=Liquidacion;
+  cdsLiquidacionDetalleOtros.Open;
+
+  dbAgrupacion.Enabled:=True;
+  //dbAgrupacion.SetFocus;
+  cbxListaCupon.Clear;
+  cbxListaTicket.Clear;
+end;
+
+procedure TFrmLiquidacion.AfectarInventario;
+begin
+  cdsTransaccion.Open;
+  cdsDetalleTransaccion.Open;
+  cdsMovimientoAlmacen.Open;
+  cdsDetalleMovimiento.Open;
+  cdsTransaccion.Append;
+  cdsLiquidacionProducto.First;
+  while not cdsLiquidacionProducto.EOF do
+  begin
+    if cdsLiquidacionProducto.FieldByName('Cantidad').AsFloat > 0 then
+    begin
+      cdsDetalleTransaccion.Append;
+      cdsDetalleTransaccion.FieldByName('ProductoID').AsInteger:=cdsLiquidacionProducto.FieldByName('ProductoID').AsInteger;
+      cdsDetalleTransaccion.FieldByName('Cantidad').AsFloat:=cdsLiquidacionProducto.FieldByName('Cantidad').AsFloat;
+      cdsDetalleTransaccion.FieldByName('Costo').AsFloat:=DM.Servidor.CostoProducto(cdsLiquidacionProducto.FieldByName('ProductoID').AsInteger);
+      cdsDetalleTransaccion.Post;
+    end;
+    cdsLiquidacionProducto.Next;
+  end;
+  if cdsDetalleTransaccion.RecordCount > 0 then
+  begin
+    cdsMovimientoAlmacen.Append;
+    cdsMovimientoAlmacen.FieldByName('MovimientoAlmacen').AsInteger:=DM.Servidor.Folio('MovimientoAlmacen','');
+    cdsMovimientoAlmacen.FieldByName('AlmacenID').AsInteger:=cdsTransaccion.FieldByName('AlmacenID').AsInteger;
+    cdsMovimientoAlmacen.FieldByName('EstacionID').AsInteger:=cdsTransaccion.FieldByName('EstacionID').AsInteger;
+    cdsDetalleTransaccion.First;
+    while not cdsDetalleTransaccion.EOF do
+    begin
+      cdsDetalleMovimiento.Append;
+      cdsDetalleMovimiento.FieldByName('DetalleMovimientoID').AsInteger:=DM.Servidor.Folio('DetalleMovimientoID','');
+      cdsDetalleMovimiento.FieldByName('Tipo').AsString:=cdsTransaccion.FieldByName('Tipo').AsString;
+      cdsDetalleMovimiento.FieldByName('Operador').AsInteger:=-1;
+      cdsDetalleMovimiento.FieldByName('Cantidad').AsFloat:=cdsDetalleTransaccion.FieldByName('Cantidad').AsFloat;
+      cdsDetalleMovimiento.FieldByName('Costo').AsFloat:=cdsDetalleTransaccion.FieldByName('Costo').AsFloat;
+      cdsDetalleMovimiento.FieldByName('MovimientoAlmacen').AsInteger:=cdsMovimientoAlmacen.FieldByName('MovimientoAlmacen').AsInteger;
+      cdsDetalleMovimiento.FieldByName('ProductoID').AsInteger:=cdsDetalleTransaccion.FieldByName('ProductoID').AsInteger;
+      cdsDetalleMovimiento.FieldByName('TransaccionID').AsInteger:=cdsTransaccion.FieldByName('TransaccionID').AsInteger;
+      cdsDetalleMovimiento.Post;
+      cdsDetalleTransaccion.Next;
+    end;
+    cdsMovimientoAlmacen.Post;
+    cdsTransaccion.Post;
+  end
+  else
+    cdsTransaccion.Cancel;
+end;
+
+procedure TFrmLiquidacion.BuscarCliente;
+begin
+{    frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+    frmBuscarCliente.ShowModal;
+    begin
+      cdsLiquidacionDetalle.FieldByName('clienteID').AsInteger:=FrmBuscarCliente.Clave;
+    end;
+    TipoValor.ClienteID:=FrmBuscarCliente.Clave;
+    cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=FrmBuscarCliente.Clave;
+
+ }
+end;
+
+procedure TFrmLiquidacion.BuscarCliente1;
+begin
+    frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+    frmBuscarCliente.ShowModal;
+   // begin
+   //   cdsLiquidacionDetalle.FieldByName('clienteID').AsInteger:=FrmBuscarCliente.Clave;
+   // end;
+   // TipoValor.ClienteID:=FrmBuscarCliente.Clave;
+   // cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=FrmBuscarCliente.Clave;
+
+end;
+
+procedure TFrmLiquidacion.CalcularDiferencia;
+var
+  Venta:Real;
+  Anticipo:Real;
+  Diferencia:Real;
+  VentaProducto:Real;
+  Valores:Real;
+  Documentos:Real;
+  RegistroActual:integer;
+begin
+  VentaProducto:=0;
+  Valores:=0;
+  Documentos:=0;
+  cdsLiquidacionProducto.First;
+  RegistroActual:=cdsLiquidacionProducto.FieldByName('LiquidacionProductoID').AsInteger;
+  While not cdsLiquidacionProducto.EOF do
+  begin
+    VentaProducto:=VentaProducto+cdsLiquidacionProducto.FieldByName('Importe').AsFloat;
+    cdsLiquidacionProducto.Next;
+  end;
+  cdsLiquidacionProducto.Locate('LiquidacionProductoID',RegistroActual,[loCaseInsensitive]);
+  cdsLiquidacionValor.First;
+
+  While not cdsLiquidacionValor.EOF do
+  begin
+    Valores:=Valores+cdsLiquidacionValor.FieldByName('Importe').AsFloat;
+    cdsLiquidacionValor.Next;
+  end;
+  if not cdsLiquidacionDetalle.Active  then
+    cdsLiquidacionDetalle.Open;
+  //Liquidacion Detalle Esta Ya no tienen Informacion por que fue dividida
+  cdsLiquidacionDetalle.First;
+  While not cdsLiquidacionDetalle.EOF do
+  begin
+    Documentos:=Documentos+cdsLiquidacionDetalle.FieldByName('Importe').AsFloat;
+    cdsLiquidacionDetalle.Next;
+  end;
+  // detalle Otros
+  cdsLiquidacionDetalleOtros.First;
+  While not cdsLiquidacionDetalleOtros.EOF do
+  begin
+    Documentos:=Documentos + cdsLiquidacionDetalleOtros.FieldByName('Importe').AsFloat;
+    cdsLiquidacionDetalleOtros.Next;
+  end;
+  //detalle nCupones
+  cdsLiquidacionDetalleCupones.First;
+  While not cdsLiquidacionDetalleCupones.EOF do
+  begin
+   Documentos:=Documentos + cdsLiquidacionDetalleCupones.FieldByName('Importe').AsFloat;
+    cdsLiquidacionDetalleCupones.Next;
+  end;
+
+  //Clientes
+  cdsLiquidacionDetalleClientes.First;
+  While not cdsLiquidacionDetalleClientes.EOF do
+  begin
+   Documentos:=Documentos + cdsLiquidacionDetalleClientes.FieldByName('Importe').AsFloat;
+    cdsLiquidacionDetalleClientes.Next;
+  end;
+  //Agregamos todo lo de  detalle moneda
+  cdsLiquidacionDetalleMoneda.First;
+  while not cdsLiquidacionDetalleMoneda.eof do
+  begin
+    Documentos:=Documentos + cdsLiquidacionDetalleMoneda.FieldByName('Importe').AsFloat;
+    cdsLiquidacionDetalleMoneda.Next;
+  end;
+
+  Venta:=VentaCombustible + VentaProducto;
+  Anticipo:=AnticipoInicial + Valores + Documentos;
+  Diferencia:= Venta - Anticipo;
+  cdsLiquidacion.FieldByName('VentasTotales').AsFloat:=Venta;
+  cdsLiquidacion.FieldByName('Anticipos').AsFloat:=Anticipo;
+  cdsLiquidacion.FieldByName('Diferencias').AsFloat:=Diferencia;
+end;
+
+
+procedure TFrmLiquidacion.CargarAnticipos;
+begin
+  cdsAnticipoDetalle.Close;
+  cdsAnticipoDetalle.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsAnticipoDetalle.ParamByName('Secuencia').AsInteger:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+  cdsAnticipoDetalle.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+  cdsAnticipoDetalle.Open;
+  cdsAnticipoDetalle.First;
+  while not cdsAnticipoDetalle.EOF do
+  begin
+    cdsLiquidacionDetalle.Append;
+    cdsLiquidacionDetalle.FieldByName('Importe').Value:=cdsAnticipoDetalle.FieldByName('Importe').Value;
+    cdsLiquidacionDetalle.FieldByName('Referencia').Value:=cdsAnticipoDetalle.FieldByName('Referencia').Value;
+    cdsLiquidacionDetalle.FieldByName('Ticket').Value:=cdsAnticipoDetalle.FieldByName('Ticket').Value;
+    cdsLiquidacionDetalle.FieldByName('Cupon').Value:=cdsAnticipoDetalle.FieldByName('CuponID').Value;
+    cdsLiquidacionDetalle.FieldByName('TipoValorID').Value:=cdsAnticipoDetalle.FieldByName('TipoValorID').Value;
+    cdsLiquidacionDetalle.FieldByName('BancoID').Value:=cdsAnticipoDetalle.FieldByName('BancoID').Value;
+    cdsLiquidacionDetalle.FieldByName('SalidaID').Value:=cdsAnticipoDetalle.FieldByName('SalidaID').Value;
+    cdsLiquidacionDetalle.FieldByName('ClienteID').Value:=cdsAnticipoDetalle.FieldByName('ClienteID').Value;
+    cdsLiquidacionDetalle.Post;
+    cdsAnticipoDetalle.Next;
+  end;
+
+  cdsAnticipoDetalleMoneda.Close;
+  cdsAnticipoDetalleMoneda.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsAnticipoDetalleMoneda.ParamByName('Secuencia').AsInteger:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+  cdsAnticipoDetalleMoneda.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+  cdsAnticipoDetalleMoneda.ParamByName('TipoAnticipo').AsInteger:=1;
+  cdsAnticipoDetalleMoneda.Open;
+  cdsAnticipoDetalleMoneda.First;
+  while not cdsAnticipoDetalleMoneda.EOF do
+  begin
+    cdsLiquidacionDetalleMoneda.Append;
+    cdsLiquidacionDetalleMoneda.FieldByName('Importe').Value:=cdsAnticipoDetalleMoneda.FieldByName('Importe').Value;
+    cdsLiquidacionDetalleMoneda.FieldByName('Referencia').Value:=cdsAnticipoDetalleMoneda.FieldByName('Referencia').Value;
+    cdsLiquidacionDetalleMoneda.FieldByName('Ticket').Value:=cdsAnticipoDetalleMoneda.FieldByName('Ticket').Value;
+    cdsLiquidacionDetalleMoneda.FieldByName('Cupon').Value:=cdsAnticipoDetalleMoneda.FieldByName('CuponID').Value;
+    cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').Value:=cdsAnticipoDetalleMoneda.FieldByName('TipoValorID').Value;
+    cdsLiquidacionDetalleMoneda.FieldByName('BancoID').Value:=cdsAnticipoDetalleMoneda.FieldByName('BancoID').Value;
+    cdsLiquidacionDetalleMoneda.FieldByName('SalidaID').Value:=cdsAnticipoDetalleMoneda.FieldByName('SalidaID').Value;
+    cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').Value:=cdsAnticipoDetalleMoneda.FieldByName('ClienteID').Value;
+    cdsLiquidacionDetalleMoneda.Post;
+    cdsAnticipoDetalleMoneda.Next;
+  end;
+
+  cdsAnticipoDetalleClientes.Close;
+  cdsAnticipoDetalleClientes.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsAnticipoDetalleClientes.ParamByName('Secuencia').AsInteger:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+  cdsAnticipoDetalleClientes.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+  cdsAnticipoDetalleClientes.ParamByName('TipoAnticipo').AsInteger:=2;
+  cdsAnticipoDetalleClientes.Open;
+  cdsAnticipoDetalleClientes.First;
+  while not cdsAnticipoDetalleClientes.EOF do
+  begin
+    cdsLiquidacionDetalleclientes.Append;
+    cdsLiquidacionDetalleClientes.FieldByName('Importe').Value:=cdsAnticipoDetalleClientes.FieldByName('Importe').Value;
+    cdsLiquidacionDetalleClientes.FieldByName('Referencia').Value:=cdsAnticipoDetalleClientes.FieldByName('Referencia').Value;
+    cdsLiquidacionDetalleClientes.FieldByName('Ticket').Value:=cdsAnticipoDetalleClientes.FieldByName('Ticket').Value;
+    cdsLiquidacionDetalleClientes.FieldByName('Cupon').Value:=cdsAnticipoDetalleClientes.FieldByName('CuponID').Value;
+    cdsLiquidacionDetalleClientes.FieldByName('TipoValorID').Value:=cdsAnticipoDetalleClientes.FieldByName('TipoValorID').Value;
+    cdsLiquidacionDetalleClientes.FieldByName('BancoID').Value:=cdsAnticipoDetalleClientes.FieldByName('BancoID').Value;
+    cdsLiquidacionDetalleClientes.FieldByName('SalidaID').Value:=cdsAnticipoDetalleClientes.FieldByName('SalidaID').Value;
+    cdsLiquidacionDetalleClientes.FieldByName('ClienteID').Value:=cdsAnticipoDetalleClientes.FieldByName('ClienteID').Value;
+    cdsLiquidacionDetalleClientes.Post;
+    cdsAnticipoDetalleClientes.Next;
+  end;
+
+  cdsAnticipoDetalleCupones.Close;
+  cdsAnticipoDetalleCupones.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsAnticipoDetalleCupones.ParamByName('Secuencia').AsInteger:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+  cdsAnticipoDetalleCupones.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+  cdsAnticipoDetalleCupones.ParamByName('TipoAnticipo').AsInteger:=3;
+  cdsAnticipoDetalleCupones.Open;
+  cdsAnticipoDetalleCupones.First;
+  while not cdsAnticipoDetalleCupones.EOF do
+  begin
+    cdsLiquidacionDetalleCupones.Append;
+    cdsLiquidacionDetalleCupones.FieldByName('Importe').Value:=cdsAnticipoDetalleCupones.FieldByName('Importe').Value;
+    cdsLiquidacionDetalleCupones.FieldByName('Referencia').Value:=cdsAnticipoDetalleCupones.FieldByName('Referencia').Value;
+    cdsLiquidacionDetalleCupones.FieldByName('Ticket').Value:=cdsAnticipoDetalleCupones.FieldByName('Ticket').Value;
+    cdsLiquidacionDetalleCupones.FieldByName('Cupon').Value:=cdsAnticipoDetalleCupones.FieldByName('CuponID').Value;
+    cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').Value:=cdsAnticipoDetalleCupones.FieldByName('TipoValorID').Value;
+    cdsLiquidacionDetalleCupones.FieldByName('BancoID').Value:=cdsAnticipoDetalleCupones.FieldByName('BancoID').Value;
+    cdsLiquidacionDetalleCupones.FieldByName('SalidaID').Value:=cdsAnticipoDetalleCupones.FieldByName('SalidaID').Value;
+    cdsLiquidacionDetalleCupones.FieldByName('ClienteID').Value:=cdsAnticipoDetalleCupones.FieldByName('ClienteID').Value;
+    cdsLiquidacionDetalleCupones.Post;
+    cdsAnticipoDetalleCupones.Next;
+  end;
+
+
+  cdsAnticipoDetalleOtros.Close;
+  cdsAnticipoDetalleOtros.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsAnticipoDetalleOtros.ParamByName('Secuencia').AsInteger:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+  cdsAnticipoDetalleOtros.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+  cdsAnticipoDetalleOtros.ParamByName('TipoAnticipo').AsInteger:=4;
+  cdsAnticipoDetalleOtros.Open;
+  cdsAnticipoDetalleOtros.First;
+  while not cdsAnticipoDetalleOtros.EOF do
+  begin
+    cdsLiquidacionDetalleOtros.Append;
+    cdsLiquidacionDetalleOtros.FieldByName('Importe').Value:=cdsAnticipoDetalleOtros.FieldByName('Importe').Value;
+    cdsLiquidacionDetalleOtros.FieldByName('Referencia').Value:=cdsAnticipoDetalleOtros.FieldByName('Referencia').Value;
+    cdsLiquidacionDetalleOtros.FieldByName('Ticket').Value:=cdsAnticipoDetalleOtros.FieldByName('Ticket').Value;
+    cdsLiquidacionDetalleOtros.FieldByName('Cupon').Value:=cdsAnticipoDetalleOtros.FieldByName('CuponID').Value;
+    cdsLiquidacionDetalleOtros.FieldByName('TipoValorID').Value:=cdsAnticipoDetalleOtros.FieldByName('TipoValorID').Value;
+    cdsLiquidacionDetalleOtros.FieldByName('BancoID').Value:=cdsAnticipoDetalleOtros.FieldByName('BancoID').Value;
+    cdsLiquidacionDetalleOtros.FieldByName('SalidaID').Value:=cdsAnticipoDetalleOtros.FieldByName('SalidaID').Value;
+    cdsLiquidacionDetalleOtros.FieldByName('ClienteID').Value:=cdsAnticipoDetalleOtros.FieldByName('ClienteID').Value;
+    cdsLiquidacionDetalleOtros.Post;
+    cdsAnticipoDetalleOtros.Next;
+  end;
+
+
+end;
+
+procedure TFrmLiquidacion.cdsDetalleTransaccionNewRecord(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsDetalleTransaccion.FieldByName('DetalleTransaccionID').AsInteger:=DM.Servidor.Folio('DetalleTransaccionID','');
+  cdsDetalleTransaccion.FieldByName('TransaccionID').AsInteger:=cdsTransaccion.FieldByName('TransaccionID').AsInteger;
+  cdsDetalleTransaccion.FieldByName('Cantidad').AsFloat:=0;
+  cdsDetalleTransaccion.FieldByName('Importe').AsFloat:=0;
+end;
+
+procedure TFrmLiquidacion.cdsFaltantesAfterPost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsFaltantes.ApplyUpdates();
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionAfterPost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsLiquidacion.ApplyUpdates(true);
+  cdsLiquidacionCombustible.ApplyUpdates(true);
+  cdsLiquidacionDetalle.ApplyUpdates(true);
+  cdsLiquidacionDetalleMoneda.ApplyUpdates(True);
+  cdsLiquidacionDetalleClientes.ApplyUpdates(True);
+  cdsLiquidacionDetalleCupones.ApplyUpdates(True);
+  cdsLiquidacionDetalleOtros.ApplyUpdates(True);
+
+  cdsLiquidacionProducto.ApplyUpdates(true);
+  cdsLiquidacionValor.ApplyUpdates(true);
+  cdsValeCredito.ApplyUpdates(true);
+  DM.Servidor.ActualizaLiquidacionCorte(Liquidacion, Secuencia, AgrupacionID );
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionBeforePost(DataTable: TDADataTable);
+var
+  Fecha:TDateTime;
+begin
+  inherited;
+  //GUARDAR LIQUIDACION
+  cdsLiquidacion.FieldByName('TipoCambioID').AsInteger:=DM.Servidor.ObtenerTipoCambioIDPorEstacion(Estacion);
+  Fecha:=Trunc(DM.Servidor.Fecha);//trunc(cdsLiquidacion.FieldByName('FechaActual').AsDateTime);
+  cdsLiquidacion.FieldByName('EstacionID').AsInteger:=Estacion;
+  cdsLiquidacion.FieldByName('Secuencia').AsInteger:=Secuencia;
+  cdsLiquidacion.FieldByName('FechaActual').AsString:=DateTimetoStr(Fecha);
+  cdsLiquidacion.FieldByName('Ejercicio').AsString:=FormatDateTime('yyyy',Fecha);
+  cdsLiquidacion.FieldByName('Periodo').AsString:=FormatDateTime('mm',Fecha);
+  cdsLiquidacion.FieldByName('Dia').AsString:=FormatDateTime('dd',Fecha);
+  AgrupacionID:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+  AfectarInventario;
+  ConsumirCupon;
+  RegistrarValeCredito;
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleAfterDelete(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  CalcularDiferencia;
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleAfterPost(
+  DataTable: TDADataTable);
+var
+  ButtonSelected:Integer;
+begin
+
+  inherited;
+  buttonSelected:=mrOK;
+  if RequiereTicket then
+    cbxListaTicket.Properties.Items.Add(cdsLiquidacionDetalle.FieldByName('Ticket').AsString);
+  if RequiereCupon then
+    cbxListaCupon.Properties.Items.Add(cdsLiquidacionDetalle.FieldByName('Cupon').AsString);
+  CalcularDiferencia;
+  if Agrupar then
+  begin
+    if Suma_Grupo < Importe_Grupo then
+    begin
+      cdsLiquidacionDetalle.Append;
+      cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger:=TipoValorID_Grupo;
+      cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=ClienteID_Grupo;
+      cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger:=Ticket_Grupo;
+      dbgAnticiposDBTableView1TipoValorID.Options.Focusing:=False;
+      dbgAnticiposDBTableView1ClienteID.Options.Focusing:=False;
+      dbgAnticiposDBTableView1Ticket.Options.Focusing:=False;
+      dbgAnticiposDBTableView1Referencia.Options.Focusing:=True;
+    end
+    else
+    begin
+      Agrupar:=False;
+      dbgAnticiposDBTableView1TipoValorID.Options.Focusing:=true;
+      Suma_Grupo:=0;
+    end;
+  end;
+
+  if CargaAnticipo=False then
+    ButtonSelected:=MessageDlg('Desea Agregar Registro del mismo Tipo',mtConfirmation, [mbOK,mbNO], 0);
+
+  if buttonSelected=mrOK then
+  begin
+    AgregarRegistro:=True;
+    TipoValor.TipoValorID:=cdsLiquidacionDetalle.FieldByName('TipovalorID').AsInteger;
+    TipoValor.ClienteID:=cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger;
+    TipoValor.Ticket:=cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger;
+    TipoValor.CuponID:=cdsLiquidacionDetalle.FieldByName('Cupon').AsInteger;
+    TipoValor.BancoID:=cdsLiquidacionDetalle.FieldByName('BancoID').AsInteger;
+    TipoValor.SalidaID:=cdsLiquidacionDetalle.FieldByName('SalidaID').AsInteger;
+    TipoValor.Referencia:=cdsLiquidacionDetalle.FieldByName('Referencia').AsString;
+
+    cdsLiquidacionDetalle.Append;
+    cdsLiquidacionDetalle.FieldByName('Referencia').AsString:=TipoValor.Referencia;
+    cdsLiquidacionDetalle.FieldByName('SalidaID').AsInteger:=TipoValor.SalidaID;
+    cdsLiquidacionDetalle.FieldByName('BancoID').AsInteger:=TipoValor.BancoID;
+    if TipoValor.CuponID>0 then
+      cdsLiquidacionDetalle.FieldByName('Cupon').AsInteger:=TipoValor.CuponID;
+    if Tipovalor.Ticket>0 then
+      cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger:=Tipovalor.Ticket;
+    cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=TipoValor.ClienteID;
+    cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger:=TipoValor.TipoValorID;
+
+    // Es para si deseamos seguir insertando reguistros del mismo tipo permitir poder carturar
+    if TipoValor.AceptaClienteID=True then
+       dbgAnticiposDBTableView1ClienteID.Options.Focusing:=True;
+    if TipoValor.AceptaTicket=True then
+      dbgAnticiposDBTableView1Ticket.Options.Focusing:=True;
+    If TipoValor.AceptaCuponID=True then
+      dbgAnticiposDBTableView1Cupon.Options.Focusing:=True;
+    If TipoValor.AceptaBancoID=True then
+      dbgAnticiposDBTableView1BancoID.Options.Focusing:=True;
+    If TipoValor.AceptaSalidaID=true then
+       dbgAnticiposDBTableView1SalidaID.Options.Focusing:=True;
+    IF TipoValor.AceptaReferencia=True then
+      dbgAnticiposDBTableView1Referencia.Options.Focusing:=True;
+
+  end
+  else
+  begin
+      AgregarRegistro:=False;
+      TipoValor.AceptaClienteID:=False;
+      TipoValor.AceptaTicket:=False;
+      TipoValor.AceptaCuponID:=False;
+      TipoValor.AceptaBancoID:=False;
+      TipoValor.AceptaSalidaID:=False;
+      TipoValor.AceptaReferencia:=False;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleBeforeDelete(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  if RequiereTicket then
+    cbxListaTicket.Properties.Items.Delete(cbxListaTicket.Properties.Items.IndexOf(cdsLiquidacionDetalle.FieldByName('Ticket').AsString));
+  if RequiereCupon then
+    cbxListaCupon.Properties.Items.Delete(cbxListaCupon.Properties.Items.IndexOf(cdsLiquidacionDetalle.FieldByName('Cupon').AsString));
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;  
+  cdsLiquidacionDetalle.FieldByName('LiquidacionDetalleID').AsInteger:=DM.Servidor.Folio('LiquidacionDetalleID', '');
+  cdsLiquidacionDetalle.FieldByName('Secuencia').AsInteger:=Secuencia;
+  cdsLiquidacionDetalle.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+  if Agrupar then
+  begin
+    TipoValorID_Grupo:=cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger;
+    ClienteID_Grupo:=cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger;
+    Ticket_Grupo:=cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger;
+    //Importe_Grupo:=500;
+    Suma_Grupo:=Suma_Grupo+cdsLiquidacionDetalle.FieldByName('Importe').AsFloat;
+    if Suma_Grupo = Importe_Grupo then
+      dbgAnticiposDBTableView1TipoValorID.Options.Focusing:=True;
+  end;
+
+  If AgregarRegistro=True then
+    cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=Tipovalor.ClienteID;
+
+
+  if (RequiereCliente) and (cdsLiquidacionDetalle.FieldByName('ClienteID').IsNull ) then
+    raise TEx.Create('Capture Cliente')
+  else
+    if (RequiereBanco) and (cdsLiquidacionDetalle.FieldByName('BancoID').IsNull ) then
+      raise TEx.Create('Capture Banco')
+    else
+    if (RequiereTicket) and  (cdsLiquidacionDetalle.FieldByName('Ticket').IsNull)  then
+      raise TEx.Create('Capture Ticket')
+    else
+      if (RequiereCupon) and (cdsLiquidacionDetalle.FieldByName('Cupon').IsNull) then
+        raise TEx.Create('Capture Cupón')
+      else
+        if (RequiereReferencia) and (cdsLiquidacionDetalle.FieldByName('Referencia').IsNull) then
+          raise TEx.Create('Capture Referencia')
+        else
+          if (RequiereSalida) and (cdsLiquidacionDetalle.FieldByName('SalidaID').IsNull) then
+            raise TEx.Create('Capture Salida');
+
+  if cdsLiquidacionDetalle.FieldByName('Importe').AsFloat = 0 then
+    raise TEx.Create('Importe no válido');
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleClientesAfterPost(
+  DataTable: TDADataTable);
+var
+  ButtonSelected:Integer;
+begin
+  inherited;
+  buttonSelected:=mrNO; //inicizlizamos la varaible
+  if RequiereTicket1(cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger) then
+    cbxListaTicket.Properties.Items.Add(cdsLiquidacionDetalleClientes.FieldByName('Ticket').AsString);
+  if RequiereCupon1(cdsLiquidacionDetalle.FieldByName('TipoValorId').AsInteger) then
+    cbxListaCupon.Properties.Items.Add(cdsLiquidacionDetalleClientes.FieldByName('Cupon').AsString);
+  CalcularDiferencia;
+  if Agrupar then
+  begin
+    if Suma_Grupo < Importe_Grupo then
+    begin
+      cdsLiquidacionDetalleClientes.Append;
+      cdsLiquidacionDetalleClientes.FieldByName('TipoValorID').AsInteger:=TipoValorID_Grupo;
+      cdsLiquidacionDetalleClientes.FieldByName('ClienteID').AsInteger:=ClienteID_Grupo;
+      cdsLiquidacionDetalleClientes.FieldByName('Ticket').AsInteger:=Ticket_Grupo;
+      ClientesTipoValor.Options.Focusing:=False;
+      ClientesClienteID.Options.Focusing:=False;
+      ClientesTicket.Options.Focusing:=False;
+      ClientesReferencia.Options.Focusing:=False;
+    end
+    else
+    begin
+      Agrupar:=False;
+      ClientesTipoValor.Options.Focusing:=True;
+      Suma_Grupo:=0;
+    end;
+  end;
+
+  if CargaAnticipo=False then
+    ButtonSelected:=MessageDlg('Desea Agregar Registro del mismo Tipo',mtConfirmation, [mbOK,mbNO], 0);
+
+  if buttonSelected=mrOK then
+  begin
+    AgregarRegistro:=True;
+    TipoValor.TipoValorID:=cdsLiquidacionDetalleClientes.FieldByName('TipovalorID').AsInteger;
+    TipoValor.ClienteID:=cdsLiquidacionDetalleClientes.FieldByName('ClienteID').AsInteger;
+    TipoValor.Ticket:=cdsLiquidacionDetalleClientes.FieldByName('Ticket').AsInteger;
+    TipoValor.CuponID:=cdsLiquidacionDetalleClientes.FieldByName('Cupon').AsInteger;
+    TipoValor.BancoID:=cdsLiquidacionDetalleClientes.FieldByName('BancoID').AsInteger;
+    TipoValor.SalidaID:=cdsLiquidacionDetalleClientes.FieldByName('SalidaID').AsInteger;
+    TipoValor.Referencia:=cdsLiquidacionDetalleClientes.FieldByName('Referencia').AsString;
+
+    cdsLiquidacionDetalleClientes.Append;
+    cdsLiquidacionDetalleClientes.FieldByName('Referencia').AsString:=TipoValor.Referencia;
+    cdsLiquidacionDetalleClientes.FieldByName('SalidaID').AsInteger:=TipoValor.SalidaID;
+    cdsLiquidacionDetalleClientes.FieldByName('BancoID').AsInteger:=TipoValor.BancoID;
+    if TipoValor.CuponID>0 then
+      cdsLiquidacionDetalleClientes.FieldByName('Cupon').AsInteger:=TipoValor.CuponID;
+    if Tipovalor.Ticket>0 then
+      cdsLiquidacionDetalleClientes.FieldByName('Ticket').AsInteger:=Tipovalor.Ticket;
+    cdsLiquidacionDetalleClientes.FieldByName('ClienteID').AsInteger:=TipoValor.ClienteID;
+    cdsLiquidacionDetalleClientes.FieldByName('TipoValorID').AsInteger:=TipoValor.TipoValorID;
+
+    // Es para si deseamos seguir insertando reguistros del mismo tipo permitir poder carturar
+    if TipoValor.AceptaClienteID=True then
+      ClientesClienteID.Options.Focusing:=True;
+    if TipoValor.AceptaTicket=True then
+      ClientesTicket.Options.Focusing:=True;
+    IF TipoValor.AceptaReferencia=True then
+      ClientesReferencia.Options.Focusing:=True;
+
+  end
+  else
+  begin
+      AgregarRegistro:=False;
+      TipoValor.AceptaClienteID:=False;
+      TipoValor.AceptaTicket:=False;
+      TipoValor.AceptaCuponID:=False;
+      TipoValor.AceptaBancoID:=False;
+      TipoValor.AceptaSalidaID:=False;
+      TipoValor.AceptaReferencia:=False;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleClientesBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsLiquidacionDetalleClientes.FieldByName('LiquidacionDetalleID').AsInteger:=DM.Servidor.Folio('LiquidacionDetalleID', '');
+  cdsLiquidacionDetalleClientes.FieldByName('Secuencia').AsInteger:=Secuencia;
+  cdsLiquidacionDetalleClientes.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+  if Agrupar then
+  begin
+    TipoValorID_Grupo:=cdsLiquidacionDetalleClientes.FieldByName('TipoValorID').AsInteger;
+    ClienteID_Grupo:=cdsLiquidacionDetalleClientes.FieldByName('ClienteID').AsInteger;
+    Ticket_Grupo:=cdsLiquidacionDetalleClientes.FieldByName('Ticket').AsInteger;
+    //Importe_Grupo:=500;
+    Suma_Grupo:=Suma_Grupo+cdsLiquidacionDetalleClientes.FieldByName('Importe').AsFloat;
+    if Suma_Grupo = Importe_Grupo then
+      ClientesTipoValor.Options.Focusing:=True;
+  end;
+
+  If AgregarRegistro=True then
+    cdsLiquidacionDetalleClientes.FieldByName('ClienteID').AsInteger:=Tipovalor.ClienteID;
+  if (RequiereCliente1(cdsLiquidacionDetalleClientes.FieldByName('TipoValorId').AsInteger)) and (cdsLiquidacionDetalleClientes.FieldByName('ClienteID').IsNull ) then
+    raise TEx.Create('Capture Cliente')
+  else
+    if (RequiereBanco1(cdsLiquidacionDetalleClientes.FieldByName('TipoValorId').AsInteger)) and (cdsLiquidacionDetalleClientes.FieldByName('BancoID').IsNull ) then
+      raise TEx.Create('Capture Banco')
+    else
+    if (RequiereTicket1(cdsLiquidacionDetalleClientes.FieldByName('TipoValorId').AsInteger)) and  (cdsLiquidacionDetalleClientes.FieldByName('Ticket').IsNull)  then
+      raise TEx.Create('Capture Ticket')
+    else
+      if (RequiereCupon1(cdsLiquidacionDetalleClientes.FieldByName('TipoValorId').AsInteger)) and (cdsLiquidacionDetalleClientes.FieldByName('Cupon').IsNull) then
+        raise TEx.Create('Capture Cupón')
+      else
+        if (RequiereReferencia1(cdsLiquidacionDetalleClientes.FieldByName('TipoValorId').AsInteger)) and (cdsLiquidacionDetalleClientes.FieldByName('Referencia').IsNull) then
+          raise TEx.Create('Capture Referencia')
+        else
+          if (RequiereSalida1(cdsLiquidacionDetalleClientes.FieldByName('TipoValorId').AsInteger)) and (cdsLiquidacionDetalleClientes.FieldByName('SalidaID').IsNull) then
+            raise TEx.Create('Capture Salida');
+
+  if cdsLiquidacionDetalleClientes.FieldByName('Importe').AsFloat = 0 then
+    raise TEx.Create('Importe no válido');
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleCuponesAfterPost(
+  DataTable: TDADataTable);
+var
+  ButtonSelected:Integer;
+begin
+  inherited;
+ buttonSelected:=mrNO; 
+  if RequiereTicket1(cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger) then
+    cbxListaTicket.Properties.Items.Add(cdsLiquidacionDetalleCupones.FieldByName('Ticket').AsString);
+  if RequiereCupon1(cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger) then
+    cbxListaCupon.Properties.Items.Add(cdsLiquidacionDetalleCupones.FieldByName('Cupon').AsString);
+  CalcularDiferencia;
+  if Agrupar then
+  begin
+    if Suma_Grupo < Importe_Grupo then
+    begin
+      cdsLiquidacionDetalleCupones.Append;
+      cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger:=TipoValorID_Grupo;
+      cdsLiquidacionDetalleCupones.FieldByName('ClienteID').AsInteger:=ClienteID_Grupo;
+      cdsLiquidacionDetalleCupones.FieldByName('Ticket').AsInteger:=Ticket_Grupo;
+      CuponesTipoValor.Options.Focusing:=False;
+      CuponesClienteID.Options.Focusing:=False;
+      CuponesTicket.Options.Focusing:=False;
+      CuponesReferencia.Options.Focusing:=False;
+    end
+    else
+    begin
+      Agrupar:=False;
+      CuponesTipoValor.Options.Focusing:=True;
+      Suma_Grupo:=0;
+    end;
+  end;
+
+  if CargaAnticipo=False then
+    ButtonSelected:=MessageDlg('Desea Agregar Registro del mismo Tipo',mtConfirmation, [mbOK,mbNO], 0);
+
+  if buttonSelected=mrOK then
+  begin
+    AgregarRegistro:=True;
+    TipoValor.TipoValorID:=cdsLiquidacionDetalleCupones.FieldByName('TipovalorID').AsInteger;
+    TipoValor.ClienteID:=cdsLiquidacionDetalleCupones.FieldByName('ClienteID').AsInteger;
+    TipoValor.Ticket:=cdsLiquidacionDetalleCupones.FieldByName('Ticket').AsInteger;
+    TipoValor.CuponID:=cdsLiquidacionDetalleCupones.FieldByName('Cupon').AsInteger;
+    TipoValor.BancoID:=cdsLiquidacionDetalleCupones.FieldByName('BancoID').AsInteger;
+    TipoValor.SalidaID:=cdsLiquidacionDetalleCupones.FieldByName('SalidaID').AsInteger;
+    TipoValor.Referencia:=cdsLiquidacionDetalleCupones.FieldByName('Referencia').AsString;
+
+    cdsLiquidacionDetalleCupones.Append;
+    cdsLiquidacionDetalleCupones.FieldByName('Referencia').AsString:=TipoValor.Referencia;
+    cdsLiquidacionDetalleCupones.FieldByName('SalidaID').AsInteger:=TipoValor.SalidaID;
+    cdsLiquidacionDetalleCupones.FieldByName('BancoID').AsInteger:=TipoValor.BancoID;
+    if TipoValor.CuponID>0 then
+      cdsLiquidacionDetalleCupones.FieldByName('Cupon').AsInteger:=TipoValor.CuponID;
+    if Tipovalor.Ticket>0 then
+      cdsLiquidacionDetalleCupones.FieldByName('Ticket').AsInteger:=Tipovalor.Ticket;
+    cdsLiquidacionDetalleCupones.FieldByName('ClienteID').AsInteger:=TipoValor.ClienteID;
+    cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger:=TipoValor.TipoValorID;
+
+    // Es para si deseamos seguir insertando reguistros del mismo tipo permitir poder carturar
+    if TipoValor.AceptaClienteID=True then
+      CuponesClienteID.Options.Focusing:=True;
+    if TipoValor.AceptaTicket=True then
+      CuponesTicket.Options.Focusing:=True;
+    If TipoValor.AceptaCuponID=True then
+      CuponesCupon.Options.Focusing:=True;
+    IF TipoValor.AceptaReferencia=True then
+      CuponesReferencia.Options.Focusing:=True;
+  end
+  else
+  begin
+      AgregarRegistro:=False;
+      TipoValor.AceptaClienteID:=False;
+      TipoValor.AceptaTicket:=False;
+      TipoValor.AceptaCuponID:=False;
+      TipoValor.AceptaBancoID:=False;
+      TipoValor.AceptaSalidaID:=False;
+      TipoValor.AceptaReferencia:=False;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleCuponesBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsLiquidacionDetalleCupones.FieldByName('LiquidacionDetalleID').AsInteger:=DM.Servidor.Folio('LiquidacionDetalleID', '');
+  cdsLiquidacionDetalleCupones.FieldByName('Secuencia').AsInteger:=Secuencia;
+  cdsLiquidacionDetalleCupones.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+  if Agrupar then
+  begin
+    TipoValorID_Grupo:=cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger;
+    ClienteID_Grupo:=cdsLiquidacionDetalleCupones.FieldByName('ClienteID').AsInteger;
+    Ticket_Grupo:=cdsLiquidacionDetalleCupones.FieldByName('Ticket').AsInteger;
+    //Importe_Grupo:=500;
+    Suma_Grupo:=Suma_Grupo+cdsLiquidacionDetalleCupones.FieldByName('Importe').AsFloat;
+    if Suma_Grupo = Importe_Grupo then
+      CuponesTipoValor.Options.Focusing:=True;
+  end;
+
+  If AgregarRegistro=True then
+    cdsLiquidacionDetalleCupones.FieldByName('ClienteID').AsInteger:=Tipovalor.ClienteID;
+  if (RequiereCliente1(cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleCupones.FieldByName('ClienteID').IsNull ) then
+    raise TEx.Create('Capture Cliente')
+  else
+    if (RequiereTicket1(cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger)) and  (cdsLiquidacionDetalleCupones.FieldByName('Ticket').IsNull)  then
+      raise TEx.Create('Capture Ticket')
+    else
+      if (RequiereCupon1(cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleCupones.FieldByName('Cupon').IsNull) then
+        raise TEx.Create('Capture Cupón')
+      else
+        if (RequiereReferencia1(cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleCupones.FieldByName('Referencia').IsNull) then
+          raise TEx.Create('Capture Referencia');
+
+  if cdsLiquidacionDetalleCupones.FieldByName('Importe').AsFloat = 0 then
+    raise TEx.Create('Importe no válido');
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleMonedaAfterPost(
+  DataTable: TDADataTable);
+var
+  ButtonSelected:Integer;
+begin
+  inherited;
+   buttonSelected:=mrNO;
+  if RequiereTicket1(cdsLiquidacionDEtalleMoneda.FieldByName('TipovalorID').AsInteger) then
+    cbxListaTicket.Properties.Items.Add(cdsLiquidacionDetalleMoneda.FieldByName('Ticket').AsString);
+ // if RequiereCupon then
+ //   cbxListaCupon.Properties.Items.Add(cdsLiquidacionDetalle.FieldByName('Cupon').AsString);
+  CalcularDiferencia;
+  if Agrupar then
+  begin
+    if Suma_Grupo < Importe_Grupo then
+    begin
+      cdsLiquidacionDetalleMoneda.Append;
+      cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger:=TipoValorID_Grupo;
+      cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').AsInteger:=ClienteID_Grupo;
+      cdsLiquidacionDetalleMoneda.FieldByName('Ticket').AsInteger:=Ticket_Grupo;
+      MonedaTipoValorId.Options.Focusing:=False;
+      MonedaClienteID.Options.Focusing:=False;
+      MonedaTicket.Options.Focusing:=False;
+      MonedaReferencia.Options.Focusing:=False;
+    end
+    else
+    begin
+      Agrupar:=False;
+      MonedaTipoValorId.Options.Focusing:=True;
+      Suma_Grupo:=0;
+    end;
+  end;
+
+  if CargaAnticipo=False then
+    ButtonSelected:=MessageDlg('Desea Agregar Registro del mismo Tipo',mtConfirmation, [mbOK,mbNO], 0);
+
+  if buttonSelected=mrOK then
+  begin
+    AgregarRegistro:=True;
+    TipoValor.TipoValorID:=cdsLiquidacionDetalleMoneda.FieldByName('TipovalorID').AsInteger;
+    TipoValor.ClienteID:=cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').AsInteger;
+    TipoValor.Ticket:=cdsLiquidacionDetalleMoneda.FieldByName('Ticket').AsInteger;
+    TipoValor.CuponID:=cdsLiquidacionDetalleMoneda.FieldByName('Cupon').AsInteger;
+    TipoValor.BancoID:=cdsLiquidacionDetalleMoneda.FieldByName('BancoID').AsInteger;
+    TipoValor.SalidaID:=cdsLiquidacionDetalleMoneda.FieldByName('SalidaID').AsInteger;
+    TipoValor.Referencia:=cdsLiquidacionDetalleMoneda.FieldByName('Referencia').AsString;
+
+    cdsLiquidacionDetalleMoneda.Append;
+    cdsLiquidacionDetalleMoneda.FieldByName('Referencia').AsString:=TipoValor.Referencia;
+    cdsLiquidacionDetalleMoneda.FieldByName('SalidaID').AsInteger:=TipoValor.SalidaID;
+    cdsLiquidacionDetalleMoneda.FieldByName('BancoID').AsInteger:=TipoValor.BancoID;
+    if TipoValor.CuponID>0 then
+      cdsLiquidacionDetalleMoneda.FieldByName('Cupon').AsInteger:=TipoValor.CuponID;
+    if Tipovalor.Ticket>0 then
+      cdsLiquidacionDetalleMoneda.FieldByName('Ticket').AsInteger:=Tipovalor.Ticket;
+    cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').AsInteger:=TipoValor.ClienteID;
+    cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger:=TipoValor.TipoValorID;
+
+    // Es para si deseamos seguir insertando reguistros del mismo tipo permitir poder carturar
+    if TipoValor.AceptaClienteID=True then
+      MonedaClienteID.Options.Focusing:=True;
+    if TipoValor.AceptaTicket=True then
+      MonedaTicket.Options.Focusing:=True;
+   // If TipoValor.AceptaCuponID=True then
+   //   dbgAnticiposDBTableView1Cupon.Options.Focusing:=True;
+    If TipoValor.AceptaBancoID=True then
+      MonedaBancoId.Options.Focusing:=True;
+      dbgAnticiposDBTableView1BancoID.Options.Focusing:=True;
+   // If TipoValor.AceptaSalidaID=true then
+    //   dbgAnticiposDBTableView1SalidaID.Options.Focusing:=True;
+    IF TipoValor.AceptaReferencia=True then
+      MonedaReferencia.Options.Focusing:=True;
+
+  end
+  else
+  begin
+      ConvierteADolar:=False; // se cambio la bandera para no convertir a dolar;
+      AgregarRegistro:=False;
+      TipoValor.AceptaClienteID:=False;
+      TipoValor.AceptaTicket:=False;
+      TipoValor.AceptaCuponID:=False;
+      TipoValor.AceptaBancoID:=False;
+      TipoValor.AceptaSalidaID:=False;
+      TipoValor.AceptaReferencia:=False;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleMonedaBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  IF ConvierteADolar=True then
+    cdsLiquidacionDetalleMoneda.FieldByName('Importe').AsFloat:=cdsLiquidacionDetalleMoneda.FieldByName('Importe').AsFloat * strtofloat(cxTipoCambio.EditValue);
+
+
+
+  cdsLiquidacionDetalleMoneda.FieldByName('LiquidacionDetalleID').AsInteger:=DM.Servidor.Folio('LiquidacionDetalleID', '');
+  cdsLiquidacionDetalleMoneda.FieldByName('Secuencia').AsInteger:=Secuencia;
+  cdsLiquidacionDetalleMoneda.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+  if Agrupar then
+  begin
+    TipoValorID_Grupo:=cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger;
+    ClienteID_Grupo:=cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').AsInteger;
+    Ticket_Grupo:=cdsLiquidacionDetalleMoneda.FieldByName('Ticket').AsInteger;
+    //Importe_Grupo:=500;
+    Suma_Grupo:=Suma_Grupo + cdsLiquidacionDetalleMoneda.FieldByName('Importe').AsFloat;
+    if Suma_Grupo = Importe_Grupo then
+      MonedaTipoValorId.Options.Focusing:=True;
+  end;
+  If AgregarRegistro=True then
+    cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').AsInteger:=Tipovalor.ClienteID;
+
+
+  if (RequiereCliente1(cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').IsNull ) then
+    raise TEx.Create('Capture Cliente')
+  else
+    if (RequiereBanco1(cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleMoneda.FieldByName('BancoID').IsNull ) then
+      raise TEx.Create('Capture Banco')
+    else
+    if (RequiereTicket1(cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger)) and  (cdsLiquidacionDetalleMoneda.FieldByName('Ticket').IsNull)  then
+      raise TEx.Create('Capture Ticket')
+    else
+      if (RequiereCupon1(cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleMoneda.FieldByName('Cupon').IsNull) then
+        raise TEx.Create('Capture Cupón')
+      else
+        if (RequiereReferencia1(cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleMoneda.FieldByName('Referencia').IsNull) then
+          raise TEx.Create('Capture Referencia')
+        else
+          if (RequiereSalida1(cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleMoneda.FieldByName('SalidaID').IsNull) then
+            raise TEx.Create('Capture Salida');
+
+  if cdsLiquidacionDetalleMoneda.FieldByName('Importe').AsFloat = 0 then
+    raise TEx.Create('Importe no válido');
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleNewRecord(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  InicializarFocus;
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleOtrosAfterPost(
+  DataTable: TDADataTable);
+var
+  ButtonSelected:Integer;
+begin
+  inherited;
+   buttonSelected:=mrNO;
+  if RequiereTicket1(cdsLiquidacionDetalleOtros.FieldByName('TipoValorID').AsInteger) then
+    cbxListaTicket.Properties.Items.Add(cdsLiquidacionDetalleOtros.FieldByName('Ticket').AsString);
+ { if RequiereCupon then
+    cbxListaCupon.Properties.Items.Add(cdsLiquidacionDetalle.FieldByName('Cupon').AsString);}
+
+  CalcularDiferencia;
+  if Agrupar then
+  begin
+    if Suma_Grupo < Importe_Grupo then
+    begin
+      cdsLiquidacionDetalleOtros.Append;
+      cdsLiquidacionDetalleOtros.FieldByName('TipoValorID').AsInteger:=TipoValorID_Grupo;
+      cdsLiquidacionDetalleOtros.FieldByName('ClienteID').AsInteger:=ClienteID_Grupo;
+      cdsLiquidacionDetalleOtros.FieldByName('Ticket').AsInteger:=Ticket_Grupo;
+      OtrosTipoValorId.Options.Focusing:=False;
+      OtrosTicket.Options.Focusing:=False;
+      OtrosRefenrecia.Options.Focusing:=False;
+    end
+    else
+    begin
+      Agrupar:=False;
+      OtrosTipoValorId.Options.Focusing:=True;
+      Suma_Grupo:=0;
+    end;
+  end;
+
+  if CargaAnticipo=False then
+    ButtonSelected:=MessageDlg('Desea Agregar Registro del mismo Tipo',mtConfirmation, [mbOK,mbNO], 0);
+
+  if buttonSelected=mrOK then
+  begin
+    AgregarRegistro:=True;
+    TipoValor.TipoValorID:=cdsLiquidacionDetalleOtros.FieldByName('TipovalorID').AsInteger;
+    TipoValor.ClienteID:=cdsLiquidacionDetalleOtros.FieldByName('ClienteID').AsInteger;
+    TipoValor.Ticket:=cdsLiquidacionDetalleOtros.FieldByName('Ticket').AsInteger;
+    TipoValor.CuponID:=cdsLiquidacionDetalleOtros.FieldByName('Cupon').AsInteger;
+    TipoValor.BancoID:=cdsLiquidacionDetalleOtros.FieldByName('BancoID').AsInteger;
+    TipoValor.SalidaID:=cdsLiquidacionDetalleOtros.FieldByName('SalidaID').AsInteger;
+    TipoValor.Referencia:=cdsLiquidacionDetalleOtros.FieldByName('Referencia').AsString;
+
+    cdsLiquidacionDetalleOtros.Append;
+    cdsLiquidacionDetalleOtros.FieldByName('Referencia').AsString:=TipoValor.Referencia;
+    cdsLiquidacionDetalleOtros.FieldByName('SalidaID').AsInteger:=TipoValor.SalidaID;
+    cdsLiquidacionDetalleOtros.FieldByName('BancoID').AsInteger:=TipoValor.BancoID;
+    if TipoValor.CuponID>0 then
+      cdsLiquidacionDetalleOtros.FieldByName('Cupon').AsInteger:=TipoValor.CuponID;
+    if Tipovalor.Ticket>0 then
+      cdsLiquidacionDetalleOtros.FieldByName('Ticket').AsInteger:=Tipovalor.Ticket;
+    cdsLiquidacionDetalleOtros.FieldByName('ClienteID').AsInteger:=TipoValor.ClienteID;
+    cdsLiquidacionDetalleOtros.FieldByName('TipoValorID').AsInteger:=TipoValor.TipoValorID;
+
+    // Es para si deseamos seguir insertando reguistros del mismo tipo permitir poder carturar
+    if TipoValor.AceptaTicket=True then
+      OtrosTicket.Options.Focusing:=True;
+    If TipoValor.AceptaSalidaID=true then
+      OtrosSalidaID.Options.Focusing:=True;
+    IF TipoValor.AceptaReferencia=True then
+      OtrosRefenrecia.Options.Focusing:=True;
+
+  end
+  else
+  begin
+      AgregarRegistro:=False;
+      TipoValor.AceptaClienteID:=False;
+      TipoValor.AceptaTicket:=False;
+      TipoValor.AceptaCuponID:=False;
+      TipoValor.AceptaBancoID:=False;
+      TipoValor.AceptaSalidaID:=False;
+      TipoValor.AceptaReferencia:=False;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionDetalleOtrosBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  cdsLiquidacionDetalleOtros.FieldByName('LiquidacionDetalleID').AsInteger:=DM.Servidor.Folio('LiquidacionDetalleID', '');
+  cdsliquidacionDetalleOtros.FieldByName('Secuencia').AsInteger:=Secuencia;
+  cdsLiquidacionDetalleOtros.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+  If Agrupar then
+  Begin
+   TipoValorID_Grupo:=cdsLiquidacionDetalleOtros.FieldByName('TipoValorId').AsInteger;
+   ClienteID_Grupo:=cdsLiquidacionDetalleOtros.FieldByName('ClienteID').AsInteger;
+   Ticket_Grupo:=cdsLiquidacionDetalleOtros.FieldByName('Ticket').AsInteger;
+   //Importe_Grupo:=500;
+   Suma_Grupo := Suma_Grupo + cdsLiquidacionDetalleOtros.FieldByName('Importe').AsFloat;
+    If Suma_Grupo=Importe_Grupo then
+      OtrosTipoValorId.Options.Focusing:=True;
+
+   End;
+  If (RequiereTicket1(cdsliquidacionDetalleOtros.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleOtros.FieldByName('Ticket').IsNull) then
+    raise TEx.Create('Capture Ticket')
+  else
+    If (RequiereReferencia1(cdsLiquidacionDEtalleOtros.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleOtros.FieldByName('Referencia').IsNull) then
+      raise TEx.Create('Capture Referencia')
+     else
+       If (RequiereSalida1(cdsLiquidacionDetalleOtros.FieldByName('TipoValorID').AsInteger)) and (cdsLiquidacionDetalleOtros.FieldByName('SalidaID').IsNull) then
+         raise Tex.Create('Capture Salida');
+   if cdsLiquidacionDetalleOtros.FieldByName('Importe').AsFloat = 0 then
+     raise TEx.Create('Importe No Valido');
+
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionProductoAfterPost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+  CalcularDiferencia;
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionProductoBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+   cdsLiquidacionProducto.FieldByName('InventarioFinal').AsFloat:=cdsLiquidacionProducto.FieldByName('InventarioInicial').AsFloat+
+                                                                 cdsLiquidacionProducto.FieldByName('Traspasos').AsFloat -
+                                                                 cdsLiquidacionProducto.FieldByName('Cantidad').AsFloat;
+  cdsLiquidacionProducto.FieldByName('Importe').AsFloat:=cdsLiquidacionProducto.FieldByName('PrecioVenta').asFloat*
+                                                         cdsLiquidacionProducto.FieldByName('Cantidad').asFloat;
+
+  cdsLiquidacionProducto.FieldByName('AgrupacionID').AsInteger:=AgrupacionID;
+  VentasTotales:=VentasTotales + cdsLiquidacionProducto.FieldByName('Importe').AsFloat;
+  Diferencia:=VentasTotales - Anticipos;
+  cdsLiquidacion.FieldByName('VentasTotales').AsFloat:=VentasTotales;
+  cdsLiquidacion.FieldByName('Diferencias').AsFloat:=Diferencia;
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionProductoNewRecord(
+  DataTable: TDADataTable);
+begin
+  inherited;
+
+  cdsLiquidacionProducto.FieldByName('InventarioInicial').AsFloat:=0;
+  cdsLiquidacionProducto.FieldByName('InventarioFinal').AsFloat:=0;
+  cdsLiquidacionProducto.FieldByName('Traspasos').AsFloat:=0;
+  cdsLiquidacionProducto.FieldByName('Cantidad').AsFloat:=0;
+  cdsLiquidacionProducto.FieldByName('Importe').AsFloat:=0;
+  cdsLiquidacionProducto.FieldByName('Secuencia').AsInteger:=ObtenerSecuencia;
+  cdsLiquidacionProducto.FieldByName('LiquidacionId').AsInteger:=Liquidacion;
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionValorAfterPost(DataTable: TDADataTable);
+begin
+  inherited;
+  CalcularDiferencia;
+end;
+
+procedure TFrmLiquidacion.cdsLiquidacionValorBeforePost(
+  DataTable: TDADataTable);
+begin
+  inherited;
+   cdsLiquidacionValor.FieldByName('LiquidacionValorID').AsInteger:=DM.Servidor.Folio('LiquidacionValorID', '');
+   cdsLiquidacionValor.FieldByName('Secuencia').AsInteger:=Secuencia;
+   cdsLiquidacionValor.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+   cdsLiquidacionValor.FieldByName('Cantidad').AsInteger:=0;
+end;
+
+procedure TFrmLiquidacion.cdsTransaccionAfterPost(DataTable: TDADataTable);
+begin
+  inherited;
+  cdsTransaccion.ApplyUpdates(true);
+  cdsDetalleTransaccion.ApplyUpdates(true);
+  cdsMovimientoAlmacen.ApplyUpdates(true);
+  cdsDetalleMovimiento.ApplyUpdates(true);
+end;
+
+procedure TFrmLiquidacion.cdsTransaccionNewRecord(DataTable: TDADataTable);
+var
+  Fecha:DateTime;
+begin
+  inherited;
+  Fecha:=Trunc(DM.Servidor.Fecha);
+  cdsTransaccion.FieldByName('TransaccionID').AsInteger:=DM.Servidor.Folio('TransaccionID','');
+  cdsTransaccion.FieldByName('Folio').AsInteger:=DM.Servidor.FolioActual('FolioVentaLiquidacionID','');
+  cdsTransaccion.FieldByName('AlmacenID').AsInteger:=ObtenerAlmacenAgrupacion;
+  cdsTransaccion.FieldByName('Fecha').AsDateTime:=StrToDate(FormatDateTime('dd/mm/yyyy',Fecha));
+  cdsTransaccion.FieldByName('Ejercicio').AsInteger:=StrToInt(FormatDateTime('yyyy',Fecha));
+  cdsTransaccion.FieldByName('Periodo').AsInteger:=StrToInt(FormatDateTime('mm',Fecha));
+  cdsTransaccion.FieldByName('Dia').AsInteger:=StrToInt(FormatDateTime('dd',Fecha));
+  cdsTransaccion.FieldByName('Secuencia').AsInteger:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+  cdsTransaccion.FieldByName('EstacionID').AsInteger:=Estacion;
+  cdsTransaccion.FieldByName('EstacionDestinoID').AsInteger:=Estacion;
+  cdsTransaccion.FieldByName('Tipo').AsString:='VT';
+  cdsTransaccion.FieldByName('Referencia').AsString:='.';
+  cdsTransaccion.FieldByName('Total').AsFloat:=0;
+  cdsTransaccion.FieldByName('Subtotal').AsFloat:=0;
+  cdsTransaccion.FieldByName('Impuesto').AsFloat:=0;
+  cdsTransaccion.FieldByName('Plazo').AsInteger:=0;
+  cdsTransaccion.FieldByName('Credito').AsBoolean:=False;
+end;
+
+procedure TFrmLiquidacion.ClientesTicketPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+var
+  MensajeError:String;
+begin
+  inherited;
+  MensajeError:='Capture Ticket';
+  if DisplayValue > 0 then
+  begin
+    if not StatusTicket(DisplayValue,MensajeError) then
+    begin
+      Error:=True;
+      ErrorText:=MensajeError;
+      DisplayValue:='0';
+    end
+    else
+    begin
+        DM.ATicket:=DM.ObtenerTicket(Estacion, DisplayValue);
+        if DM.ATicket.ProductoID > 0 then
+        begin
+          cdsLiquidacionDetalleClientes.FieldByName('Importe').AsFloat:=DM.ATicket.Importe;
+          ClientesTicket.Options.Focusing:=True;
+          Importe_Grupo:=DM.ATicket.Importe;
+          cdsLiquidacionDetalleClientes.FieldByName('Ticket').AsString:=DisplayValue;
+        end
+        else
+        begin
+          Error:=True;
+          ErrorText:='Ticket No Existe';
+          DisplayValue:='0';
+        end;
+    end;
+  end
+  else
+  begin
+    Error:=True;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.ClientesTipoValorPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  I: Integer;
+begin
+  inherited;
+  //Inhabilitamos las demas columnnas para solo activar las que deban ser seleccionadas
+   ConvierteADolar:=False;
+  I:=cdsLiquidacionDetalleClientes.FieldByName('TipoValorID').AsInteger;
+
+  cdsTipoValorSeleccionado.ParamByName('TipoValorID').AsInteger:=I;
+  cdsTipoValorSeleccionado.Open;
+
+  if cdsTipoValorSeleccionado.FieldByName('Referencia').AsBoolean then
+  begin
+    ClientesReferencia.Options.Focusing:=True;
+    TipoValor.AceptaReferencia:=True;
+  end;
+
+  if (cdsTipoValorSeleccionado.FieldByName('Cliente').AsBoolean)  then //and
+  begin
+    ClientesClienteID.Options.Focusing:=True;
+    TipoValor.AceptaClienteID:=True;
+  end;
+
+  IF cdsTipoValorSeleccionado.FieldByName('Ticket').AsBoolean then
+  begin
+    ClientesTicket.Options.Focusing:=True;
+    tipovalor.AceptaTicket:=True;
+
+  end;
+  cdsTipoValorSeleccionado.Close;
+
+end;
+
+procedure TFrmLiquidacion.ConsumirCupon;
+var
+  Ejercicio:Integer;
+  Periodo:Integer;
+  Dia:Integer;
+  Cupon:String;
+  Fecha:DateTime;
+begin
+  Fecha:=DM.Servidor.Fecha;
+  Ejercicio:=strtoint(FormatDateTime('yyyy',Fecha));
+  Periodo:=strtoint(FormatDateTime('mm',Fecha));
+  Dia:=strtoint(FormatDateTime('dd',Fecha));
+  cdsLiquidacionDetalle.First;
+  while not cdsLiquidacionDetalle.EOF do
+  begin
+    if RequiereCupon then
+    begin
+      Cupon:=cdsLiquidacionDetalle.FieldByName('Cupon').AsString;
+      DM.Servidor.ActualizaCupon(Cupon,Dia,Ejercicio,Fecha,Periodo,Secuencia, cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger,cdsLiquidacion.FieldByName('LiquidacionID').AsInteger);
+    end;
+    cdsLiquidacionDetalle.Next;
+  end;
+
+  cdsLiquidacionDetalleCupones.First;
+  while not cdsLiquidacionDetalleCupones.EOF do
+  begin
+    if RequiereCupon1(cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger) then
+    begin
+      Cupon:=cdsLiquidacionDetalleCupones.FieldByName('Cupon').AsString;
+      DM.Servidor.ActualizaCupon(Cupon,Dia,Ejercicio,Fecha,Periodo,Secuencia, cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger,cdsLiquidacion.FieldByName('LiquidacionID').AsInteger);
+    end;
+    cdsLiquidacionDetalleCupones.Next;
+  end;
+end;
+
+procedure TFrmLiquidacion.CuponesCuponPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+var
+  MensajeError:String;
+begin
+  inherited;
+  MensajeError:='Capture Cupón';
+  if not StatusCupon(DisplayValue, MensajeError) then
+  begin
+    Error:=True;
+    ErrorText:=MensajeError;
+    DisplayValue:=0;
+  end
+  else
+  begin
+    cdsLiquidacionDetalleCupones.FieldByName('Importe').AsFloat:=cdsCupon.FieldByName('Importe').AsFloat;
+    cdsLiquidacionDetalleCupones.FieldByName('ClienteID').AsInteger:=cdsCupon.FieldByName('ClienteID').AsInteger;
+    TipoValor.ClienteID:=cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger;
+    cdsLiquidacionDetalleCupones.FieldByName('Cupon').AsString:=DisplayValue;
+    TipoValor.CuponID:=cdsLiquidacionDetalleCupones.FieldByName('Cupon').AsInteger;
+    CuponesImporte.Options.Focusing:=False;
+  end;
+end;
+
+procedure TFrmLiquidacion.CuponesTicketPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+var
+  MensajeError:String;
+begin
+  inherited;
+  MensajeError:='Capture Ticket';
+  if DisplayValue > 0 then
+  begin
+    if not StatusTicket(DisplayValue,MensajeError) then
+    begin
+      Error:=True;
+      ErrorText:=MensajeError;
+      DisplayValue:='0';
+    end
+    else
+    begin
+        DM.ATicket:=DM.ObtenerTicket(Estacion, DisplayValue);
+        if DM.ATicket.ProductoID > 0 then
+        begin
+           // En Ticket de cupon
+          //cdsLiquidacionDetalleOtros.FieldByName('Importe').AsFloat:=DM.ATicket.Importe;
+          OtrosTicket.Options.Focusing:=True;
+          Importe_Grupo:=DM.ATicket.Importe;
+         // cdsLiquidacionDetalleOtros.FieldByName('Ticket').AsString:=DisplayValue;
+        end
+        else
+        begin
+          Error:=True;
+          ErrorText:='Ticket No Existe';
+          DisplayValue:='0';
+        end;
+    end;
+  end
+  else
+  begin
+    Error:=True;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.CuponesTipoValorPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  I: Integer;
+begin
+  inherited;
+   ConvierteADolar:=False;
+  //Inhabilitamos las demas columnnas para solo activar las que deban ser seleccionadas
+  I:=cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger;
+  cdsTipoValorSeleccionado.ParamByName('TipoValorID').AsInteger:=I;
+  cdsTipoValorSeleccionado.Open;
+
+  if cdsTipoValorSeleccionado.FieldByName('Referencia').AsBoolean then
+  begin
+    CuponesReferencia.Options.Focusing:=True;
+    TipoValor.AceptaReferencia:=True;
+  end;
+
+  if (cdsTipoValorSeleccionado.FieldByName('Cliente').AsBoolean)  then //and
+  begin
+   CuponesClienteID.Options.Focusing:=True;
+   TipoValor.AceptaClienteID:=True;
+  end;
+
+
+  IF cdsTipoValorSeleccionado.FieldByName('Ticket').AsBoolean then
+  begin
+    CuponesTicket.Options.Focusing:=True;
+    tipovalor.AceptaTicket:=True;
+  end;
+
+  if cdsTipoValorSeleccionado.FieldByName('Cupon').AsBoolean then
+  begin
+    CuponesCupon.Options.Focusing:=True;
+    TipoValor.AceptaCuponID:=True;
+  end;
+
+  cdsTipoValorSeleccionado.Close;
+
+end;
+
+procedure TFrmLiquidacion.cxGrid5DBTableView1ImportePropertiesEditValueChanged(
+  Sender: TObject);
+begin
+  inherited;
+  cdsLiquidacionValor.Post;
+  Anticipos:=Anticipos + cdsLiquidacionValor.FieldByName('Importe').AsFloat;
+  Diferencia:=VentasTotales - Anticipos;
+  dbAnticipo.Enabled:=True;
+  dbAnticipo.Enabled:=False;
+  cdsLiquidacion.FieldByName('Anticipos').AsFloat:=Anticipos;
+  cdsLiquidacion.FieldByName('Diferencias').AsFloat:=Diferencia;
+end;
+
+procedure TFrmLiquidacion.cxGridDBTableView2EditKeyDown(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F6 then
+  begin
+    if (RequiereTicket) and (not RequiereCupon)  then
+    begin
+      Agrupar:=true;
+      dbgAnticiposDBTableView1Importe.Options.Focusing:=True;
+    end;
+  end;
+  if KEY=VK_F2 then
+  Begin
+     BuscarCliente1;
+     begin
+     cdsLiquidacionDetalleCupones.FieldByName('clienteID').AsInteger:=FrmBuscarCliente.Clave;
+    end;
+    TipoValor.ClienteID:=FrmBuscarCliente.Clave;
+    cdsLiquidacionDetalleCupones.FieldByName('ClienteID').AsInteger:=FrmBuscarCliente.Clave;
+  End;
+end;
+
+procedure TFrmLiquidacion.cxGridDBTableView3EditKeyDown(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F6 then
+  begin
+    if (RequiereTicket) and (not RequiereCupon)  then
+    begin
+      Agrupar:=true;
+      dbgAnticiposDBTableView1Importe.Options.Focusing:=True;
+    end;
+  end;
+
+  if KEY=VK_F2 then
+  Begin
+     BuscarCliente1;
+     begin
+     cdsLiquidacionDetalleClientes.FieldByName('clienteID').AsInteger:=FrmBuscarCliente.Clave;
+    end;
+    TipoValor.ClienteID:=FrmBuscarCliente.Clave;
+    cdsLiquidacionDetalleClientes.FieldByName('ClienteID').AsInteger:=FrmBuscarCliente.Clave;
+  End;
+end;
+
+procedure TFrmLiquidacion.cxGridDBTableView4EditKeyDown(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F6 then
+  begin
+    if (RequiereTicket) and (not RequiereCupon)  then
+    begin
+      Agrupar:=true;
+      dbgAnticiposDBTableView1Importe.Options.Focusing:=True;
+    end;
+  end;
+  if KEY=VK_F2 then
+  Begin
+     BuscarCliente1;
+     begin
+     cdsLiquidacionDetalleMoneda.FieldByName('clienteID').AsInteger:=FrmBuscarCliente.Clave;
+    end;
+    TipoValor.ClienteID:=FrmBuscarCliente.Clave;
+    cdsLiquidacionDetalleMoneda.FieldByName('ClienteID').AsInteger:=FrmBuscarCliente.Clave;
+  End;
+end;
+
+procedure TFrmLiquidacion.dbAgrupacionExit(Sender: TObject);
+begin
+  inherited;
+  if cdsLiquidacion.FieldByName('AgrupacionID').asstring<>'' then
+  begin
+    //PARAMETROS PARA CORTE POR ESTACION Y AGRUPACION
+    cdsCortePorAgrupacion.Close;
+    cdsCortePorAgrupacion.ParamByName('EstacionID').AsInteger:=Estacion;
+    cdsCortePorAgrupacion.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+    cdsCorteporAgrupacion.Open;
+    IF cdsCortePorAgrupacion.RecordCount=0 then
+    Begin
+       ShowMessage('No Existen Liquidaciones Pendientes '+ inttoStr(cdsCortePorAgrupacion.RecordCount));
+       cdsLiquidacion.Cancel;
+       UpdateActionsState;
+       dbAgrupacion.Enabled:=False;
+    end
+    else
+    Begin
+      dbTurno.Enabled:=True;
+    End;
+  end
+  else
+  begin
+    ShowMessage('Debes de Seleccionar Una Agrupacion');
+    if not (dmAppActions.actNuevo.Enabled) then
+       dbAgrupacion.SetFocus;
+  end;
+end;
+
+procedure TFrmLiquidacion.dbDespachadorExit(Sender: TObject);
+begin
+  inherited;
+  if (dbTurno.Focused) or  (dbAgrupacion.Focused) then
+    exit;
+
+  if dbDespachador.Text<>'' then
+  begin
+    cxPageControl1.Enabled:=True;
+    cxPageControl1.SetFocus;
+    CargaAnticipo:=False;
+    CargaAnticipo:=False;
+  end
+  else
+  begin
+    ShowMessage('Debes de Seleccionar un Despachador');
+    if not (dmAppActions.actNuevo.Enabled) then
+       dbDespachador.SetFocus;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.dbgAnticiposDBTableView1CuponPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+var
+  //StatusCupon:Boolean;
+  MensajeError:String;
+begin
+  inherited;
+  MensajeError:='Capture Cupón';
+  if not StatusCupon(DisplayValue, MensajeError) then
+  begin
+    Error:=True;
+    ErrorText:=MensajeError;
+    DisplayValue:=0;
+  end
+  else
+  begin
+    cdsLiquidacionDetalle.FieldByName('Cupon').AsString:=DisplayValue;
+    TipoValor.CuponID:=cdsLiquidacionDetalle.FieldByName('Cupon').AsInteger;
+    dbgAnticiposDBTableView1Importe.Options.Focusing:=False;
+  end;
+end;
+
+procedure TFrmLiquidacion.dbgAnticiposDBTableView1EditKeyDown(
+  Sender: TcxCustomGridTableView; AItem: TcxCustomGridTableItem;
+  AEdit: TcxCustomEdit; var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F6 then
+  begin
+    if (RequiereTicket) and (not RequiereCupon)  then
+    begin
+      Agrupar:=true;
+      dbgAnticiposDBTableView1Importe.Options.Focusing:=True;
+    end;
+  end;
+  if KEY=VK_F2 then
+  Begin
+     BuscarCliente;
+  End;
+end;
+
+procedure TFrmLiquidacion.dbgAnticiposDBTableView1ImportePropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+begin
+  inherited;
+  if Agrupar then
+  begin
+    if Suma_Grupo + DisplayValue > Importe_Grupo then
+    begin
+      Error:=True;
+      ErrorText:='Importe Excede Total de Ticket';
+      DisplayValue:=0;
+    end
+    else
+      cdsLiquidacionDetalle.FieldByName('Importe').AsFloat:=DisplayValue;
+  end;
+end;
+
+procedure TFrmLiquidacion.dbgAnticiposDBTableView1KeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F6 then
+  begin
+    if (RequiereTicket) and (not RequiereCupon) then
+    begin
+      Agrupar:=true;
+      dbgAnticiposDBTableView1Importe.Options.Focusing:=True;
+    end;
+  end;
+   if Key=VK_F2 then
+   begin
+     BuscarCliente;
+   end;
+end;
+
+function TFrmLiquidacion.StatusCupon(Valor: string;
+  var Mensaje: String): boolean;
+var
+  Status:string;
+begin
+  Status:=Dm.Servidor.ObtenerStatusCupon(Valor);
+  If ExisteCuponEnLista(Valor) then
+  Begin
+    Mensaje:='Cupón Ya Existe En la Lista';
+    Result:=False;
+  End
+  else
+  begin
+    if Status='A' then
+    Begin
+      cdsCupon.Close;
+      cdsCupon.ParamByName('Barras').AsString:=Valor;
+      cdsCupon.Open;
+      //cdsLiquidacionDetalle.FieldByName('Importe').AsFloat:=cdsCupon.FieldByName('Importe').AsFloat;
+      //cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger:=cdsCupon.FieldByName('ClienteID').AsInteger;
+      //TipoValor.ClienteID:=cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger;
+      Result:=True
+    end
+    else
+    Begin
+      if status='C' then
+      Begin
+        Mensaje:='Cupón Consumido';
+        Result:=False;
+      End
+      else
+      Begin
+        If Status='X' then
+        Begin
+          Mensaje:='Cupon Cancelado';
+           Result:=False;
+        End
+        else
+        Begin
+           Mensaje:='Cupón No Encontrado';
+           Result:=False;
+         End;
+       End;
+     End;
+  End;
+end;
+
+function TFrmLiquidacion.StatusTicket(Valor:String;var Mensaje:String):boolean;
+var
+  EstacionID : integer;
+  TicketID   : String;
+begin
+  EstacionID:=Estacion;//cdsFactura.FieldByName('EstacionID').AsInteger;
+  TicketID:=Valor;
+  case DM.Servidor.StatusTicket(EstacionID, StrToInt(TicketID)) of
+   1:begin
+       // Mensaje:='Ticket utilizado';    //Revisa si el Ticket esta Fqcturado
+       // Result:=False;
+
+       Result:=True;
+    end;
+   2:if ExisteTicketEnLista(TicketID) then
+    begin
+      Mensaje:='Ticket Existe En La Lista';
+      Result:=False;
+    end
+    else
+      Result:=True;
+    3:begin
+        Mensaje:='Ticket No Existe';
+        Result:=False;
+    end;
+    4:begin
+        Mensaje:='Ticket Existe En Liquidación';
+        Result:=False;
+    end;
+    else
+      Result:=False;
+  end;
+end;
+
+procedure TFrmLiquidacion.dbgAnticiposDBTableView1TicketPropertiesValidate(
+  Sender: TObject; var DisplayValue: Variant; var ErrorText: TCaption;
+  var Error: Boolean);
+var
+  MensajeError:String;
+begin
+  inherited;
+  MensajeError:='Capture Ticket';
+  if DisplayValue > 0 then
+  begin
+    if not StatusTicket(DisplayValue,MensajeError) then
+    begin
+      Error:=True;
+      ErrorText:=MensajeError;
+      DisplayValue:='0';
+    end
+    else
+    begin
+     // if (DM.ObtenerSecuencia(Estacion, cdsLiquidacionProducto.FieldByName('Bomba').AsInteger) =
+     //     cdsLiquidacion.FieldByName('Secuencia').AsInteger) then
+     // begin
+        DM.ATicket:=DM.ObtenerTicket(Estacion, DisplayValue);
+        if DM.ATicket.ProductoID > 0 then
+        begin
+          cdsLiquidacionDetalle.FieldByName('Importe').AsFloat:=DM.ATicket.Importe;
+          dbgAnticiposDBTableView1Importe.Options.Focusing:=False;
+          Importe_Grupo:=DM.ATicket.Importe;
+          cdsLiquidacionDetalle.FieldByName('Ticket').AsString:=DisplayValue;
+        end
+        else
+        begin
+          Error:=True;
+          ErrorText:='Ticket No Existe';
+          DisplayValue:='0';
+        end;
+      //end
+     // else
+     // begin
+     //   Error:=True;
+     //   ErrorText:='Ticket de otra secuencia';
+     //   DisplayValue:=0;
+     // end;
+    end;
+  end
+  else
+  begin
+    Error:=True;
+  end;
+end;
+
+
+procedure TFrmLiquidacion.dbgAnticiposDBTableView1TipoValorIDPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  I: Integer;
+begin
+  inherited;
+  //Inhabilitamos las demas columnnas para solo activar las que deban ser seleccionadas
+  I:=cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger;
+  cdsTipoValorSeleccionado.ParamByName('TipoValorID').AsInteger:=I;
+  cdsTipoValorSeleccionado.Open;
+
+  if cdsTipoValorSeleccionado.FieldByName('Referencia').AsBoolean then
+  begin
+    dbgAnticiposDBTableView1Referencia.Options.Focusing:=True;
+    TipoValor.AceptaReferencia:=True;
+  end;
+
+  if (cdsTipoValorSeleccionado.FieldByName('Cliente').AsBoolean)  then //and
+//     (not (RequiereCupon)) then
+  begin
+    dbgAnticiposDBTableView1ClienteID.Options.Focusing:=True;
+    TipoValor.AceptaClienteID:=True;
+  //  frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+   // frmBuscarCliente.ShowModal;
+   // cdsLiquidacionDetalle.FieldByName('clienteID').AsInteger:=FrmBuscarCliente.Clave;
+  end;
+
+  if cdsTipoValorSeleccionado.FieldByName('Banco').AsBoolean then
+  Begin
+    dbgAnticiposDBTableView1BancoID.Options.Focusing:=true;
+    TipoValor.AceptaBancoID:=True;
+  End;
+
+  IF cdsTipoValorSeleccionado.FieldByName('Ticket').AsBoolean then
+  begin
+    dbgAnticiposDBTableView1Ticket.Options.Focusing:=True;
+    tipovalor.AceptaTicket:=True;
+
+  end;
+
+  if cdsTipoValorSeleccionado.FieldByName('Cupon').AsBoolean then
+  begin
+    dbgAnticiposDBTableView1Cupon.Options.Focusing:=True;
+    TipoValor.AceptaCuponID:=True;
+  end;
+
+  if cdsTipoValorSeleccionado.FieldByName('ConsumoInterno').AsBoolean then
+  begin
+    dbgAnticiposDBTableView1SalidaID.Options.Focusing:=true;
+    tipovalor.AceptaSalidaID:=true;
+  end;
+
+ // if cdsTipoValorSeleccionado.FieldByName('Cupon').AsInteger:=-1 then
+ //   dbgAnticiposDBTableView1Cupon.Options.Focusing:=True;
+  cdsTipoValorSeleccionado.Close;
+
+//  if I > 0 then
+//    exit;
+end;
+
+procedure TFrmLiquidacion.dbgAnticiposEnter(Sender: TObject);
+begin
+  inherited;
+  dbAgrupacion.Enabled:=false;
+  dbTurno.Enabled:=false;
+  dbDespachador.Enabled:=false;
+  OKEnter:=False;
+end;
+
+procedure TFrmLiquidacion.dbgAnticiposExit(Sender: TObject);
+begin
+  inherited;
+  OKEnter:=True;
+end;
+
+procedure TFrmLiquidacion.dbTurnoExit(Sender: TObject);
+var
+  AgrupacionID:integer;
+begin
+  inherited;
+
+
+  //CondiciON PARA SABER SI HA SELECCIONADO UN TURNO;
+  if dbAgrupacion.Focused then
+    Exit;
+  if cdsLiquidacion.FieldByName('Secuencia').AsInteger > 0 then
+  begin
+    cdsLiquidacion.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+    Secuencia:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+
+    //PARAMETROS PARA OBTENER LOS COMBUSTIBLES DE LA LIQUIDACION
+
+    //PARAMETROS PARA CORTE POR SECUENCIA Y ESTACION
+    cdsCortePorSecuencia.Close;
+    cdsCortePorSecuencia.ParamByName('Secuencia').AsInteger:=Secuencia;
+    cdsCortePorSecuencia.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+    cdsCortePorSecuencia.Open;
+
+    //OBTENER LOS ANTICIPOS Y VENTAS TOTALES DE COMBUSTIBLE.
+    AnticipoInicial:=DM.Servidor.SumaAnticipo(Estacion,Secuencia);
+    AgrupacionID:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+    cdsLiquidacion.FieldByName('Anticipos').AsFloat:=AnticipoInicial;
+    VentaCombustible:=DM.Servidor.SumaVentasCorte(Estacion, Secuencia, AgrupacionID);
+    cdsLiquidacion.FieldByName('VentasTotales').AsFloat:=VentaCombustible;
+    VentasTotales:=VentaCombustible;
+    Diferencia:=cdsLiquidacion.FieldByName('VentasTotales').AsFloat- cdsLiquidacion.FieldByName('Anticipos').AsFloat;
+    cdsLiquidacion.FieldByName('Diferencias').AsFloat:=Diferencia;
+
+    //PRODUCTOS SOLO COMBUSTIBLE
+    while not cdsCortePorSecuencia.EOF do
+    begin
+       cdsLiquidacionCombustible.Append;
+       cdsLiquidacionCombustible.FieldByName('LiquidacionProductoID').AsInteger:=Dm.Servidor.Folio('LiquidacionProductoID', '');
+       cdsLiquidacionCombustible.FieldByName('ProductoID').AsInteger:=cdsCortePorSecuencia.FieldByName('ProductoID').AsInteger;
+       cdsLiquidacionCombustible.FieldByName('BombaID').AsInteger:=cdsCortePorSecuencia.FieldByName('BombaID').AsInteger;
+       cdsLiquidacionCombustible.FieldByName('PrecioVenta').AsFloat:=cdsCortePorSecuencia.FieldByName('Precio').AsFloat;
+       cdsLiquidacionCombustible.FieldByName('InventarioInicial').AsFloat:=cdsCortePorSecuencia.FieldByName('LecturaInicial').AsFloat;
+       cdsLiquidacionCombustible.FieldByName('InventarioFinal').AsFloat:=cdsCortePorSecuencia.FieldByName('LecturaFinal').AsFloat;
+       cdsLiquidacionCombustible.FieldByName('Cantidad').AsFloat:=cdsCortePorSecuencia.FieldByName('VolumenVendido').AsFloat;
+       cdsLiquidacionCombustible.FieldByName('Importe').AsFloat:=cdsCortePorSecuencia.FieldByName('Importe').AsFloat;
+       cdsLiquidacionCombustible.FieldByName('Secuencia').AsInteger:=Secuencia;
+       cdsLiquidacionCombustible.FieldByName('LiquidacionID').AsInteger:=cdsLiquidacion.FieldByName('liquidacionID').AsInteger;
+       cdsLiquidacionCombustible.FieldByName('AgrupacionID').AsInteger:=AgrupacionID;
+       cdsLiquidacionCombustible.FieldByName('Traspasos').AsInteger:=0;
+       cdsLiquidacionCombustible.Post;
+       cdsCortePorSecuencia.Next;
+   end;
+
+   //CUPONES ENTRANTES POR PVI
+   cdsCortePorSecuencia.BOF;
+   while not cdsCortePorSecuencia.EOF do
+   begin
+     if cdsCortePorSecuencia.FieldByName('NumeroCupones').AsInteger > 0 then
+     begin
+       cdsLiquidacionDetalleCupones.Append;
+       cdsLiquidacionDetalleCupones.FieldByName('LiquidaciondetalleID').AsInteger:=Dm.Servidor.Folio('LiquidacionDetalleID', '');
+       cdsLiquidacionDetalleCupones.FieldByName('Importe').AsFloat:=cdsCortePorSecuencia.FieldByName('ImporteCupones').AsFloat;
+       cdsLiquidacionDetalleCupones.FieldByName('Secuencia').AsInteger:=Secuencia;
+       cdsLiquidacionDetalleCupones.FieldByName('Referencia').AsString:=cdsCortePorSecuencia.FieldByName('NumeroCupones').AsString;
+       cdsLiquidacionDetalleCupones.FieldByName('LiquidacionID').AsInteger:=cdsLiquidacion.FieldByName('liquidacionID').AsInteger;;
+       cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger:=4;  //Es el Tipo de valor que le corresponde al Cupon
+       cdsLiquidacionDetalleCupones.Post;
+     end;
+     If cdsCortePorSecuencia.FieldByName('NumeroTarjetas').AsInteger > 0 then
+     Begin
+       cdsLiquidacionDetalleCupones.Append;
+       cdsLiquidacionDetalleCupones.FieldByName('LiquidaciondetalleID').AsInteger:=Dm.Servidor.Folio('LiquidacionDetalleID', '');
+       cdsLiquidacionDetalleCupones.FieldByName('Importe').AsFloat:=cdsCortePorSecuencia.FieldByName('ImporteTarjetas').AsFloat;
+       cdsLiquidacionDetalleCupones.FieldByName('Secuencia').AsInteger:=Secuencia;
+       cdsLiquidacionDetalleCupones.FieldByName('Referencia').AsString:=cdsCortePorSecuencia.FieldByName('NumeroTarjetas').AsString;
+       cdsLiquidacionDetalleCupones.FieldByName('LiquidacionID').AsInteger:=cdsLiquidacion.FieldByName('liquidacionID').AsInteger;;
+       cdsLiquidacionDetalleCupones.FieldByName('TipoValorID').AsInteger:=4;  //Es el Tipo de valor que le corresponde al Cupon
+       cdsLiquidacionDetalleCupones.Post;
+     End;
+     cdsCortePorSecuencia.Next;
+   end;
+
+   //PRODUCTOS QUE NO SON COMBUSTIBLE
+    cdsProducto.Open;
+    cdsLiquidacionProducto.Open;
+    cdsObtenerProductosLiquidacion.Close;
+    cdsObtenerProductosLiquidacion.ParamByName('EstacionID').AsInteger:=Estacion;
+    cdsObtenerProductosLiquidacion.ParamByName('AgrupacionID').AsInteger:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+    cdsObtenerProductosLiquidacion.ParamByName('Secuencia').AsInteger:=Secuencia;
+    cdsObtenerProductosLiquidacion.ParamByName('Tipo').AsString:='TR';
+
+    cdsObtenerProductosLiquidacion.Open;
+    //showmessage(inttostr(cdsObtenerProductosLiquidacion.RecordCount));
+
+    while not cdsObtenerProductosLiquidacion.EOF  do
+    begin
+      cdsLiquidacionProducto.Append;
+      cdsLiquidacionProducto.FieldByName('LiquidacionProductoId').AsInteger:=DM.Servidor.Folio('LiquidacionProductoID', '');
+      cdsLiquidacionProducto.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+      cdsLiquidacionProducto.FieldByName('ProductoID').AsInteger:=cdsObtenerProductosLiquidacion.FieldByName('ProductoID').AsInteger;
+      cdsLiquidacionProducto.FieldByName('PrecioVenta').AsFloat:=cdsObtenerProductosLiquidacion.FieldByName('PrecioVenta').AsFloat;
+      cdsLiquidacionProducto.FieldByName('InventarioInicial').AsFloat:=cdsObtenerProductosLiquidacion.FieldByName('InventarioFinal').AsFloat;
+      cdsLiquidacionProducto.FieldByName('Traspasos').AsFloat:=cdsObtenerProductosLiquidacion.FieldByName('TraspasosRecibidos').AsFloat -
+                                                               cdsObtenerProductosLiquidacion.FieldByName('TraspasosEnviados').AsFloat;
+      cdsLiquidacionProducto.Post;
+      cdsObtenerProductosLiquidacion.Next;
+    end;
+
+    //habilitamos al despachador
+    dbDespachador.Enabled:=True;
+    dbDespachador.SetFocus;
+
+    cdsLiquidacionValor.Open;
+    //Mandamos llamar a los anticipos
+    CargaAnticipo:=True;
+    CargarAnticipos;
+    CargaAnticipo:=False;
+
+    AgregarRegistro:=True;
+  end
+  else
+  begin
+    showmessage('Debes de Seleccionar Un Turno');
+    if not (dmAppActions.actNuevo.Enabled) then
+       dbTurno.SetFocus;
+  end;
+end;
+
+function TFrmLiquidacion.EsCredito:Boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Credito').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.ExisteCuponEnLista(Valor: String): Boolean;
+begin
+  Result:=cbxListaCupon.Properties.Items.IndexOf(Valor)>-1;
+end;
+
+function TFrmLiquidacion.ExisteTicketEnLista(Valor: String): boolean;
+begin
+  Result:=cbxListaTicket.Properties.Items.IndexOf(Valor)>-1;
+end;
+
+procedure TfrmLiquidacion.ActionGuardar(Action: TBasicAction);
+begin
+ (*if cdsLiquidacion.State=dsEdit then
+    showMessage('Editando');
+  if cdsLiquidacion.State=dsInsert then
+    showMessage('Insertando');*)
+  If cdsLiquidacion.FieldByName('Diferencias').AsFloat<>0 then
+    GuardarFaltantes(cdsLiquidacion.FieldByName('DespachadorID').AsInteger, cdsLiquidacion.FieldByName('Diferencias').AsFloat,cdsLiquidacion.FieldByName('Secuencia').AsInteger);
+
+  cdsLiquidacion.Post;
+
+  cdsLiquidacionDetalleMoneda.Close;
+  cdsLiquidacionDetalleClientes.Close;
+  cdsLiquidacionDetalleCupones.Close;
+  cdsLiquidacionDetalleOtros.Close;
+  If (ImprimirReporteLiquidacion='True') or (ImprimirReporteLiquidacion='true')  then
+  Begin
+    ImprimirReporte(Estacion, Secuencia, Secuencia, AgrupacionID);
+  End;
+
+
+  //GuardarLiquidacion;
+end;
+
+procedure TfrmLiquidacion.ActionCancelar(Action: TBasicAction);
+begin
+  cdsLiquidacion.CancelUpdates(true);
+  cdsLiquidacionDetalle.CancelUpdates(true);
+  cdsLiquidacionProducto.CancelUpdates(true);
+  cdsLiquidacionCombustible.CancelUpdates(true);
+  cxPageControl1.Enabled := True;
+end;
+
+procedure TfrmLiquidacion.RegisterActions;
+begin
+  inherited RegisterActions;
+  RegisterAction(AppActions.actNuevo, ActionNuevo);
+  RegisterAction(AppActions.actGuardar, ActionGuardar);
+  RegisterAction(AppActions.actCancelar, ActionCancelar);
+  //RegisterAction(AppActions.actEliminar, ActionEliminar);
+end;
+
+procedure TFrmLiquidacion.RegistrarValeCredito;
+var
+  Fecha:DateTime;
+begin
+  Fecha:=DM.Servidor.Fecha;
+  cdsLiquidacionDetalle.First;
+  while not cdsLiquidacionDetalle.EOF do
+  begin
+    if EsCredito then
+    begin
+      cdsValeCredito.Append;
+      cdsValeCredito.FieldByName('CarteraValeCreditoID').AsInteger:=DM.Servidor.Folio('CarteraValeCreditoID','');
+      cdsValeCredito.FieldByName('NoVale').AsInteger:=cdsLiquidacionDetalle.FieldByName('Referencia').AsInteger;
+      cdsValeCredito.FieldByName('Ticket').AsInteger:=cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger;
+      cdsValeCredito.FieldByName('Importe').AsFloat:=cdsLiquidacionDetalle.FieldByName('Importe').AsFloat;
+      cdsValeCredito.FieldByName('Fecha').AsDateTime:=StrToDate(FormatDateTime('dd/mm/yyyy',Fecha));
+      cdsValeCredito.FieldByName('Ejercicio').AsInteger:=StrToInt(FormatDateTime('yyyy',Fecha));
+      cdsValeCredito.FieldByName('Periodo').AsInteger:=StrToInt(FormatDateTime('mm',Fecha));
+      cdsValeCredito.FieldByName('Dia').AsInteger:=StrToInt(FormatDateTime('dd',Fecha));
+      cdsValeCredito.FieldByName('Status').AsString:='NF';
+      cdsValeCredito.FieldByName('EstacionID').AsInteger:=Estacion;
+      cdsValeCredito.FieldByName('ClienteID').AsInteger:=cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger;
+      cdsValeCredito.FieldByName('LiquidacionDetalleID').AsInteger:=cdsLiquidacionDetalle.FieldByName('LiquidacionDetalleID').AsInteger;
+      cdsValeCredito.Post;
+    end;
+    cdsLiquidacionDetalle.Next;
+  end;
+end;
+
+function TFrmLiquidacion.RequiereBanco: Boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Banco').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereBanco1(Valor: Integer): Boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',Valor,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Banco').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereCliente: Boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Cliente').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereCliente1(Valor: Integer): Boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',Valor,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Cliente').AsBoolean
+  else
+    Result:=False;
+
+end;
+
+function TFrmLiquidacion.RequiereCupon: boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Cupon').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereCupon1(Valor: Integer): Boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',Valor,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Cupon').AsBoolean
+  else
+    Result:=False;
+
+end;
+
+function TFrmLiquidacion.RequiereReferencia: boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Referencia').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereReferencia1(Valor: Integer): Boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',Valor,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Referencia').AsBoolean
+  else
+    Result:=False;
+
+end;
+
+function TFrmLiquidacion.RequiereSalida: Boolean;
+begin
+   if (cdsTipoValor.Locate('TipoValorID',cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('ConsumoInterno').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereSalida1(Valor: Integer): Boolean;
+begin
+   if (cdsTipoValor.Locate('TipoValorID',Valor,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('ConsumoInterno').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereTicket: boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Ticket').AsBoolean
+  else
+    Result:=False;
+end;
+
+function TFrmLiquidacion.RequiereTicket1(Valor: Integer): boolean;
+begin
+  if (cdsTipoValor.Locate('TipoValorID',Valor,[loCaseInsensitive])) then
+    Result:=cdsTipoValor.FieldByName('Ticket').AsBoolean
+  else
+    Result:=False;
+
+end;
+
+procedure TFrmLiquidacion.FormCreate(Sender: TObject);
+begin
+  inherited;
+
+
+  Estacion:=DM.Estacion;
+
+  cdsTipoCambio.Close;
+  cdsTipoCambio.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsTipoCambio.Open;
+  cxTipoCambio.Caption:=floattostr(cdsTipoCambio.FieldByName('TipoCambio').AsFloat);
+  TipoCambioID:= cdsTipoCambio.FieldByName('TipoCambioID').AsInteger;
+
+  ImprimirReporteLiquidacion:=UtileriasComun.LeerRegistro('ImprimirReporteLiquidacion','True');
+
+  cdsLiquidacion.Open;
+  cdsTipoValor.Open;
+  cdsTipoValorOtros.Open;
+  cdsTipoValorCupon.Open;
+  cdsTipoValorClientes.Open;
+  cdsTipoValorMoneda.Open;
+  cdsBanco.Open;
+  cdsSalida.Open;
+  cdsBomba.Open;
+  cdsLiquidacionCombustible.Open;
+  cdsClientes.Open;
+
+  //PARAMETRO DESPACHADOR POR ESTACION
+  cdsDespachador.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsDespachador.Open;
+
+  //PARAMETRO AGRUPACION POR ESTACION
+  cdsAgrupacion.ParamByName('EstacionID').AsInteger:=Estacion;
+  cdsAgrupacion.Open;
+  cdsLiquidacionValor.Open;
+  cdsLiquidacionDetalle.Open;
+  cdsValeCredito.Open;
+  cdsLiquidacionProducto.Open;
+end;
+
+procedure TFrmLiquidacion.GuardarFaltantes(Empleado: Integer; Faltante: Float;Liquidacion:Integer);
+begin
+  cdsFaltantes.Open;
+  cdsFaltantes.Append;
+  IF Faltante>0 then
+  Begin
+    cdsFaltantes.FieldByName('FaltanteyPagoID').AsInteger:=DM.Servidor.Folio('FaltanteyPago','');
+    cdsFaltantes.FieldByName('Fecha').AsDateTime:=DM.Servidor.Fecha;
+    cdsFaltantes.FieldByName('Descripcion').AsString:='FALTANTE '+ cdsFaltantes.FieldByName('Fecha').AsString;
+    cdsFaltantes.FieldByName('EmpleadoID').AsInteger:=Empleado;
+    cdsFaltantes.FieldByName('Cargo').AsFloat:=Faltante;
+    cdsFaltantes.FieldByName('TipoFaltantePagoID').AsInteger:=1;
+    cdsFaltantes.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+  end
+  else
+  begin
+    cdsFaltantes.FieldByName('FaltanteyPagoID').AsInteger:=DM.Servidor.Folio('FaltanteyPago','');
+    cdsFaltantes.FieldByName('Fecha').AsDateTime:=DM.Servidor.Fecha;
+    cdsFaltantes.FieldByName('Descripcion').AsString:='SOBRANTE '+ cdsFaltantes.FieldByName('Fecha').AsString;
+    cdsFaltantes.FieldByName('EmpleadoID').AsInteger:=Empleado;
+    cdsFaltantes.FieldByName('Abono').AsFloat:=(Faltante) * -1;
+    cdsFaltantes.FieldByName('TipoFaltantePagoID').AsInteger:=2;
+    cdsFaltantes.FieldByName('LiquidacionID').AsInteger:=Liquidacion;
+  end;
+  cdsFaltantes.Post;
+end;
+
+{procedure TFrmLiquidacion.GuardarLiquidacion;
+var
+  Combustible:TLiquidacionProducto;
+  Producto:TLiquidacionProducto;
+  LiquidacionDetalle:TLiquidacionDetalle;
+  CarteraVales:TCarteraVale;
+  Fecha:DateTime;
+begin
+  DM.DatosLiquidacion:=TDatosLiquidacion.Create;
+  DM.DatosLiquidacion.Liquidacion:=TLiquidacion.Create;
+  DM.DatosLiquidacion.LiquidacionDetalle:=ATLiquidacionDetalle.Create;
+  DM.DatosLiquidacion.LiquidacionCombustible:=ATLiquidacionProducto.Create;
+  DM.DatosLiquidacion.LiquidacionProducto:=ATLiquidacionProducto.Create;
+  DM.DatosLiquidacion.Traspaso:=TTransaccion.Create;
+  DM.DatosLiquidacion.Venta:=TTransaccion.Create;
+  DM.DatosLiquidacion.DetalleTraspaso:=ATDetalleTransaccion.Create;
+  DM.DatosLiquidacion.DetalleVenta:=ATDetalleTransaccion.Create;
+  DM.DatosLiquidacion.CarteraVales:=ATCarteraVale.Create;
+  Fecha:=DM.Servidor.Fecha;
+  DM.DatosLiquidacion.Liquidacion.Fecha:=Fecha;
+  DM.DatosLiquidacion.Liquidacion.LiquidacionID:=Liquidacion;
+  DM.DatosLiquidacion.Liquidacion.VentasTotales:=cdsLiquidacion.FieldByName('VentasTotales').AsFloat;
+  DM.DatosLiquidacion.Liquidacion.Anticipos:=cdsLiquidacion.FieldByName('Anticipos').AsFloat;
+  DM.DatosLiquidacion.Liquidacion.Diferencias:=cdsLiquidacion.FieldByName('Diferencias').AsFloat;
+  DM.DatosLiquidacion.Liquidacion.Secuencia:=cdsLiquidacion.FieldByName('Secuencia').AsInteger;
+  DM.DatosLiquidacion.Liquidacion.EstacionID:=Estacion;
+  DM.DatosLiquidacion.Liquidacion.DespachadorID:=cdsLiquidacion.FieldByName('DespachadorID').AsInteger;
+  DM.DatosLiquidacion.Liquidacion.AgrupacionID:=cdsLiquidacion.FieldByName('AgrupacionID').AsInteger;
+
+  cdsLiquidacionCombustible.First;
+  while not cdsLiquidacionCombustible.EOF do
+  begin
+    Combustible:=TLiquidacionProducto.Create;
+    Combustible.PrecioVenta:=cdsLiquidacionCombustible.FieldByName('PrecioVenta').AsFloat;
+    Combustible.InventarioInicial:=cdsLiquidacionCombustible.FieldByName('InventarioInicial').AsFloat;
+    Combustible.InventarioFinal:=cdsLiquidacionCombustible.FieldByName('InventarioFinal').AsFloat;
+    Combustible.Cantidad:=cdsLiquidacionCombustible.FieldByName('Cantidad').AsFloat;
+    Combustible.Importe:=cdsLiquidacionCombustible.FieldByName('Importe').AsFloat;
+    Combustible.Traspasos:=cdsLiquidacionCombustible.FieldByName('Traspasos').AsFloat;
+    Combustible.Secuencia:=cdsLiquidacionCombustible.FieldByName('Secuencia').AsInteger;
+    Combustible.ProductoID:=cdsLiquidacionCombustible.FieldByName('ProductoID').AsInteger;
+    Combustible.BombaID:=cdsLiquidacionCombustible.FieldByName('BombaID').AsInteger;
+    DM.DatosLiquidacion.LiquidacionCombustible.Add(Combustible);
+    cdsLiquidacionCombustible.Next;
+  end;
+
+  cdsLiquidacionProducto.First;
+  while not cdsLiquidacionProducto.EOF do
+  begin
+    Producto:=TLiquidacionProducto.Create;
+    Producto.PrecioVenta:=cdsLiquidacionProducto.FieldByName('PrecioVenta').AsFloat;
+    Producto.InventarioInicial:=cdsLiquidacionProducto.FieldByName('InventarioInicial').AsFloat;
+    Producto.InventarioFinal:=cdsLiquidacionProducto.FieldByName('InventarioFinal').AsFloat;
+    Producto.Cantidad:=cdsLiquidacionProducto.FieldByName('Cantidad').AsFloat;
+    Producto.Importe:=cdsLiquidacionProducto.FieldByName('Importe').AsFloat;
+    Producto.Traspasos:=cdsLiquidacionProducto.FieldByName('Traspasos').AsFloat;
+    Producto.Secuencia:=cdsLiquidacionProducto.FieldByName('Secuencia').AsInteger;
+    Producto.ProductoID:=cdsLiquidacionProducto.FieldByName('ProductoID').AsInteger;
+    DM.DatosLiquidacion.LiquidacionProducto.Add(Producto);
+    cdsLiquidacionProducto.Next;
+  end;
+
+  cdsLiquidacionDetalle.First;
+  while not cdsLiquidacionDetalle.EOF do
+  begin
+    LiquidacionDetalle:=TLiquidacionDetalle.Create;
+    LiquidacionDetalle.Importe:=cdsLiquidacionDetalle.FieldByName('Importe').AsFloat;
+    LiquidacionDetalle.Secuencia:=cdsLiquidacionDetalle.FieldByName('Secuencia').AsInteger;
+    LiquidacionDetalle.Referencia:=cdsLiquidacionDetalle.FieldByName('Referencia').AsString;;
+    LiquidacionDetalle.TipoValorID:=cdsLiquidacionDetalle.FieldByName('TipoValorID').AsInteger;
+
+    if not (cdsLiquidacionDetalle.FieldByName('Ticket').IsNull) then
+      LiquidacionDetalle.Ticket:=cdsLiquidacionDetalle.FieldByName('Ticket').AsVariant
+    else
+      LiquidacionDetalle.Ticket:=0;
+    if not(cdsLiquidacionDetalle.FieldByName('Cupon').IsNull) then
+      LiquidacionDetalle.Cupon:=cdsLiquidacionDetalle.FieldByName('Cupon').AsVariant
+    else
+      LiquidacionDetalle.Cupon:='';
+    if not(cdsLiquidacionDetalle.FieldByName('BancoID').IsNull) then
+      LiquidacionDetalle.BancoID:=cdsLiquidacionDetalle.FieldByName('BancoID').AsVariant
+    else
+      LiquidacionDetalle.BancoID:=0;
+    if not(cdsLiquidacionDetalle.FieldByName('SalidaID').IsNull) then
+      LiquidacionDetalle.SalidaID:=cdsLiquidacionDetalle.FieldByName('SalidaID').AsVariant
+    else
+      LiquidacionDetalle.SalidaID:=0;
+    if not(cdsLiquidacionDetalle.FieldByName('ClienteID').IsNull) then
+      LiquidacionDetalle.ClienteID:=cdsLiquidacionDetalle.FieldByName('ClienteID').AsVariant
+    else
+      LiquidacionDetalle.ClienteID:=0;
+    DM.DatosLiquidacion.LiquidacionDetalle.Add(LiquidacionDetalle);
+    if EsCredito then
+    begin
+      CarteraVales:=TCarteraVale.Create;
+      CarteraVales.NoVale:=cdsLiquidacionDetalle.FieldByName('Referencia').AsInteger;
+      CarteraVales.Ticket:=cdsLiquidacionDetalle.FieldByName('Ticket').AsInteger;
+      CarteraVales.Importe:=cdsLiquidacionDetalle.FieldByName('Importe').AsFloat;
+      CarteraVales.Fecha:=DM.DatosLiquidacion.Liquidacion.Fecha;
+      CarteraVales.Status:='NF';
+      CarteraVales.EstacionID:=Estacion;
+      CarteraVales.ClienteID:=cdsLiquidacionDetalle.FieldByName('ClienteID').AsInteger;
+      CarteraVales.LiquidacionDetalleID:=cdsLiquidacionDetalle.FieldByName('LiquidacionDetalleID').AsInteger;
+      DM.DatosLiquidacion.CarteraVales.Add(CarteraVales);
+    end;
+    cdsLiquidacionDetalle.Next;
+  end;
+  DM.Servidor.GuardarDatosLiquidacion(DM.DatosLiquidacion);
+end;    }
+
+
+
+procedure TFrmLiquidacion.ImprimirReporte(Estacion, SecuenciaIni, SecuenciaFin,
+  Agrupacion: Integer);
+var
+  Aux: LibraryAdministracion_Intf.TReporte;
+begin
+  Aux:=DM.Servidor.BuscaReporte('CORTE', 1);
+  try
+    DM.Parametros.Estacion:=Estacion;
+    DM.Parametros.SecuenciaIniLiquidacion:=SecuenciaIni;
+    DM.Parametros.SecuenciaFinLiquidacion:=SecuenciaFin;
+    DM.Parametros.Agrupacion:=Agrupacion;
+    DM.Imprimir(Aux.SQL1, Aux.SQL2, Aux.Template, 'IMPRIMIENDO...', Aux.CampoJoin);
+  finally
+    Aux.Free;
+  end;
+end;
+
+procedure TFrmLiquidacion.InicializarFocus;
+begin
+  dbgAnticiposDBTableView1Ticket.Options.Focusing:=False;
+  dbgAnticiposDBTableView1Cupon.Options.Focusing:=False;
+  dbgAnticiposDBTableView1BancoID.Options.Focusing:=False;
+  dbgAnticiposDBTableView1SalidaID.Options.Focusing:=False;
+  dbgAnticiposDBTableView1Referencia.Options.Focusing:=False;
+  dbgAnticiposDBTableView1Importe.Options.Focusing:=True;
+end;
+
+procedure TFrmLiquidacion.MonedaTicketPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+var
+  MensajeError:String;
+begin
+  inherited;
+  MensajeError:='Capture Ticket';
+  if DisplayValue > 0 then
+  begin
+    if not StatusTicket(DisplayValue,MensajeError) then
+    begin
+      Error:=True;
+      ErrorText:=MensajeError;
+      DisplayValue:='0';
+    end
+    else
+    begin
+        DM.ATicket:=DM.ObtenerTicket(Estacion, DisplayValue);
+        if DM.ATicket.ProductoID > 0 then
+        begin
+          cdsLiquidacionDetalleMoneda.FieldByName('Importe').AsFloat:=DM.ATicket.Importe;
+          MonedaTicket.Options.Focusing:=True;
+          Importe_Grupo:=DM.ATicket.Importe;
+          cdsLiquidacionDetalleMoneda.FieldByName('Ticket').AsString:=DisplayValue;
+        end
+        else
+        begin
+          Error:=True;
+          ErrorText:='Ticket No Existe';
+          DisplayValue:='0';
+        end;
+    end;
+  end
+  else
+  begin
+    Error:=True;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.MonedaTipoValorIdPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  I: Integer;
+begin
+  inherited;
+  ConvierteADolar:=False;
+  //Inhabilitamos las demas columnnas para solo activar las que deban ser seleccionadas
+  MonedaClienteID.Options.Focusing:=False;
+  MonedaNombreCliente.Options.Focusing:=False;
+  MonedaTicket.Options.Focusing:=False;
+  MonedaBancoID.Options.Focusing:=False;
+  MonedaReferencia.Options.Focusing:=False;
+
+  I:=cdsLiquidacionDetalleMoneda.FieldByName('TipoValorID').AsInteger;
+  cdsTipoValorSeleccionado.ParamByName('TipoValorID').AsInteger:=I;
+  cdsTipoValorSeleccionado.Open;
+  If  cdsTipoValorSeleccionado.FieldByName('TipoCambio').AsBoolean then
+  Begin
+    ConvierteADolar:=true;
+  End
+  else
+     ConvierteADolar:=False;
+
+
+  if cdsTipoValorSeleccionado.FieldByName('Referencia').AsBoolean then
+  begin
+    MonedaReferencia.Options.Focusing:=True;
+    TipoValor.AceptaReferencia:=True;
+  end
+  else
+    MonedaReferencia.EditValue:='';
+
+  if (cdsTipoValorSeleccionado.FieldByName('Cliente').AsBoolean)  then //and
+  begin
+    MonedaClienteID.Options.Focusing:=True;
+    TipoValor.AceptaClienteID:=True;
+  end
+  else
+    If MonedaClienteID.EditValue>0 then
+      MonedaClienteID.EditValue:=0;
+
+
+  if cdsTipoValorSeleccionado.FieldByName('Banco').AsBoolean then
+  Begin
+    MonedaBancoId.Options.Focusing:=True;
+    TipoValor.AceptaBancoID:=True;
+  End
+  else
+    MonedaBancoID.EditValue:=0;
+
+  IF cdsTipoValorSeleccionado.FieldByName('Ticket').AsBoolean then
+  begin
+    MonedaTicket.Options.Focusing:=true;
+    tipovalor.AceptaTicket:=True;
+  end
+  else
+    If MonedaTicket.EditValue>0 then
+      MonedaTicket.EditValue:=0;
+
+  cdsTipoValorSeleccionado.Close;
+end;
+
+function TFrmLiquidacion.ObtenerAlmacenAgrupacion: integer;
+begin
+  if (cdsAgrupacion.Locate('AgrupacionID',cdsLiquidacion.FieldByName('AgrupacionID').AsInteger,[loCaseInsensitive])) then
+    Result:=cdsAgrupacion.FieldByName('AlmacenID').AsInteger
+  else
+    Result:=0;
+end;
+
+function TFrmLiquidacion.ObtenerSecuencia: Integer;
+begin
+  Result:=Secuencia;
+end;
+
+procedure TFrmLiquidacion.OtrosTicketPropertiesValidate(Sender: TObject;
+  var DisplayValue: Variant; var ErrorText: TCaption; var Error: Boolean);
+var
+  MensajeError:String;
+begin
+  inherited;
+  MensajeError:='Capture Ticket';
+  if DisplayValue > 0 then
+  begin
+    if not StatusTicket(DisplayValue,MensajeError) then
+    begin
+      Error:=True;
+      ErrorText:=MensajeError;
+      DisplayValue:='0';
+    end
+    else
+    begin
+        DM.ATicket:=DM.ObtenerTicket(Estacion, DisplayValue);
+        if DM.ATicket.ProductoID > 0 then
+        begin
+          cdsLiquidacionDetalleOtros.FieldByName('Importe').AsFloat:=DM.ATicket.Importe;
+          OtrosTicket.Options.Focusing:=True;
+          Importe_Grupo:=DM.ATicket.Importe;
+          cdsLiquidacionDetalleOtros.FieldByName('Ticket').AsString:=DisplayValue;
+        end
+        else
+        begin
+          Error:=True;
+          ErrorText:='Ticket No Existe';
+          DisplayValue:='0';
+        end;
+    end;
+  end
+  else
+  begin
+    Error:=True;
+  end;
+
+end;
+
+procedure TFrmLiquidacion.OtrosTipoValorIdPropertiesEditValueChanged(
+  Sender: TObject);
+var
+  I: Integer;
+begin
+  inherited;
+   ConvierteADolar:=False;
+  //Inhabilitamos las demas columnnas para solo activar las que deban ser seleccionadas
+  I:=cdsLiquidacionDetalleOtros.FieldByName('TipoValorID').AsInteger;
+  cdsTipoValorSeleccionado.Close;
+  cdsTipoValorSeleccionado.ParamByName('TipoValorID').AsInteger:=I;
+  cdsTipoValorSeleccionado.Open;
+
+
+  if cdsTipoValorSeleccionado.FieldByName('Referencia').AsBoolean then
+  begin
+    OtrosRefenrecia.Options.Focusing:=True;
+    TipoValor.AceptaReferencia:=True;
+  end;
+
+ { if (cdsTipoValorSeleccionado.FieldByName('Cliente').AsInteger=-1)  then //and
+//     (not (RequiereCupon)) then
+  begin
+    dbgAnticiposDBTableView1ClienteID.Options.Focusing:=True;
+    TipoValor.AceptaClienteID:=True;
+  //  frmBuscarCliente:=TfrmBuscarCliente.Create(Self);
+   // frmBuscarCliente.ShowModal;
+   // cdsLiquidacionDetalle.FieldByName('clienteID').AsInteger:=FrmBuscarCliente.Clave;
+  end;
+
+  if cdsTipoValorSeleccionado.FieldByName('Banco').AsInteger=-1 then
+  Begin
+    dbgAnticiposDBTableView1BancoID.Options.Focusing:=true;
+    TipoValor.AceptaBancoID:=True;
+  End;  }
+
+  IF cdsTipoValorSeleccionado.FieldByName('Ticket').AsBoolean then
+  begin
+    OtrosTicket.Options.Focusing:=True;
+    tipovalor.AceptaTicket:=True;
+
+  end;
+ { if cdsTipoValorSeleccionado.FieldByName('Cupon').AsInteger=-1 then
+  begin
+    dbgAnticiposDBTableView1Cupon.Options.Focusing:=True;
+    TipoValor.AceptaCuponID:=True;
+  end;
+  }
+  if cdsTipoValorSeleccionado.FieldByName('ConsumoInterno').AsBoolean then
+  begin
+    OtrosSalidaID.Options.Focusing:=True;
+    tipovalor.AceptaSalidaID:=true;
+  end;
+
+  cdsTipoValorSeleccionado.Close;
+
+
+end;
+
+procedure TfrmLiquidacion.UpdateActionsState;
+begin
+  inherited;
+  dmAppActions.actNuevo.Enabled:=cdsLiquidacion.State = dsBrowse;
+  dmAppActions.actGuardar.Enabled:=cdsLiquidacion.State in dsEditModes;
+  dmAppActions.actCancelar.Enabled:=cdsLiquidacion.State in dsEditModes;
+  dmAppActions.actEliminar.Enabled:=(cdsLiquidacion.State = dsBrowse) and (cdsLiquidacion.RecordCount > 0);
+
+  grpLiquidacion.Enabled := not (dmAppActions.actNuevo.Enabled);
+  dbgAnticipos.Enabled   := not (dmAppActions.actNuevo.Enabled);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Liquidación2', TFrmLiquidacion);
+end.

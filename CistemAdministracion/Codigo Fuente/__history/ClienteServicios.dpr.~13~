@@ -1,0 +1,96 @@
+program ClienteServicios;
+
+uses
+  Forms,
+  Windows,
+  MidasLIB,
+  uDM in 'uDM.pas' {DM: TDataModule},
+  ufrmPrincipal in 'ufrmPrincipal.pas' {frmPrincipal},
+  UfrmCatalogoCategoria in 'UfrmCatalogoCategoria.pas' {frmCatalogoCategoria},
+  ufrmCatalogoDespachador in 'ufrmCatalogoDespachador.pas' {frmCatalogoDespachador},
+  UfrmCatalogoProveedor in 'UfrmCatalogoProveedor.pas' {frmCatalogoProveedor},
+  UfrmCatalogoTipoValor in 'UfrmCatalogoTipoValor.pas' {frmCatalogoTipoValor},
+  ufrmCompras in 'ufrmCompras.pas' {FrmCompra},
+  ufrmFacturacionDePiso in 'ufrmFacturacionDePiso.pas' {FrmFacturacionDePiso},
+  ufrmInventarioFisico in 'ufrmInventarioFisico.pas' {FrmInventarioFisico},
+  ufrmMermas in 'ufrmMermas.pas' {FrmMermas},
+  ufrmAlmacen in 'ufrmAlmacen.pas' {frmAlmacen},
+  ufrmBuscar in 'ufrmBuscar.pas' {frmBuscar},
+  ufrmBuscarProveedor in 'ufrmBuscarProveedor.pas' {frmBuscarProveedor},
+  ufrmEstaciones in 'ufrmEstaciones.pas' {FrmEstaciones},
+  ufrmBuscarProducto in 'ufrmBuscarProducto.pas' {FrmBuscarProducto},
+  ufrmCatalogoCuentaBancaria in 'ufrmCatalogoCuentaBancaria.pas' {FrmCatalogoCuentaBancaria},
+  ufrmCatalogoReportes in 'ufrmCatalogoReportes.pas' {frmCatalogoReportes},
+  ufrmCatalogoProductos in 'ufrmCatalogoProductos.pas' {frmCatalogoProducto},
+  ufrmCatalogoFormaPago in 'ufrmCatalogoFormaPago.pas' {ufrmCatalogoFormadePago},
+  UfrmReporteGenerales in 'UfrmReporteGenerales.pas' {frmReporteGenerales},
+  ufrmReporteCupon in 'ufrmReporteCupon.pas' {frmReporteCupon},
+  ufrmModificaFolio in 'ufrmModificaFolio.pas' {frmModificarFolio},
+  ufrmModificaFolioFactura in 'ufrmModificaFolioFactura.pas' {frmModificaFolioFactura},
+  ufrmBuscarEstacion2 in 'ufrmBuscarEstacion2.pas' {frmBuscaEstaciones},
+  ufrmPropiedadesSistema in 'ufrmPropiedadesSistema.pas' {frmPropiedadesSistema},
+  ufrmCatalogoUsuarios in 'ufrmCatalogoUsuarios.pas' {frmCatalogoUsuarios},
+  ufrmReImprimirFactura in 'ufrmReImprimirFactura.pas' {frmReImprimirFactura},
+  uRapFunctions in 'uRapFunctions.pas',
+  ufrmParametros in 'ufrmParametros.pas' {frmParametros},
+  ufrmPantallaReportes in 'ufrmPantallaReportes.pas' {frmPantallaReportes},
+  ufrmReportesInventario in 'ufrmReportesInventario.pas' {frmReportesInventario},
+  ufrmReportesEspecificos in 'ufrmReportesEspecificos.pas' {frmReportesEspecificos},
+  ufrmReportesExportar in 'ufrmReportesExportar.pas' {frmReportesExportar},
+  ufrmSplashScreen in 'ufrmSplashScreen.pas' {frmSplashScreen},
+  ufrmBuscarCliente in 'ufrmBuscarCliente.pas' {frmBuscarCliente},
+  ufrmBuscarEmpleado in 'ufrmBuscarEmpleado.pas' {frmBuscarEmpleado},
+  ufrmCatalogoPuntosCategoria in 'ufrmCatalogoPuntosCategoria.pas' {frmCatalogoPuntosCategoria},
+  ufrmCatalogoPuntosPremio in 'ufrmCatalogoPuntosPremio.pas' {frmCatalogoPuntosPremio},
+  ufrmPCatalogoClub in 'ufrmPCatalogoClub.pas' {frmPCatalogoClub},
+  ufrmCatalogoArticulos in 'ufrmCatalogoArticulos.pas' {frmCatalogoArticulos},
+  LibraryEmpresas_Intf in 'Server\LibraryEmpresas_Intf.pas',
+  CustomModule in 'CistemComun\CodigoFuente\CustomModule.pas' {frmCustomModule},
+  dmImagenes in 'CistemComun\CodigoFuente\dmImagenes.pas' {dmImages: TDataModule},
+  dmActions in 'CistemComun\CodigoFuente\dmActions.pas' {dmAppActions: TDataModule},
+  ExportaDataSet in 'CistemComun\CodigoFuente\ExportaDataSet.pas',
+  LibXmlParser in 'CistemComun\CodigoFuente\LibXmlParser.pas',
+  rbPrvDlg in 'CistemComun\CodigoFuente\rbPrvDlg.pas' {rbPrintPreview},
+  Seguridad in 'CistemComun\CodigoFuente\Seguridad.pas',
+  ufrmCatalogo in 'CistemComun\CodigoFuente\ufrmCatalogo.pas' {frmCatalogo},
+  ufrmPassword in 'CistemComun\CodigoFuente\ufrmPassword.pas' {frmPassword},
+  ufrmSplash in 'CistemComun\CodigoFuente\ufrmSplash.pas' {frmSplash},
+  uPSI_ExportaDataSet in 'CistemComun\CodigoFuente\uPSI_ExportaDataSet.pas',
+  UtileriasComun in 'CistemComun\CodigoFuente\UtileriasComun.pas',
+  Modules in 'CistemComun\CodigoFuente\Modules.pas',
+  ufrmBitacoraServiciosEst in 'ufrmBitacoraServiciosEst.pas' {frmBitacoraServicioEst},
+  ufrmHorariosPersonal in 'ufrmHorariosPersonal.pas' {frmHorariosPersonal},
+  ufrmProgramaMantenimiento in 'ufrmProgramaMantenimiento.pas' {frmProgramaMantenimiento},
+  ufrmTipoMantenimiento in 'ufrmTipoMantenimiento.pas' {frmTipoMantenimiento},
+  ufmEmpleados in 'ufmEmpleados.pas' {frmEmpleados},
+  ufrmCropImage in 'ufrmCropImage.pas' {frmcropimage};
+
+{$R *.res}
+
+begin
+  Mutex := CreateMutex(nil, True, 'Utilerias');
+  Application.MainFormOnTaskbar := True;
+  if (Mutex <> 0) then
+  begin
+    frmSplashScreen:=TfrmSplashScreen.Create(Application);
+    frmSplashScreen.Show;
+    Application.Initialize;
+    Application.Title := 'Cliente Servicios (Utilerias) 1.0';
+  end;
+
+  Application.CreateForm(TDM, DM);
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TdmImages, dmImages);
+  Application.CreateForm(TdmAppActions, dmAppActions);
+  Application.CreateForm(TrbPrintPreview, rbPrintPreview);
+  Application.CreateForm(TfrmHorariosPersonal, frmHorariosPersonal);
+  Application.CreateForm(TfrmProgramaMantenimiento, frmProgramaMantenimiento);
+  Application.CreateForm(TfrmTipoMantenimiento, frmTipoMantenimiento);
+  Application.CreateForm(TfrmEmpleados, frmEmpleados);
+  Application.CreateForm(Tfrmcropimage, frmcropimage);
+  //Application.CreateForm(TfrmSplash, frmSplash);
+  Sleep(3000);
+  frmSplashScreen.Hide;
+  frmSplashScreen.Free;
+  Application.Run;
+end.

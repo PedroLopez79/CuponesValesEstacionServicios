@@ -1,0 +1,556 @@
+inherited frmFacturaPemex: TfrmFacturaPemex
+  Caption = 'frmFacturaPemex'
+  ClientHeight = 478
+  ClientWidth = 700
+  ExplicitWidth = 700
+  ExplicitHeight = 478
+  PixelsPerInch = 96
+  TextHeight = 13
+  object cxPagFacturacion: TcxPageControl
+    Left = 0
+    Top = 0
+    Width = 700
+    Height = 478
+    ActivePage = cxTabSheet1
+    Align = alClient
+    Images = dmImages.Imagenes
+    LookAndFeel.NativeStyle = False
+    TabOrder = 0
+    TabPosition = tpBottom
+    ClientRectBottom = 448
+    ClientRectLeft = 3
+    ClientRectRight = 694
+    ClientRectTop = 3
+    object cxTabSheet1: TcxTabSheet
+      Caption = 'Facturaci'#243'n '
+      ImageIndex = 37
+      object grbEncabezado: TcxGroupBox
+        Left = 0
+        Top = 0
+        TabStop = True
+        Align = alTop
+        Enabled = False
+        Style.BorderStyle = ebsUltraFlat
+        Style.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.NativeStyle = False
+        TabOrder = 0
+        Height = 99
+        Width = 691
+        object lblProducto: TLabel
+          Left = 343
+          Top = 15
+          Width = 43
+          Height = 13
+          Caption = 'Producto'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = True
+        end
+        object cxLabel5: TcxLabel
+          Left = 216
+          Top = 18
+          Caption = 'Folio'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel6: TcxLabel
+          Left = 8
+          Top = 58
+          Caption = 'Estacion'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel8: TcxLabel
+          Left = 8
+          Top = 18
+          Caption = 'Fecha'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel13: TcxLabel
+          Left = 152
+          Top = 59
+          Caption = 'Nombre'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxDBDateEdit1: TcxDBDateEdit
+          Left = 8
+          Top = 34
+          TabStop = False
+          DataBinding.DataField = 'Fecha'
+          DataBinding.DataSource = dsFactura
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 3
+          Width = 132
+        end
+        object cxLabel14: TcxLabel
+          Left = 152
+          Top = 18
+          Caption = 'Serie'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxDBTextEdit2: TcxDBTextEdit
+          Left = 8
+          Top = 74
+          DataBinding.DataField = 'EstacionID'
+          DataBinding.DataSource = dsFactura
+          Enabled = False
+          Properties.CharCase = ecUpperCase
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          Style.TextStyle = [fsBold]
+          TabOrder = 9
+          Width = 132
+        end
+        object dbNombre: TcxDBTextEdit
+          Left = 152
+          Top = 74
+          DataBinding.DataField = 'Nombre'
+          DataBinding.DataSource = dsFactura
+          TabOrder = 2
+          Width = 391
+        end
+        object dbSerie: TcxDBTextEdit
+          Left = 152
+          Top = 34
+          DataBinding.DataField = 'Serie'
+          DataBinding.DataSource = dsFactura
+          TabOrder = 0
+          Width = 58
+        end
+        object dbFolio: TcxDBCurrencyEdit
+          Left = 216
+          Top = 34
+          DataBinding.DataField = 'Folio'
+          DataBinding.DataSource = dsFactura
+          TabOrder = 1
+          Width = 121
+        end
+        object cbProducto: TcxLookupComboBox
+          Left = 343
+          Top = 34
+          Properties.DropDownWidth = 350
+          Properties.KeyFieldNames = 'ProductoID'
+          Properties.ListColumns = <
+            item
+              FieldName = 'Nombre'
+            end
+            item
+              FieldName = 'ProductoID'
+            end>
+          Properties.ListSource = DADataSource2
+          Style.BorderStyle = ebsOffice11
+          Style.LookAndFeel.Kind = lfOffice11
+          Style.LookAndFeel.NativeStyle = True
+          StyleDisabled.LookAndFeel.Kind = lfOffice11
+          StyleDisabled.LookAndFeel.NativeStyle = True
+          StyleFocused.LookAndFeel.Kind = lfOffice11
+          StyleFocused.LookAndFeel.NativeStyle = True
+          StyleHot.LookAndFeel.Kind = lfOffice11
+          StyleHot.LookAndFeel.NativeStyle = True
+          TabOrder = 10
+          Width = 200
+        end
+      end
+      object cxGroupBox5: TcxGroupBox
+        Left = 0
+        Top = 347
+        Align = alBottom
+        Style.BorderStyle = ebsUltraFlat
+        TabOrder = 1
+        Height = 98
+        Width = 691
+        object cxLabel18: TcxLabel
+          Left = 431
+          Top = 69
+          Caption = 'Total'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxDBTextEdit10: TcxDBTextEdit
+          Left = 487
+          Top = 67
+          TabStop = False
+          DataBinding.DataField = 'Total'
+          DataBinding.DataSource = dsFactura
+          Enabled = False
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Properties.OnChange = cxDBTextEdit10PropertiesChange
+          Style.BorderStyle = ebsUltraFlat
+          Style.LookAndFeel.NativeStyle = False
+          StyleDisabled.LookAndFeel.NativeStyle = False
+          StyleFocused.LookAndFeel.NativeStyle = False
+          StyleHot.LookAndFeel.NativeStyle = False
+          TabOrder = 1
+          Visible = False
+          Width = 121
+        end
+        object cxCurrencyEdit3: TcxCurrencyEdit
+          Left = 487
+          Top = 67
+          Enabled = False
+          Properties.Alignment.Horz = taRightJustify
+          Properties.EditFormat = '$,0.00;-$,0.00'
+          Properties.ReadOnly = True
+          Style.TextStyle = [fsBold]
+          TabOrder = 2
+          Width = 121
+        end
+      end
+      object grbDetalles: TcxGroupBox
+        Left = 0
+        Top = 99
+        Align = alClient
+        Enabled = False
+        Style.BorderStyle = ebsUltraFlat
+        Style.LookAndFeel.NativeStyle = False
+        StyleDisabled.LookAndFeel.NativeStyle = False
+        StyleFocused.LookAndFeel.NativeStyle = False
+        StyleHot.LookAndFeel.NativeStyle = False
+        TabOrder = 2
+        Height = 248
+        Width = 691
+        object cxGrid1: TcxGrid
+          Left = 3
+          Top = 18
+          Width = 685
+          Height = 227
+          Align = alClient
+          TabOrder = 0
+          OnEnter = cxGrid1Enter
+          OnExit = cxGrid1Exit
+          LookAndFeel.NativeStyle = False
+          ExplicitLeft = 2
+          ExplicitWidth = 687
+          ExplicitHeight = 228
+          object cxGrid1DBTableView1: TcxGridDBTableView
+            NavigatorButtons.ConfirmDelete = False
+            DataController.DataSource = dsDetalleFactura
+            DataController.Summary.DefaultGroupSummaryItems = <>
+            DataController.Summary.FooterSummaryItems = <
+              item
+                Format = '#,,###,##0.00'
+                Kind = skSum
+              end
+              item
+                Format = '$#,#0.00'
+                Kind = skSum
+              end
+              item
+                Format = '$#,#0.00'
+                Kind = skSum
+              end>
+            DataController.Summary.SummaryGroups = <>
+            NewItemRow.Visible = True
+            OptionsBehavior.AlwaysShowEditor = True
+            OptionsBehavior.FocusCellOnTab = True
+            OptionsBehavior.FocusFirstCellOnNewRecord = True
+            OptionsBehavior.GoToNextCellOnEnter = True
+            OptionsBehavior.FocusCellOnCycle = True
+            OptionsView.Footer = True
+            OptionsView.GroupByBox = False
+            OptionsView.Indicator = True
+            object cxGrid1DBTableView1TipoValorPemexID: TcxGridDBColumn
+              Caption = 'Concepto'
+              DataBinding.FieldName = 'TipoValorPemexID'
+              PropertiesClassName = 'TcxLookupComboBoxProperties'
+              Properties.KeyFieldNames = 'TipoValorPemexID'
+              Properties.ListColumns = <
+                item
+                  FieldName = 'Referencia'
+                end>
+              Properties.ListSource = dsTipoValorPemex
+              Width = 264
+            end
+            object cxGrid1DBTableView1Cantidad: TcxGridDBColumn
+              DataBinding.FieldName = 'Cantidad'
+              Width = 125
+            end
+            object cxGrid1DBTableView1Precio: TcxGridDBColumn
+              DataBinding.FieldName = 'Precio'
+              Width = 130
+            end
+            object cxGrid1DBTableView1Importe: TcxGridDBColumn
+              DataBinding.FieldName = 'Importe'
+              Width = 131
+            end
+          end
+          object cxGridLevel2: TcxGridLevel
+            GridView = cxGrid1DBTableView1
+          end
+        end
+      end
+    end
+  end
+  object cxLabel1: TcxLabel
+    Left = 552
+    Top = 21
+    Caption = 'Turno'
+    Style.BorderStyle = ebsNone
+    Transparent = True
+  end
+  object cxDBTextEdit1: TcxDBTextEdit
+    Left = 552
+    Top = 37
+    DataBinding.DataField = 'TurnoID'
+    DataBinding.DataSource = dsFactura
+    Enabled = False
+    Properties.CharCase = ecUpperCase
+    Properties.ReadOnly = True
+    Style.BorderStyle = ebsUltraFlat
+    Style.TextStyle = [fsBold]
+    TabOrder = 2
+    Width = 59
+  end
+  object dsDetalleFactura: TDADataSource
+    DataSet = cdsDetalleFactura.Dataset
+    DataTable = cdsDetalleFactura
+    Left = 56
+    Top = 383
+  end
+  object dsFactura: TDADataSource
+    DataSet = cdsFactura.Dataset
+    DataTable = cdsFactura
+    Left = 24
+    Top = 382
+  end
+  object cdsTipoValorPemex: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'TipoValorPemexID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Referencia'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'CuentaContable'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'Operador'
+        DataType = datInteger
+      end
+      item
+        Name = 'NTCuenta'
+        DataType = datString
+        Size = 1
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo TipoValorPemex'
+    IndexDefs = <>
+    Left = 192
+    Top = 352
+  end
+  object dsTipoValorPemex: TDADataSource
+    DataSet = cdsTipoValorPemex.Dataset
+    DataTable = cdsTipoValorPemex
+    Left = 192
+    Top = 384
+  end
+  object cdsFactura: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'TurnoID'
+        DataType = datInteger
+        InPrimaryKey = True
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Fletes'
+        DataType = datCurrency
+      end
+      item
+        Name = 'ImpDerPagar'
+        DataType = datCurrency
+      end
+      item
+        Name = 'Proveedores'
+        DataType = datCurrency
+      end
+      item
+        Name = 'Fecha'
+        DataType = datDateTime
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'IVA'
+        DataType = datCurrency
+      end
+      item
+        Name = 'IEPS'
+        DataType = datCurrency
+      end
+      item
+        Name = 'FacturaPemexID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Serie'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Folio'
+        DataType = datInteger
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Total'
+        DataType = datCurrency
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsFacturaNewRecord
+    LogicalName = 'dbo FacturaPemex'
+    IndexDefs = <>
+    Left = 24
+    Top = 352
+  end
+  object cdsDetalleFactura: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'FacturaPemexID'
+        DataType = datInteger
+      end
+      item
+        Name = 'TipoValorPemexID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Cantidad'
+        DataType = datFloat
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+      end
+      item
+        Name = 'Precio'
+        DataType = datFloat
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    BeforePost = cdsDetalleFacturaBeforePost
+    AfterPost = cdsDetalleFacturaAfterPost
+    OnNewRecord = cdsDetalleFacturaNewRecord
+    LogicalName = 'dbo FacturaPemexDetalle'
+    IndexDefs = <>
+    Left = 56
+    Top = 352
+  end
+  object cdsProductos: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Codigo'
+        DataType = datString
+        Size = 10
+        Required = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 30
+        Required = True
+      end
+      item
+        Name = 'PrecioVenta'
+        DataType = datFloat
+        Required = True
+      end
+      item
+        Name = 'ClavePemex'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Costo'
+        DataType = datFloat
+      end
+      item
+        Name = 'Status'
+        DataType = datBoolean
+      end
+      item
+        Name = 'Barras'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'CuentaContableCompra'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'CuentaContableVenta'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'Inventariable'
+        DataType = datBoolean
+      end
+      item
+        Name = 'CostoPromedio'
+        DataType = datFloat
+      end
+      item
+        Name = 'CategoriaID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'IEPS'
+        DataType = datFloat
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo Producto'
+    IndexDefs = <>
+    Left = 552
+    Top = 58
+  end
+  object DADataSource2: TDADataSource
+    DataSet = cdsProductos.Dataset
+    DataTable = cdsProductos
+    Left = 584
+    Top = 58
+  end
+end

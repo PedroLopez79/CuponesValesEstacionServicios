@@ -1,0 +1,95 @@
+unit ufrmEstaciones;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ufrmCatalogo, cxStyles, cxCustomData, cxGraphics, cxFilter, cxData,
+  cxDataStorage, cxEdit, DB, cxDBData, cxLabel, cxTextEdit, cxDBEdit,
+  cxContainer, cxGroupBox, dxmdaset, uDADataTable, uDAScriptingProvider,
+  uDACDSDataTable, cxGridLevel, cxClasses, cxControls, cxGridCustomView,
+  cxGridCustomTableView, cxGridTableView, cxGridDBTableView, cxGrid, cxPC,
+  dxSkinsCore, dxSkinsDefaultPainters, dxSkinscxPCPainter, uDAInterfaces,
+  uDAMemDataTable, cxLookAndFeels, cxLookAndFeelPainters, dxSkinBlack,
+  dxSkinBlue, dxSkinCaramel, dxSkinCoffee, dxSkinDarkRoom, dxSkinDarkSide,
+  dxSkinFoggy, dxSkinGlassOceans, dxSkiniMaginary, dxSkinLilian,
+  dxSkinLiquidSky, dxSkinLondonLiquidSky, dxSkinMcSkin, dxSkinMoneyTwins,
+  dxSkinOffice2007Black, dxSkinOffice2007Blue, dxSkinOffice2007Green,
+  dxSkinOffice2007Pink, dxSkinOffice2007Silver, dxSkinPumpkin, dxSkinSeven,
+  dxSkinSharp, dxSkinSilver, dxSkinSpringTime, dxSkinStardust, dxSkinSummer2008,
+  dxSkinValentine, dxSkinXmas2008Blue;
+
+type
+  TFrmEstaciones = class(TfrmCatalogo)
+    procedure cdsCatalogoNewRecord(DataTable: TDADataTable);
+    procedure TxtIvaExit(Sender: TObject);
+    procedure TxtClavePemexExit(Sender: TObject);
+    procedure TxtNoBombasExit(Sender: TObject);
+    procedure TxtRFCExit(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmEstaciones: TFrmEstaciones;
+
+implementation
+
+uses Modules, uDM, UtileriasComun;
+
+{$R *.dfm}
+
+procedure TFrmEstaciones.cdsCatalogoNewRecord(DataTable: TDADataTable);
+begin
+  inherited;
+  TxtNoEstacion.SetFocus;
+end;
+
+procedure TFrmEstaciones.TxtClavePemexExit(Sender: TObject);
+begin
+  inherited;
+  if not isNumeric(txtClavePemex.Text) then
+  begin
+    showMessage('No Es Un Numero');
+    //txtClavePemex.Clear;
+    txtClavePemex.SetFocus;
+  end;
+end;
+
+procedure TFrmEstaciones.TxtIvaExit(Sender: TObject);
+begin
+  inherited;
+  if not isNumeric(txtIVA.Text) then
+  begin
+    showMessage('No Es Un Numero');
+    txtIVa.Clear;
+    txtIva.SetFocus;
+  end;
+end;
+
+procedure TFrmEstaciones.TxtNoBombasExit(Sender: TObject);
+begin
+  inherited;
+  if not isNumeric(txtNoBombas.Text) then
+  begin
+    showMessage('No Es Un Numero');
+    //txtFolio.Clear;
+    txtNoBombas.SetFocus;
+  end;
+end;
+
+procedure TFrmEstaciones.TxtRFCExit(Sender: TObject);
+begin
+  inherited;
+  if not DM.ValidaRFC(TxtRFC.Text) then
+  begin
+    ShowMessage('El RFC no debe de llevar Espacios ni Guiones(-)');
+    txtRFC.SetFocus;
+  end;
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Estaciones', TFrmEstaciones);
+end.

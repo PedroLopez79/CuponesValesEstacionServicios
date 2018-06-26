@@ -1,0 +1,38 @@
+unit ufrmReportesInventario;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ufrmPantallaReportes, ComCtrls, dxSkinsCore, dxSkinsDefaultPainters,
+  ImgList, uDAScriptingProvider, uDADataTable, uDAMemDataTable, cxControls,
+  cxContainer, cxListView;
+
+type
+  TfrmReportesInventario = class(TfrmPantallaReportes)
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmReportesInventario: TfrmReportesInventario;
+
+implementation
+
+uses Modules;
+
+{$R *.dfm}
+
+procedure TfrmReportesInventario.FormCreate(Sender: TObject);
+begin
+  inherited;
+  DespliegaReportes(2);
+end;
+
+initialization
+  ModuleInfoManager.RegisterModule('Inventarios', TfrmReportesInventario);
+
+end.

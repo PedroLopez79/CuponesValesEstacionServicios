@@ -1,0 +1,3040 @@
+inherited frmLiquidacion2: TfrmLiquidacion2
+  Caption = 'Cortar'
+  ClientHeight = 460
+  ClientWidth = 985
+  Visible = True
+  OnShow = FormShow
+  ExplicitWidth = 985
+  ExplicitHeight = 460
+  PixelsPerInch = 96
+  TextHeight = 13
+  object cxGroupBox1: TcxGroupBox
+    Left = 0
+    Top = 0
+    Align = alTop
+    Caption = ' Datos de la Liquidacion '
+    Style.LookAndFeel.NativeStyle = False
+    StyleDisabled.LookAndFeel.NativeStyle = False
+    StyleFocused.LookAndFeel.NativeStyle = False
+    StyleHot.LookAndFeel.NativeStyle = False
+    TabOrder = 0
+    Height = 171
+    Width = 985
+    object Label1: TLabel
+      Left = 392
+      Top = 28
+      Width = 109
+      Height = 13
+      Caption = 'Ventas Liquidaci'#243'n'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object Label2: TLabel
+      Left = 392
+      Top = 52
+      Width = 128
+      Height = 13
+      Caption = 'Entregado Liquidaci'#243'n'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object Label3: TLabel
+      Left = 392
+      Top = 78
+      Width = 128
+      Height = 13
+      Caption = 'Diferencia Liquidaci'#243'n'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object lblCerrada: TLabel
+      Left = 650
+      Top = 108
+      Width = 185
+      Height = 16
+      Caption = 'LIQUIDACION CERRADA!!!'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold, fsUnderline]
+      ParentFont = False
+      Transparent = True
+      Visible = False
+    end
+    object Label4: TLabel
+      Left = 24
+      Top = 106
+      Width = 62
+      Height = 13
+      Caption = 'Lee Cup'#243'n'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object Label5: TLabel
+      Left = 39
+      Top = 136
+      Width = 50
+      Height = 13
+      Caption = 'Vehiculo'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object Label6: TLabel
+      Left = 222
+      Top = 136
+      Width = 43
+      Height = 13
+      Caption = 'Importe'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Transparent = True
+    end
+    object cxLabel1: TcxLabel
+      Left = 24
+      Top = 28
+      Caption = 'Secuencia'
+      ParentFont = False
+      Style.BorderStyle = ebsNone
+      Style.Font.Charset = DEFAULT_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -11
+      Style.Font.Name = 'MS Sans Serif'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
+      Transparent = True
+    end
+    object cxLabel9: TcxLabel
+      Left = 24
+      Top = 76
+      Caption = 'Despachador'
+      Style.BorderStyle = ebsNone
+      Style.LookAndFeel.Kind = lfUltraFlat
+      StyleDisabled.LookAndFeel.Kind = lfUltraFlat
+      StyleFocused.LookAndFeel.Kind = lfUltraFlat
+      StyleHot.LookAndFeel.Kind = lfUltraFlat
+      Transparent = True
+    end
+    object cbDespachador: TcxDBLookupComboBox
+      Left = 96
+      Top = 76
+      DataBinding.DataField = 'DespachadorID'
+      DataBinding.DataSource = dsDespachadorLiquidacion
+      Properties.KeyFieldNames = 'DespachadorID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'Nombre'
+        end>
+      Properties.ListSource = dsDespachador
+      Style.BorderStyle = ebsUltraFlat
+      TabOrder = 2
+      OnEnter = cbDespachadorEnter
+      OnExit = cbDespachadorExit
+      Width = 285
+    end
+    object cxLabel3: TcxLabel
+      Left = 24
+      Top = 52
+      Caption = 'Isla'
+      Style.BorderStyle = ebsNone
+      Style.LookAndFeel.Kind = lfUltraFlat
+      StyleDisabled.LookAndFeel.Kind = lfUltraFlat
+      StyleFocused.LookAndFeel.Kind = lfUltraFlat
+      StyleHot.LookAndFeel.Kind = lfUltraFlat
+      Transparent = True
+    end
+    object cbIsla: TcxLookupComboBox
+      Left = 96
+      Top = 52
+      Properties.KeyFieldNames = 'AgrupacionID'
+      Properties.ListColumns = <
+        item
+          FieldName = 'Nombre'
+        end>
+      Properties.ListSource = dsAgrupacion
+      Properties.OnChange = cbIslaPropertiesChange
+      Style.BorderStyle = ebsUltraFlat
+      TabOrder = 4
+      Width = 285
+    end
+    object edtSecuencia: TcxCurrencyEdit
+      Left = 96
+      Top = 27
+      Enabled = False
+      Properties.DecimalPlaces = 0
+      Properties.DisplayFormat = '#'
+      Properties.ReadOnly = True
+      TabOrder = 5
+      Width = 81
+    end
+    object cxLabel14: TcxLabel
+      Left = 232
+      Top = 28
+      Caption = 'Fecha'
+      Style.BorderStyle = ebsNone
+      Style.LookAndFeel.NativeStyle = False
+      StyleDisabled.LookAndFeel.NativeStyle = False
+      StyleFocused.LookAndFeel.NativeStyle = False
+      StyleHot.LookAndFeel.NativeStyle = False
+      Transparent = True
+    end
+    object dtpFecha: TcxDBDateEdit
+      Left = 272
+      Top = 27
+      DataBinding.DataField = 'Fecha'
+      DataBinding.DataSource = dsLiquidacion
+      Properties.ReadOnly = False
+      TabOrder = 7
+      Width = 109
+    end
+    object cxDBTextEdit4: TcxDBTextEdit
+      Left = 527
+      Top = 28
+      DataBinding.DataField = 'VentasTotales'
+      DataBinding.DataSource = dsLiquidacion
+      Properties.Alignment.Horz = taRightJustify
+      Properties.ReadOnly = True
+      TabOrder = 8
+      Width = 105
+    end
+    object cxDBTextEdit5: TcxDBTextEdit
+      Left = 527
+      Top = 53
+      DataBinding.DataField = 'Entregado'
+      DataBinding.DataSource = dsLiquidacion
+      Properties.Alignment.Horz = taRightJustify
+      Properties.ReadOnly = True
+      TabOrder = 9
+      Width = 105
+    end
+    object cxDBTextEdit6: TcxDBTextEdit
+      Left = 527
+      Top = 76
+      DataBinding.DataField = 'Diferencia'
+      DataBinding.DataSource = dsLiquidacion
+      Properties.Alignment.Horz = taRightJustify
+      Properties.ReadOnly = True
+      TabOrder = 10
+      Width = 105
+    end
+    object cxImprimeParcial: TcxButton
+      Left = 634
+      Top = 28
+      Width = 108
+      Height = 25
+      Caption = 'Imprime Parcial'
+      TabOrder = 11
+      OnClick = cxImprimeParcialClick
+      Glyph.Data = {
+        36040000424D3604000000000000360000002800000010000000100000000100
+        2000000000000004000000000000000000000000000000000000FF00FF00FF00
+        FF00FF00FF00FF00FF006C6A6A006C6A6A00FF00FF00FF00FF006C6A6A006C6A
+        6A00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF00FF00FF006C6A6A00AAA7A700A19F9F006C6A6A006C6A6A006C6A6A00E5E3
+        E3006C6A6A006C6A6A006C6A6A00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF006C6A6A00DAD9D900A19F9F00A19F9F00A19F9F0037363600353535006C6D
+        6D00BFBFBF00E1E2E200B7B6B6006C6A6A006C6A6A006C6A6A00FF00FF006C6A
+        6A00D4D3D300CACACA008E8C8C008E8C8C008E8C8C003C3B3B000A090A000707
+        07000B0B0B00070707007A7A7A00BBBBBB006C6A6A00FF00FF006C6A6A00CACA
+        CA00CACACA008E8C8C00D7D4D400CECBCB00BFBCBC00B1AFAF00A3A0A0008886
+        86005E5B5C000707070009090900080808006C6A6A00767373006C6A6A00CACA
+        CA008E8C8C00EFEEEE00FFFEFE00FBFAFA00E3E0E100DEDEDE00DEDDDD00CFCE
+        CE00BDBCBC00ADABAB008B898900585656007A787800757373006C6A6A008E8C
+        8C00FFFFFF00FEFCFC00FAFAFA00D5D4D50098919300A0989900B2ABAC00C4C0
+        C100D7D7D700D8D8D800C7C6C600B7B6B600918F8F006C696900FF00FF006C6A
+        6A006C6A6A00EDEBEB00B1A6A7007A6F72008A83880096929500969091009D97
+        98009A9395009E989900BBBABA00D1D1D100C2C2C2006C6A6A00FF00FF00FF00
+        FF00FF00FF006C6A6A00BB897F00A7876D008B6F64007D6760006F6265007973
+        79008F8B8E00A9A3A400CBCACA00C1C1C1006C6A6A00FF00FF00FF00FF00FF00
+        FF00FF00FF00FF00FF00BD828100FFE3B400FFD39F00E9B28100C9997300BA91
+        6C00BD828100807D7E006C6A6A006C6A6A00FF00FF00FF00FF00FF00FF00FF00
+        FF00FF00FF00FF00FF00BD828100FFE0B800FFD3A700FFD09D00FFCE9000FFC6
+        8800BD828100FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF00FF00FF00C0868300FFE7CF00FFE0C000FFD9B200FFD3A500FFD09900BD82
+        8100FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF00FF00FF00BD828100FEEBD800FFE6CC00FFDEBD00FFD8B100FED3A400BD82
+        8100FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF00BD828100FFFFF200FFFFF200FFEBD800FFE5CA00FFE1BD00F3C7A700BD82
+        8100FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF00BD828100BD828100BD828100FBEFE200FBE3CF00FBDDC200BD828100FF00
+        FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00
+        FF00FF00FF00FF00FF00FF00FF00BD828100BD828100BD828100FF00FF00FF00
+        FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00}
+      LookAndFeel.Kind = lfOffice11
+      LookAndFeel.NativeStyle = False
+    end
+    object lbSecuenciaCistemGas: TcxLabel
+      Left = 748
+      Top = 24
+      Caption = 'La secuencia en el CistemGas no esta cerrada !!'
+      ParentFont = False
+      Style.Font.Charset = ANSI_CHARSET
+      Style.Font.Color = clWindowText
+      Style.Font.Height = -19
+      Style.Font.Name = 'Calibri'
+      Style.Font.Style = [fsBold]
+      Style.IsFontAssigned = True
+      Properties.WordWrap = True
+      Transparent = True
+      Visible = False
+      Width = 218
+    end
+    object edtVehiculo: TcxButtonEdit
+      Left = 96
+      Top = 133
+      Enabled = False
+      Properties.Buttons = <
+        item
+          Default = True
+          Kind = bkEllipsis
+        end>
+      Properties.OnButtonClick = edtVehiculoPropertiesButtonClick
+      TabOrder = 13
+      OnExit = edtVehiculoExit
+      OnKeyDown = edtVehiculoKeyDown
+      Width = 105
+    end
+    object edtLeeCupon: TcxTextEdit
+      Left = 96
+      Top = 103
+      Enabled = False
+      TabOrder = 14
+      OnExit = edtLeeCuponExit
+      Width = 285
+    end
+    object txtImporte: TcxTextEdit
+      Left = 271
+      Top = 133
+      Enabled = False
+      TabOrder = 15
+      OnExit = txtImporteExit
+      Width = 110
+    end
+    object btnAceptar: TcxButton
+      Left = 383
+      Top = 131
+      Width = 26
+      Height = 25
+      Enabled = False
+      TabOrder = 16
+      OnClick = btnAceptarClick
+      Glyph.Data = {
+        36050000424D3605000000000000360400002800000010000000100000000100
+        0800000000000001000000000000000000000001000000000000FF00FF00004B
+        0000098611000A8615000D931A000C9518000C9C19000F991C000E9D1D001392
+        240011A0210011A422001CA134001CB1350024BC430029B548002EC6520035CA
+        5E0039D465000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000001
+        0100000000000000000000000000010808010000000000000000000000010D0B
+        080B0100000000000000000001100E0901040801000000000000000111120C01
+        000103080100000000000000010F010000000001040100000000000000010000
+        0000000001030100000000000000000000000000000001010000000000000000
+        0000000000000001010000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+    end
+    object cxButton2: TcxButton
+      Left = 392
+      Top = 101
+      Width = 240
+      Height = 25
+      Caption = 'Actualiza Historial de Inventarios'
+      TabOrder = 17
+      Visible = False
+      OnClick = cxButton2Click
+      Glyph.Data = {
+        36050000424D3605000000000000360400002800000010000000100000000100
+        0800000000000001000000000000000000000001000000000000FF00FF00004B
+        0000098611000A8615000D931A000C9518000C9C19000F991C000E9D1D001392
+        240011A0210011A422001CA134001CB1350024BC430029B548002EC6520035CA
+        5E0039D465000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000001
+        0100000000000000000000000000010808010000000000000000000000010D0B
+        080B0100000000000000000001100E0901040801000000000000000111120C01
+        000103080100000000000000010F010000000001040100000000000000010000
+        0000000001030100000000000000000000000000000001010000000000000000
+        0000000000000001010000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000}
+    end
+  end
+  object pgcLiquidacion: TcxPageControl
+    Left = 0
+    Top = 171
+    Width = 985
+    Height = 289
+    ActivePage = Totales
+    Align = alClient
+    Images = dmImages.Imagenes
+    TabOrder = 1
+    TabPosition = tpBottom
+    OnPageChanging = pgcLiquidacionPageChanging
+    ClientRectBottom = 259
+    ClientRectLeft = 3
+    ClientRectRight = 979
+    ClientRectTop = 3
+    object Totales: TcxTabSheet
+      Caption = 'Totales'
+      ImageIndex = 84
+      object cxGroupBox4: TcxGroupBox
+        Left = 0
+        Top = 0
+        Align = alClient
+        Caption = ' Totales '
+        TabOrder = 0
+        Height = 256
+        Width = 976
+        object Bevel1: TBevel
+          Left = 24
+          Top = 176
+          Width = 240
+          Height = 14
+          Shape = bsTopLine
+        end
+        object Bevel2: TBevel
+          Left = 392
+          Top = 104
+          Width = 240
+          Height = 14
+          Shape = bsTopLine
+        end
+        object Bevel3: TBevel
+          Left = 330
+          Top = 23
+          Width = 15
+          Height = 186
+          Shape = bsLeftLine
+        end
+        object cxLabel12: TcxLabel
+          Left = 392
+          Top = 120
+          Caption = 'Ventas'
+          ParentFont = False
+          Style.BorderStyle = ebsNone
+          Style.Font.Charset = ANSI_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -16
+          Style.Font.Name = 'Verdana'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
+          Properties.WordWrap = True
+          Transparent = True
+          Width = 65
+        end
+        object cxDBTextEdit1: TcxDBTextEdit
+          Left = 512
+          Top = 120
+          TabStop = False
+          DataBinding.DataField = 'Importe'
+          DataBinding.DataSource = dsDespachadorLiquidacion
+          ParentFont = False
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -16
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
+          TabOrder = 1
+          Width = 117
+        end
+        object cxDBTextEdit2: TcxDBTextEdit
+          Left = 136
+          Top = 192
+          TabStop = False
+          DataBinding.DataField = 'Entregado'
+          DataBinding.DataSource = dsDespachadorLiquidacion
+          ParentFont = False
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -16
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
+          TabOrder = 2
+          Width = 119
+        end
+        object edtEfectivo: TcxCurrencyEdit
+          Left = 152
+          Top = 24
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 3
+          Width = 97
+        end
+        object edtCheques: TcxCurrencyEdit
+          Left = 152
+          Top = 72
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 4
+          Width = 97
+        end
+        object edtClientes: TcxCurrencyEdit
+          Left = 152
+          Top = 48
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 5
+          Width = 97
+        end
+        object edtTarjetasYCupones: TcxCurrencyEdit
+          Left = 152
+          Top = 96
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 6
+          Width = 97
+        end
+        object edtOtros: TcxCurrencyEdit
+          Left = 152
+          Top = 120
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 7
+          Width = 97
+        end
+        object cxLabel2: TcxLabel
+          Left = 32
+          Top = 24
+          Caption = 'Efectivo'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel4: TcxLabel
+          Left = 32
+          Top = 72
+          Caption = 'Cheques'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel5: TcxLabel
+          Left = 32
+          Top = 48
+          Caption = 'Clientes'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel7: TcxLabel
+          Left = 32
+          Top = 120
+          Caption = 'Otros'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel6: TcxLabel
+          Left = 32
+          Top = 96
+          Caption = 'Tarjetas y Cupones'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object cxLabel10: TcxLabel
+          Left = 24
+          Top = 192
+          Caption = 'Entregado'
+          ParentFont = False
+          Style.BorderStyle = ebsNone
+          Style.Font.Charset = ANSI_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -16
+          Style.Font.Name = 'Verdana'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
+          Properties.WordWrap = True
+          Transparent = True
+          Width = 96
+        end
+        object cxLabel11: TcxLabel
+          Left = 400
+          Top = 24
+          Caption = 'Combustible'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object edtCombustibles: TcxCurrencyEdit
+          Left = 528
+          Top = 24
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 15
+          Width = 97
+        end
+        object cxLabel13: TcxLabel
+          Left = 400
+          Top = 48
+          Caption = 'Otros Productos'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object edtOtrosProductos: TcxCurrencyEdit
+          Left = 528
+          Top = 48
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 17
+          Width = 97
+        end
+        object cxGroupBox2: TcxGroupBox
+          Left = 435
+          Top = 159
+          Caption = ' Diferencia '
+          TabOrder = 18
+          Height = 66
+          Width = 157
+          object cxDBTextEdit3: TcxDBTextEdit
+            Left = 19
+            Top = 29
+            TabStop = False
+            DataBinding.DataField = 'Diferencia'
+            DataBinding.DataSource = dsDespachadorLiquidacion
+            ParentFont = False
+            Properties.Alignment.Horz = taRightJustify
+            Properties.ReadOnly = True
+            Style.Font.Charset = DEFAULT_CHARSET
+            Style.Font.Color = clWindowText
+            Style.Font.Height = -16
+            Style.Font.Name = 'MS Sans Serif'
+            Style.Font.Style = [fsBold]
+            Style.IsFontAssigned = True
+            TabOrder = 0
+            Width = 117
+          end
+        end
+        object cxLabel8: TcxLabel
+          Left = 400
+          Top = 72
+          Caption = 'Sobrantes'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object edtSobrantes: TcxCurrencyEdit
+          Left = 528
+          Top = 72
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 20
+          Width = 97
+        end
+        object cxLabel15: TcxLabel
+          Left = 32
+          Top = 146
+          Caption = 'Faltantes'
+          Style.BorderStyle = ebsNone
+          Transparent = True
+        end
+        object edtFaltantes: TcxCurrencyEdit
+          Left = 152
+          Top = 144
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 22
+          Width = 97
+        end
+      end
+    end
+    object Efectivo: TcxTabSheet
+      Caption = 'Efectivo'
+      ImageIndex = 26
+      object dbgEfectivo: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgEfectivoDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '#,,###,##0.00'
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = dbgEfectivoDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          NewItemRow.Visible = True
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsSelection.CellSelect = False
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object dbgEfectivoDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 187
+          end
+          object dbgEfectivoDBTableView1Cantidad: TcxGridDBColumn
+            DataBinding.FieldName = 'Cantidad'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.DisplayFormat = '#,#0.00'
+            Width = 118
+          end
+          object dbgEfectivoDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Options.Editing = False
+            Options.Focusing = False
+            Width = 107
+          end
+        end
+        object dbgEfectivoLevel1: TcxGridLevel
+          GridView = dbgEfectivoDBTableView1
+        end
+      end
+    end
+    object Clientes: TcxTabSheet
+      Caption = 'Clientes'
+      ImageIndex = 20
+      object dbgClientes: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgClientesDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnEditKeyDown = dbgClientesDBTableView1EditKeyDown
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = dbgClientesDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          NewItemRow.Visible = True
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object dbgClientesDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 126
+          end
+          object dbgClientesDBTableView1ClienteID: TcxGridDBColumn
+            Caption = 'Cliente'
+            DataBinding.FieldName = 'ClienteID'
+          end
+          object dbgClientesDBTableView1Column2: TcxGridDBColumn
+            DataBinding.FieldName = 'Ticket'
+            Width = 74
+          end
+          object dbgClientesDBTableView1Column1: TcxGridDBColumn
+            Caption = 'Nombre del Cliente'
+            DataBinding.FieldName = 'ClienteID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'ClienteID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsClientes
+            Properties.ReadOnly = True
+            Options.Editing = False
+            Options.Focusing = False
+            Width = 231
+          end
+          object dbgClientesDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Properties.OnValidate = dbgClientesDBTableView1ImportePropertiesValidate
+            Width = 104
+          end
+        end
+        object dbgClientesLevel1: TcxGridLevel
+          GridView = dbgClientesDBTableView1
+        end
+      end
+    end
+    object Cheques: TcxTabSheet
+      Caption = 'Cheques'
+      ImageIndex = 23
+      object dbgCheques: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgChequesDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnEditKeyDown = dbgClientesDBTableView1EditKeyDown
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '#,,###,##0.00'
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = dbgChequesDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          NewItemRow.Visible = True
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object dbgChequesDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 108
+          end
+          object dbgChequesDBTableView1ClienteID: TcxGridDBColumn
+            Caption = 'Cliente'
+            DataBinding.FieldName = 'ClienteID'
+            Width = 69
+          end
+          object dbgChequesDBTableView1Column1: TcxGridDBColumn
+            Caption = 'Nombre del Cliente'
+            DataBinding.FieldName = 'ClienteID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'ClienteID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsClientes
+            Properties.ReadOnly = True
+            Options.Focusing = False
+            Width = 216
+          end
+          object dbgChequesDBTableView1BancoID: TcxGridDBColumn
+            Caption = 'Banco'
+            DataBinding.FieldName = 'BancoID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'BancoID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsBanco
+            Width = 136
+          end
+          object dbgChequesDBTableView1Referencia: TcxGridDBColumn
+            DataBinding.FieldName = 'Referencia'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.CharCase = ecUpperCase
+            Width = 204
+          end
+          object dbgChequesDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Width = 98
+          end
+        end
+        object cxGridLevel1: TcxGridLevel
+          GridView = dbgChequesDBTableView1
+        end
+      end
+    end
+    object TarjetasyCupones: TcxTabSheet
+      Caption = 'Tarjetas y Cupones'
+      ImageIndex = 83
+      object dbgTarjetasYCupones: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgTarjetasYCuponesDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = dbgTarjetasYCuponesDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object dbgTarjetasYCuponesDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 139
+          end
+          object dbgTarjetasYCuponesDBTableView1CuponID: TcxGridDBColumn
+            Caption = 'Cupon / Tarjeta'
+            DataBinding.FieldName = 'Referencia'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.OnValidate = dbgTarjetasYCuponesDBTableView1CuponIDPropertiesValidate
+            Width = 219
+          end
+          object dbgTarjetasYCuponesDBTableView1Ticket: TcxGridDBColumn
+            DataBinding.FieldName = 'Ticket'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.OnValidate = cxGrid4DBTableView1TicketPropertiesValidate
+            Width = 114
+          end
+          object dbgTarjetasYCuponesDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            Options.Editing = False
+            Width = 150
+          end
+        end
+        object dbgTarjetasYCuponesLevel1: TcxGridLevel
+          GridView = dbgTarjetasYCuponesDBTableView1
+        end
+      end
+    end
+    object Otros: TcxTabSheet
+      Caption = 'Otros'
+      ImageIndex = 11
+      object dbgOtros: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgOtrosDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = dbgOtrosDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          NewItemRow.Visible = True
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object dbgOtrosDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 145
+          end
+          object dbgOtrosDBTableView1Ticket: TcxGridDBColumn
+            DataBinding.FieldName = 'Ticket'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.ValidateOnEnter = True
+            Properties.OnValidate = cxGrid4DBTableView1TicketPropertiesValidate
+            Width = 93
+          end
+          object dbgOtrosDBTableView1SalidaID: TcxGridDBColumn
+            Caption = 'Salida'
+            DataBinding.FieldName = 'SalidaID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'SalidaID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsSalida
+            Width = 154
+          end
+          object dbgOtrosDBTableView1ProductoID: TcxGridDBColumn
+            Caption = 'Producto'
+            DataBinding.FieldName = 'ProductoID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'ProductoID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end
+              item
+                FieldName = 'ProductoID'
+              end>
+            Properties.ListSource = dsProducto
+            Width = 128
+          end
+          object dbgOtrosDBTableView1Referencia: TcxGridDBColumn
+            DataBinding.FieldName = 'Referencia'
+            PropertiesClassName = 'TcxTextEditProperties'
+            Properties.CharCase = ecUpperCase
+            Width = 208
+          end
+          object dbgOtrosDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            Width = 80
+          end
+        end
+        object dbgOtrosLevel1: TcxGridLevel
+          GridView = dbgOtrosDBTableView1
+        end
+      end
+    end
+    object Aceites: TcxTabSheet
+      Caption = 'Productos'
+      ImageIndex = 19
+      object dbgProductos: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgProductosDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnEditKeyDown = dbgProductosDBTableView1EditKeyDown
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '#,,###,##0.00'
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = dbgProductosDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          NewItemRow.Visible = True
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object dbgProductosDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.ImmediatePost = True
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 135
+          end
+          object dbgProductosDBTableView1ProductoID: TcxGridDBColumn
+            Caption = 'Producto'
+            DataBinding.FieldName = 'ProductoID'
+            Width = 81
+          end
+          object dbgProductosDBTableView1Column1: TcxGridDBColumn
+            Caption = 'Nombre del Producto'
+            DataBinding.FieldName = 'ProductoID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'ProductoID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsProducto
+            Options.Editing = False
+            Options.Focusing = False
+            Width = 227
+          end
+          object dbgProductosDBTableView1Cantidad: TcxGridDBColumn
+            DataBinding.FieldName = 'Cantidad'
+            Width = 96
+          end
+          object dbgProductosDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            Options.Editing = False
+            Options.Focusing = False
+            Width = 122
+          end
+        end
+        object cxGridLevel2: TcxGridLevel
+          GridView = dbgProductosDBTableView1
+        end
+      end
+    end
+    object Combustible: TcxTabSheet
+      Caption = 'Combustible'
+      ImageIndex = 62
+      object dbgCombustible: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgCombustibleDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = dbgCombustibleDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object dbgCombustibleDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Producto'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 182
+          end
+          object dbgCombustibleDBTableView1Cantidad: TcxGridDBColumn
+            DataBinding.FieldName = 'Cantidad'
+            Width = 134
+          end
+          object dbgCombustibleDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            Width = 139
+          end
+        end
+        object dbgCombustibleLevel1: TcxGridLevel
+          GridView = dbgCombustibleDBTableView1
+        end
+      end
+    end
+    object Diferencias: TcxTabSheet
+      Caption = 'Diferencias'
+      ImageIndex = 41
+      object dbgDiferencias: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object dbgDiferenciasDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          DataController.DataSource = dsLiquidacionDetalle
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              Column = cxGridDBColumn3
+            end>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsData.Editing = False
+          OptionsData.Inserting = False
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object cxGridDBColumn1: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 182
+          end
+          object cxGridDBColumn3: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            Width = 139
+          end
+        end
+        object cxGridLevel3: TcxGridLevel
+          GridView = dbgDiferenciasDBTableView1
+        end
+      end
+    end
+    object Depositos: TcxTabSheet
+      Caption = 'Depositos'
+      ImageIndex = 64
+      object cxGrid1: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 439
+        Height = 256
+        Align = alLeft
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object cxGridDBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionDepositos
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+              FieldName = 'Importe'
+              Column = cxGridDBTableView1Importe
+            end>
+          DataController.Summary.SummaryGroups = <>
+          NewItemRow.Visible = True
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsSelection.CellSelect = False
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object cxGridDBTableView1TipoValorID: TcxGridDBColumn
+            Caption = 'Tipo'
+            DataBinding.FieldName = 'TipoValorID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValor
+            Width = 78
+          end
+          object cxGridDBTableView1TipoValorDepositoID: TcxGridDBColumn
+            Caption = 'Deposito'
+            DataBinding.FieldName = 'TipoValorDepositoID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'TipoValorID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTipoValorDocumentos
+            Width = 144
+          end
+          object cxGridDBTableView1Cantidad: TcxGridDBColumn
+            DataBinding.FieldName = 'Cantidad'
+            PropertiesClassName = 'TcxCurrencyEditProperties'
+            Width = 102
+          end
+          object cxGridDBTableView1Importe: TcxGridDBColumn
+            DataBinding.FieldName = 'Importe'
+            Options.Focusing = False
+            Width = 101
+          end
+          object cxGridDBTableView1BancoID: TcxGridDBColumn
+            DataBinding.FieldName = 'BancoID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'BancoID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsBanco
+            Width = 157
+          end
+        end
+        object cxGridLevel4: TcxGridLevel
+          GridView = cxGridDBTableView1
+        end
+      end
+      object cxGroupBox3: TcxGroupBox
+        Left = 670
+        Top = 0
+        Caption = ' Notas'
+        Style.TransparentBorder = True
+        TabOrder = 1
+        Height = 216
+        Width = 265
+        object cxDBMemo1: TcxDBMemo
+          Left = 11
+          Top = 23
+          DataBinding.DataField = 'Nota'
+          DataBinding.DataSource = dsLiquidacionDepositoNota
+          Properties.WantReturns = False
+          TabOrder = 0
+          Height = 177
+          Width = 242
+        end
+      end
+      object grbMPV: TcxGroupBox
+        Left = 456
+        Top = 135
+        Caption = ' '
+        Enabled = False
+        TabOrder = 2
+        Height = 64
+        Width = 196
+        object cxDBMaskEdit1: TcxDBMaskEdit
+          Left = 73
+          Top = 23
+          DataBinding.DataField = 'Importe'
+          DataBinding.DataSource = dsLiquidacionDocumento
+          Properties.Alignment.Horz = taRightJustify
+          Properties.EditMask = '$,0.00;-$,0.00'
+          Properties.MaxLength = 0
+          Properties.ReadOnly = True
+          TabOrder = 0
+          Width = 112
+        end
+        object cxLabel16: TcxLabel
+          Left = 16
+          Top = 24
+          Caption = 'MPV'
+          Transparent = True
+        end
+      end
+      object cxGroupBox6: TcxGroupBox
+        Left = 456
+        Top = 0
+        Caption = ' Entregado'
+        Enabled = False
+        TabOrder = 3
+        Height = 121
+        Width = 196
+        object cxLabel17: TcxLabel
+          Left = 16
+          Top = 24
+          Caption = 'Pesos'
+          Transparent = True
+        end
+        object cxLabel18: TcxLabel
+          Left = 16
+          Top = 52
+          Caption = 'Dolares'
+          Transparent = True
+        end
+        object cxLabel19: TcxLabel
+          Left = 16
+          Top = 79
+          Caption = 'Total'
+          ParentFont = False
+          Style.Font.Charset = DEFAULT_CHARSET
+          Style.Font.Color = clWindowText
+          Style.Font.Height = -11
+          Style.Font.Name = 'MS Sans Serif'
+          Style.Font.Style = [fsBold]
+          Style.IsFontAssigned = True
+          Transparent = True
+        end
+        object edtDPesos: TcxCurrencyEdit
+          Left = 63
+          Top = 23
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 3
+          Width = 122
+        end
+        object edtDTotal: TcxCurrencyEdit
+          Left = 63
+          Top = 78
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 4
+          Width = 122
+        end
+        object edtDDolar: TcxCurrencyEdit
+          Left = 63
+          Top = 51
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.DisplayFormat = ',0.00;-,0.00'
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 5
+          Width = 49
+        end
+        object edtDDolares: TcxCurrencyEdit
+          Left = 119
+          Top = 51
+          TabStop = False
+          EditValue = '0'
+          Properties.Alignment.Horz = taRightJustify
+          Properties.ReadOnly = True
+          Style.BorderStyle = ebsUltraFlat
+          TabOrder = 6
+          Width = 66
+        end
+        object cxGroupBox7: TcxGroupBox
+          Left = 8
+          Top = 105
+          TabOrder = 7
+          Height = 3
+          Width = 180
+        end
+      end
+    end
+    object Inventarios: TcxTabSheet
+      Caption = 'Inventarios'
+      ImageIndex = 13
+      object cxGrid2: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        OnEnter = dbgOtrosEnter
+        OnExit = dbgOtrosExit
+        LookAndFeel.NativeStyle = False
+        object cxGridDBTableView2: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          OnFocusedRecordChanged = dbgEfectivoDBTableView1FocusedRecordChanged
+          DataController.DataSource = dsLiquidacionInventario
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <
+            item
+              Format = '#,,###,##0.00'
+              Kind = skSum
+            end
+            item
+              Format = '$#,#0.00'
+              Kind = skSum
+            end>
+          DataController.Summary.SummaryGroups = <>
+          NewItemRow.Visible = True
+          OptionsBehavior.AlwaysShowEditor = True
+          OptionsBehavior.FocusCellOnTab = True
+          OptionsBehavior.FocusFirstCellOnNewRecord = True
+          OptionsBehavior.GoToNextCellOnEnter = True
+          OptionsBehavior.FocusCellOnCycle = True
+          OptionsSelection.CellSelect = False
+          OptionsView.Footer = True
+          OptionsView.GroupByBox = False
+          OptionsView.Indicator = True
+          object cxGridDBTableView2AgrupacionTanqueID: TcxGridDBColumn
+            Caption = 'Tanque'
+            DataBinding.FieldName = 'AgrupacionTanqueID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'AgrupacionTanqueID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = dsTanquePorEstacion
+            Width = 128
+          end
+          object cxGridDBTableView2Lectura: TcxGridDBColumn
+            DataBinding.FieldName = 'Lectura'
+            Width = 180
+          end
+        end
+        object cxGridLevel5: TcxGridLevel
+          GridView = cxGridDBTableView2
+        end
+      end
+      object cxButton1: TcxButton
+        Left = 344
+        Top = 17
+        Width = 89
+        Height = 25
+        Caption = 'Traer Lecturas'
+        TabOrder = 1
+        OnClick = cxButton1Click
+      end
+    end
+    object Carretes: TcxTabSheet
+      Caption = 'Carretes'
+      ImageIndex = 72
+      object cxGrid5: TcxGrid
+        Left = 0
+        Top = 0
+        Width = 976
+        Height = 256
+        Align = alClient
+        TabOrder = 0
+        object cxGrid5DBTableView1: TcxGridDBTableView
+          NavigatorButtons.ConfirmDelete = False
+          DataController.DataSource = dsLiquidacionCarrete
+          DataController.Summary.DefaultGroupSummaryItems = <>
+          DataController.Summary.FooterSummaryItems = <>
+          DataController.Summary.SummaryGroups = <>
+          OptionsData.Deleting = False
+          OptionsView.GroupByBox = False
+          object cxGrid5DBTableView1BombaID: TcxGridDBColumn
+            Caption = 'Bomba'
+            DataBinding.FieldName = 'BombaID'
+            Options.Editing = False
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Options.FilteringMRUItemsList = False
+            Options.FilteringPopup = False
+            Options.FilteringPopupMultiSelect = False
+            Width = 65
+          end
+          object cxGrid5DBTableView1MangueraID: TcxGridDBColumn
+            Caption = 'Manguera'
+            DataBinding.FieldName = 'MangueraID'
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Options.FilteringMRUItemsList = False
+            Options.FilteringPopup = False
+            Options.FilteringPopupMultiSelect = False
+            Width = 71
+          end
+          object cxGrid5DBTableView1ProductoID: TcxGridDBColumn
+            Caption = 'Producto'
+            DataBinding.FieldName = 'ProductoID'
+            PropertiesClassName = 'TcxLookupComboBoxProperties'
+            Properties.KeyFieldNames = 'ProductoID'
+            Properties.ListColumns = <
+              item
+                FieldName = 'Nombre'
+              end>
+            Properties.ListSource = DADataSource2
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Options.FilteringMRUItemsList = False
+            Options.FilteringPopup = False
+            Options.FilteringPopupMultiSelect = False
+            Width = 82
+          end
+          object cxGrid5DBTableView1LecturaInicial: TcxGridDBColumn
+            Caption = 'Lectura Inicial'
+            DataBinding.FieldName = 'LecturaInicial'
+            Options.Editing = False
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Options.FilteringMRUItemsList = False
+            Options.FilteringPopup = False
+            Options.FilteringPopupMultiSelect = False
+            Width = 96
+          end
+          object cxGrid5DBTableView1LecturaFinal: TcxGridDBColumn
+            Caption = 'Lectura Final'
+            DataBinding.FieldName = 'LecturaFinal'
+            Options.Filtering = False
+            Options.FilteringFilteredItemsList = False
+            Options.FilteringMRUItemsList = False
+            Options.FilteringPopup = False
+            Options.FilteringPopupMultiSelect = False
+            Width = 105
+          end
+        end
+        object cxGrid5Level1: TcxGridLevel
+          GridView = cxGrid5DBTableView1
+        end
+      end
+    end
+  end
+  object dsAgrupacion: TDADataSource
+    DataSet = cdsAgrupacion.Dataset
+    DataTable = cdsAgrupacion
+    Left = 160
+    Top = 400
+  end
+  object cdsAgrupacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'AgrupacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 70
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = ''
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'LIQAgrupacion2'
+    IndexDefs = <>
+    Left = 160
+    Top = 368
+  end
+  object dsTipoValor: TDADataSource
+    DataSet = cdsTipoValor.Dataset
+    DataTable = cdsTipoValor
+    Left = 128
+    Top = 400
+  end
+  object cdsTipoValor: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'TipoValorID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Codigo'
+        DataType = datString
+        Size = 5
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'Factor'
+        DataType = datFloat
+      end
+      item
+        Name = 'Operador'
+        DataType = datInteger
+      end
+      item
+        Name = 'CuentaContable'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'Grupo'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'GrupoCierre'
+        DataType = datString
+        Size = 50
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'LIQTipoValor2'
+    IndexDefs = <>
+    Left = 128
+    Top = 368
+  end
+  object dsLiquidacionDetalle: TDADataSource
+    DataSet = cdsLiquidacionDetalle.Dataset
+    DataTable = cdsLiquidacionDetalle
+    Left = 40
+    Top = 400
+  end
+  object cdsDespachador: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'DespachadorID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 50
+        Required = True
+      end
+      item
+        Name = 'Codigo'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Domicilio'
+        DataType = datString
+        Size = 80
+        Required = True
+      end
+      item
+        Name = 'Ciudad'
+        DataType = datString
+        Size = 30
+      end
+      item
+        Name = 'Telefono'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'Status'
+        DataType = datBoolean
+      end
+      item
+        Name = 'FechaAlta'
+        DataType = datDateTime
+        Required = True
+      end
+      item
+        Name = 'CuentaContable'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+        Required = True
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = ''
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo DespachadorPorEstacion'
+    IndexDefs = <>
+    Left = 248
+    Top = 368
+  end
+  object dsDespachador: TDADataSource
+    DataSet = cdsDespachador.Dataset
+    DataTable = cdsDespachador
+    Left = 248
+    Top = 400
+  end
+  object dsLiquidacion: TDADataSource
+    DataSet = cdsLiquidacion.Dataset
+    OnStateChange = dsLiquidacionStateChange
+    DataTable = cdsLiquidacion
+    Left = 8
+    Top = 400
+  end
+  object dsClientes: TDADataSource
+    DataSet = cdsClientes.Dataset
+    DataTable = cdsClientes
+    Left = 344
+    Top = 400
+  end
+  object cdsClientes: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ClienteID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 80
+      end
+      item
+        Name = 'Credito'
+        DataType = datBoolean
+      end
+      item
+        Name = 'AutorizaCheque'
+        DataType = datBoolean
+      end
+      item
+        Name = 'AutorizaValeCredito'
+        DataType = datBoolean
+      end
+      item
+        Name = 'TicketBoucher'
+        DataType = datBoolean
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'ClientesLiquidacion'
+    IndexDefs = <>
+    Left = 344
+    Top = 368
+  end
+  object dsProducto: TDADataSource
+    DataSet = cdsProducto.Dataset
+    DataTable = cdsProducto
+    Left = 280
+    Top = 400
+  end
+  object cdsProducto: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Codigo'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 150
+      end
+      item
+        Name = 'PrecioVenta'
+        DataType = datFloat
+      end
+      item
+        Name = 'ClavePemex'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Costo'
+        DataType = datFloat
+      end
+      item
+        Name = 'Status'
+        DataType = datBoolean
+      end
+      item
+        Name = 'Barras'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'CuentaContableCompra'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'CuentaContableVenta'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'Inventariable'
+        DataType = datBoolean
+      end
+      item
+        Name = 'CostoPromedio'
+        DataType = datFloat
+      end
+      item
+        Name = 'CategoriaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'IEPS'
+        DataType = datFloat
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = '1'
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'spProducto'
+    IndexDefs = <>
+    Left = 280
+    Top = 368
+  end
+  object dsSalida: TDADataSource
+    DataSet = cdsSalida.Dataset
+    DataTable = cdsSalida
+    Left = 312
+    Top = 400
+  end
+  object cdsSalida: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'SalidaID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 40
+        Required = True
+      end
+      item
+        Name = 'ConceptoSalidaID'
+        DataType = datInteger
+        Required = True
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo Salida'
+    IndexDefs = <>
+    Left = 312
+    Top = 368
+  end
+  object cdsDespachadorLiquidacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'DespachadorLiquidacionID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'DespachadorID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+        DisplayFormat = '$#,#0.00'
+      end
+      item
+        Name = 'Entregado'
+        DataType = datFloat
+        DisplayFormat = '$#,#0.00'
+      end
+      item
+        Name = 'Diferencia'
+        DataType = datFloat
+        DisplayFormat = '$#,#0.00'
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'AgrupacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'PagareID'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = ''
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    AfterScroll = cdsDespachadorLiquidacionAfterScroll
+    LogicalName = 'LIQDespachadorLiquidacion2'
+    IndexDefs = <>
+    Left = 72
+    Top = 368
+  end
+  object dsDespachadorLiquidacion: TDADataSource
+    DataSet = cdsDespachadorLiquidacion.Dataset
+    OnStateChange = dsDespachadorLiquidacionStateChange
+    DataTable = cdsDespachadorLiquidacion
+    Left = 72
+    Top = 400
+  end
+  object cdsAgrupacionBomba: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'AgrupacionID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = '4120'
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'LIQAgrupacionBomba2'
+    IndexDefs = <>
+    Left = 192
+    Top = 368
+  end
+  object dsAgrupacionBomba: TDADataSource
+    DataSet = cdsAgrupacionBomba.Dataset
+    DataTable = cdsAgrupacionBomba
+    Left = 192
+    Top = 400
+  end
+  object cdsLiquidacionDetalle: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'DetalleLiquidacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Cantidad'
+        DataType = datFloat
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+      end
+      item
+        Name = 'Serie'
+        DataType = datString
+        Size = 5
+      end
+      item
+        Name = 'Referencia'
+        DataType = datString
+        Size = 70
+      end
+      item
+        Name = 'Ticket'
+        DataType = datInteger
+      end
+      item
+        Name = 'CuponID'
+        DataType = datInteger
+      end
+      item
+        Name = 'SalidaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'ClienteID'
+        DataType = datInteger
+        OnValidate = cdsLiquidacionDetalleClienteIDValidate
+      end
+      item
+        Name = 'BancoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'AuxiliarID'
+        DataType = datInteger
+      end
+      item
+        Name = 'DespachadorLiquidacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'TipoValorID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Grupo'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'Operador'
+        DataType = datInteger
+      end
+      item
+        Name = 'Factor'
+        DataType = datFloat
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+        OnValidate = cdsLiquidacionDetalleProductoIDValidate
+      end
+      item
+        Name = 'Facturado'
+        DataType = datBoolean
+      end
+      item
+        Name = 'VehiculoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'GasolineroID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Costo'
+        DataType = datFloat
+      end
+      item
+        Name = 'Puntos'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = '1'
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    BeforeInsert = cdsLiquidacionDetalleBeforeInsert
+    BeforePost = cdsLiquidacionDetalleBeforePost
+    AfterPost = cdsLiquidacionDetalleAfterPost
+    BeforeDelete = cdsLiquidacionDetalleBeforeDelete
+    AfterDelete = cdsLiquidacionDetalleAfterDelete
+    OnNewRecord = cdsLiquidacionDetalleNewRecord
+    LogicalName = 'LIQDetalleLiquidacion2'
+    IndexDefs = <>
+    Left = 40
+    Top = 368
+  end
+  object cdsLiquidacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Fecha'
+        DataType = datDateTime
+      end
+      item
+        Name = 'Ejercicio'
+        DataType = datInteger
+      end
+      item
+        Name = 'Periodo'
+        DataType = datInteger
+      end
+      item
+        Name = 'Dia'
+        DataType = datInteger
+      end
+      item
+        Name = 'VentasTotales'
+        DataType = datFloat
+      end
+      item
+        Name = 'Entregado'
+        DataType = datFloat
+      end
+      item
+        Name = 'Diferencia'
+        DataType = datFloat
+      end
+      item
+        Name = 'Cerrada'
+        DataType = datBoolean
+      end
+      item
+        Name = 'TurnoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Estatus'
+        DataType = datInteger
+      end
+      item
+        Name = 'UsuarioID'
+        DataType = datInteger
+      end
+      item
+        Name = 'FechaInicio'
+        DataType = datDateTime
+      end
+      item
+        Name = 'FechaFinal'
+        DataType = datDateTime
+      end>
+    Params = <
+      item
+        Name = 'TurnoID'
+        Value = '0'
+        ParamType = daptInput
+      end
+      item
+        Name = 'EstacionID'
+        Value = '0'
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    AfterScroll = cdsLiquidacionAfterScroll
+    LogicalName = 'LIQLiquidacion2'
+    IndexDefs = <>
+    Left = 8
+    Top = 368
+  end
+  object cdsBanco: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'BancoID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 50
+        Required = True
+      end
+      item
+        Name = 'Ejecutivo'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'Telefono'
+        DataType = datString
+        Size = 20
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo Banco'
+    IndexDefs = <>
+    Left = 376
+    Top = 368
+  end
+  object dsBanco: TDADataSource
+    DataSet = cdsBanco.Dataset
+    DataTable = cdsBanco
+    Left = 376
+    Top = 400
+  end
+  object cdsOtrosProductos: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Codigo'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 150
+      end
+      item
+        Name = 'PrecioVenta'
+        DataType = datFloat
+      end
+      item
+        Name = 'ClavePemex'
+        DataType = datString
+        Size = 10
+      end
+      item
+        Name = 'Costo'
+        DataType = datFloat
+      end
+      item
+        Name = 'Status'
+        DataType = datBoolean
+      end
+      item
+        Name = 'Barras'
+        DataType = datString
+        Size = 50
+      end
+      item
+        Name = 'CuentaContableCompra'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'CuentaContableVenta'
+        DataType = datString
+        Size = 20
+      end
+      item
+        Name = 'Inventariable'
+        DataType = datBoolean
+      end
+      item
+        Name = 'CategoriaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Puntos'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'Tipo'
+        Value = '1'
+        ParamType = daptInput
+      end
+      item
+        Name = 'EstacionID'
+        Value = '4120'
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'ObtenerProductoPorTipo'
+    IndexDefs = <>
+    Left = 408
+    Top = 368
+  end
+  object dsOtrosProductos: TDADataSource
+    DataSet = cdsOtrosProductos.Dataset
+    DataTable = cdsOtrosProductos
+    Left = 408
+    Top = 400
+  end
+  object cdsLiquidacionDepositos: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionDepositosID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+      end
+      item
+        Name = 'TipoValorID'
+        DataType = datInteger
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'TipoValorDepositoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Cantidad'
+        DataType = datFloat
+      end
+      item
+        Name = 'BancoID'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = '120'
+        ParamType = daptInput
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    BeforePost = cdsLiquidacionDepositosBeforePost
+    AfterDelete = cdsLiquidacionDepositosAfterDelete
+    OnNewRecord = cdsLiquidacionDepositosNewRecord
+    LogicalName = 'LIQDepositos'
+    IndexDefs = <>
+    Left = 488
+    Top = 368
+  end
+  object dsLiquidacionDepositos: TDADataSource
+    DataSet = cdsLiquidacionDepositos.Dataset
+    OnStateChange = dsLiquidacionDepositosStateChange
+    DataTable = cdsLiquidacionDepositos
+    Left = 488
+    Top = 400
+  end
+  object cdsTipoValorDocumentos: TDAMemDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'TipoValorID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 20
+        Required = True
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'dbo TipoValorDepositos'
+    IndexDefs = <>
+    Left = 520
+    Top = 368
+  end
+  object dsTipoValorDocumentos: TDADataSource
+    DataSet = cdsTipoValorDocumentos.Dataset
+    OnStateChange = dsLiquidacionDepositosStateChange
+    DataTable = cdsTipoValorDocumentos
+    Left = 520
+    Top = 400
+  end
+  object cdsLiquidacionDocumento: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionDocumentoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+      end
+      item
+        Name = 'TipoValorID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Documento'
+        DataType = datFloat
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = '1'
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    AfterPost = cdsLiquidacionDocumentoAfterPost
+    OnNewRecord = cdsLiquidacionDocumentoNewRecord
+    LogicalName = 'dbo LiquidacionDocumento'
+    IndexDefs = <>
+    Left = 552
+    Top = 368
+  end
+  object dsLiquidacionDocumento: TDADataSource
+    DataSet = cdsLiquidacionDocumento.Dataset
+    OnStateChange = dsLiquidacionDepositosStateChange
+    DataTable = cdsLiquidacionDocumento
+    Left = 552
+    Top = 400
+  end
+  object cdsLiquidacionEfectivo: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionEfectivoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'DespachadorLiquidacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'TipoValorID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Cantidad'
+        DataType = datFloat
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+      end
+      item
+        Name = 'Fecha'
+        DataType = datDateTime
+      end
+      item
+        Name = 'DetalleLiquidacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = '1'
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsLiquidacionEfectivoNewRecord
+    LogicalName = 'dbo LiquidacionEfectivo'
+    IndexDefs = <>
+    Left = 584
+    Top = 368
+  end
+  object dsLiquidacionInventario: TDADataSource
+    DataSet = cdsLiquidacionInventario.Dataset
+    OnStateChange = dsLiquidacionInventarioStateChange
+    DataTable = cdsLiquidacionInventario
+    Left = 616
+    Top = 400
+  end
+  object cdsLiquidacionInventario: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionInventarioTanque'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'AgrupacionTanqueID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'Lectura'
+        DataType = datFloat
+        Required = True
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = ''
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    BeforePost = cdsLiquidacionInventarioBeforePost
+    OnNewRecord = cdsLiquidacionInventarioNewRecord
+    LogicalName = 'dbo LiquidacionInventarioTanque'
+    IndexDefs = <>
+    Left = 616
+    Top = 368
+  end
+  object cdsTanquePorEstacion: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'AgrupacionTanqueID'
+        DataType = datInteger
+      end
+      item
+        Name = 'EstacionID'
+        DataType = datInteger
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 50
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = '0'
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsLiquidacionEfectivoNewRecord
+    LogicalName = 'TanquePorEstacion'
+    IndexDefs = <>
+    Left = 648
+    Top = 368
+  end
+  object dsTanquePorEstacion: TDADataSource
+    DataSet = cdsTanquePorEstacion.Dataset
+    OnStateChange = dsLiquidacionDepositosStateChange
+    DataTable = cdsTanquePorEstacion
+    Left = 648
+    Top = 400
+  end
+  object cdsLiquidacionDepositoNota: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionDepositoNotaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Nota'
+        DataType = datMemo
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = '1'
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsLiquidacionDepositoNotaNewRecord
+    LogicalName = 'LiquidacionDepositoNota'
+    IndexDefs = <>
+    Left = 344
+    Top = 208
+  end
+  object dsLiquidacionDepositoNota: TDADataSource
+    DataSet = cdsLiquidacionDepositoNota.Dataset
+    OnStateChange = dsLiquidacionDepositoNotaStateChange
+    DataTable = cdsLiquidacionDepositoNota
+    Left = 344
+    Top = 240
+  end
+  object cdsLiquidacionCarrete: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionCarreteID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'LecturaInicial'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'LecturaFinal'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'MangueraID'
+        DataType = datInteger
+        Required = True
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = ''
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    BeforePost = cdsLiquidacionCarreteBeforePost
+    OnNewRecord = cdsLiquidacionCarreteNewRecord
+    LogicalName = 'dbo LiquidacionCarrete'
+    IndexDefs = <>
+    Left = 704
+    Top = 368
+  end
+  object dsLiquidacionCarrete: TDADataSource
+    DataSet = cdsLiquidacionCarrete.Dataset
+    OnStateChange = dsLiquidacionCarreteStateChange
+    DataTable = cdsLiquidacionCarrete
+    Left = 704
+    Top = 400
+  end
+  object cdsBombas: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'MangueraID'
+        DataType = datInteger
+      end
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end>
+    Params = <>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.AdapterCistemGas
+    LogicalName = 'BombaManguera'
+    IndexDefs = <>
+    Left = 312
+    Top = 208
+  end
+  object cdsProductos: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'ProductoID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Nombre'
+        DataType = datString
+        Size = 150
+      end
+      item
+        Name = 'ClavePemex'
+        DataType = datString
+        Size = 10
+      end>
+    Params = <
+      item
+        Name = 'CategoriaID'
+        Value = '1'
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsLiquidacionDepositoNotaNewRecord
+    LogicalName = 'MuestraProductoCategoria'
+    IndexDefs = <>
+    Left = 376
+    Top = 208
+  end
+  object DADataSource2: TDADataSource
+    DataSet = cdsProductos.Dataset
+    OnStateChange = dsLiquidacionDepositoNotaStateChange
+    DataTable = cdsProductos
+    Left = 376
+    Top = 240
+  end
+  object DADataSource1: TDADataSource
+    DataSet = cdsCarreteInventarioInicial.Dataset
+    OnStateChange = dsLiquidacionDepositoNotaStateChange
+    DataTable = cdsCarreteInventarioInicial
+    Left = 408
+    Top = 240
+  end
+  object cdsCarreteInventarioInicial: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'BombaID'
+        DataType = datInteger
+      end
+      item
+        Name = 'MangueraID'
+        DataType = datInteger
+      end
+      item
+        Name = 'LecturaInicial'
+        DataType = datInteger
+      end
+      item
+        Name = 'LecturaFinal'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = ''
+      end
+      item
+        Name = 'TurnoID'
+        Value = ''
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsLiquidacionDepositoNotaNewRecord
+    LogicalName = 'spLiquidacionCarreteInicial'
+    IndexDefs = <>
+    Left = 408
+    Top = 208
+  end
+  object cdsEntregadoEfectivo: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'TipoValorID'
+        DataType = datInteger
+      end
+      item
+        Name = 'Cantidad'
+        DataType = datFloat
+      end
+      item
+        Name = 'Importe'
+        DataType = datFloat
+      end>
+    Params = <
+      item
+        Name = 'EstacionID'
+        Value = ''
+      end
+      item
+        Name = 'TurnoID'
+        Value = ''
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    LogicalName = 'EntregadoEfectivoLiquidacion'
+    IndexDefs = <>
+    Left = 272
+    Top = 208
+  end
+  object cdsLiquidacionDatos: TDACDSDataTable
+    RemoteUpdatesOptions = []
+    Fields = <
+      item
+        Name = 'LiquidacionDatosID'
+        DataType = datInteger
+        Required = True
+        InPrimaryKey = True
+      end
+      item
+        Name = 'LiquidacionID'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'Estatus'
+        DataType = datInteger
+        Required = True
+      end
+      item
+        Name = 'Fecha'
+        DataType = datDateTime
+        Required = True
+      end
+      item
+        Name = 'UsuarioID'
+        DataType = datInteger
+      end>
+    Params = <
+      item
+        Name = 'LiquidacionID'
+        Value = ''
+      end>
+    StreamingOptions = [soDisableEventsWhileStreaming]
+    RemoteDataAdapter = DM.RemoteDataAdapter
+    OnNewRecord = cdsLiquidacionDepositoNotaNewRecord
+    LogicalName = 'dbo LiquidacionDatos'
+    IndexDefs = <>
+    Left = 216
+    Top = 208
+  end
+end
