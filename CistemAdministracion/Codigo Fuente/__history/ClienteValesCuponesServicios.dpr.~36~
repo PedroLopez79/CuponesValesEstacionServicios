@@ -67,7 +67,10 @@ uses
   ufraBomba in 'ufraBomba.pas' {fraBomba: TFrame},
   ufraBombaNew in 'ufraBombaNew.pas' {fraBombaNew: TFrame},
   uPoleaServidorGlobal in 'uPoleaServidorGlobal.pas',
-  ufrmFacturas in 'ufrmFacturas.pas' {frmFacturas};
+  ufrmFacturas in 'ufrmFacturas.pas' {frmFacturas},
+  ufrmFacturasCliente in 'ufrmFacturasCliente.pas' {frmFacturasCliente},
+  ufrmCatalogoClientes in 'ufrmCatalogoClientes.pas' {frmCatalogoClientes},
+  ufrmConsultaValesCliente in 'ufrmConsultaValesCliente.pas' {frmConsultaValesClientes};
 
 {$R *.res}
 
@@ -86,7 +89,8 @@ begin
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
   Application.CreateForm(TdmImages, dmImages);
   Application.CreateForm(TdmAppActions, dmAppActions);
-  //Application.CreateForm(TrbPrintPreview, rbPrintPreview);
+  Application.CreateForm(TrbPrintPreview, rbPrintPreview);
+  Application.CreateForm(TfrmConsultaValesClientes, frmConsultaValesClientes);
   //Application.CreateForm(TfrmSplash, frmSplash);
   Sleep(3000);
   frmSplashScreen.Hide;

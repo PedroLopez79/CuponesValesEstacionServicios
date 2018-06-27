@@ -4,7 +4,6 @@ inherited frmCuponInterno: TfrmCuponInterno
   ClientWidth = 752
   OnDestroy = FormDestroy
   OnPaint = FormPaint
-  ExplicitLeft = -76
   ExplicitWidth = 752
   ExplicitHeight = 542
   PixelsPerInch = 96

@@ -3,7 +3,6 @@ inherited frmCatalogoCategoria: TfrmCatalogoCategoria
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcCatalogo: TcxPageControl
-    Properties.ActivePage = cxTabSheet2
     inherited cxTabSheet1: TcxTabSheet
       ExplicitLeft = 3
       ExplicitTop = 3

@@ -70,7 +70,8 @@ uses
   ufrmFacturas in 'ufrmFacturas.pas' {frmFacturas},
   ufrmFacturasCliente in 'ufrmFacturasCliente.pas' {frmFacturasCliente},
   ufrmCatalogoClientes in 'ufrmCatalogoClientes.pas' {frmCatalogoClientes},
-  ufrmConsultaValesCliente in 'ufrmConsultaValesCliente.pas' {frmConsultaValesClientes};
+  ufrmConsultaValesCliente in 'ufrmConsultaValesCliente.pas' {frmConsultaValesClientes},
+  ufrmConectTickets in 'ufrmConectTickets.pas' {frmCatalogo1};
 
 {$R *.res}
 
@@ -91,6 +92,7 @@ begin
   Application.CreateForm(TdmAppActions, dmAppActions);
   Application.CreateForm(TrbPrintPreview, rbPrintPreview);
   Application.CreateForm(TfrmConsultaValesClientes, frmConsultaValesClientes);
+  Application.CreateForm(TfrmCatalogo1, frmCatalogo1);
   //Application.CreateForm(TfrmSplash, frmSplash);
   Sleep(3000);
   frmSplashScreen.Hide;
